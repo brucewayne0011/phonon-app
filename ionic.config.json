@@ -1,0 +1,7 @@
+{
+  "name": "phonon-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
