@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
 
-const baseUrl = "";
+// const baseUrl = "";
 const bridgeUrl = "https://phonon.npmaile.com:8080/phonon/";
 
 export const api = createApi({
   // reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery(),
   tagTypes: ["Session", "Phonon"],
   endpoints: (builder) => ({
     fetchSessions: builder.query<{ Sessions: Session[] }, void>({
@@ -19,42 +19,47 @@ export const api = createApi({
         body: { pin },
       }),
     }),
-    pairSession: builder.mutation<void, string>({
-      query: (cardId) => ({
-        url: `Pair`,
+    pairSession: builder.mutation<void, { sessionId: string; cardId: string }>({
+      query: ({ cardId, sessionId }) => ({
+        url: `cards/${sessionId}/Pair`,
         method: "POST",
         body: { url: `${bridgeUrl}${cardId}` },
       }),
     }),
-    fetchPhonons: builder.query<Phonon[], string>({
-      query: (sessionId) => `/cards/${sessionId}/listPhonons`,
+    fetchPhonons: builder.query<Phonon[], { sessionId: string }>({
+      query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
       providesTags: ["Phonon"],
     }),
-    createPhonon: builder.mutation<CreatePhononResponse, void>({
-      query: () => ({
-        url: `phonon/create`,
-        method: "POST",
-      }),
-      invalidatesTags: ["Phonon"],
-    }),
+    createPhonon: builder.mutation<CreatePhononResponse, { sessionId: string }>(
+      {
+        query: ({ sessionId }) => ({
+          url: `cards/${sessionId}/phonon/create`,
+          method: "POST",
+        }),
+        invalidatesTags: ["Phonon"],
+      }
+    ),
     setDescriptor: builder.mutation<void, DescriptorDTO>({
-      query: ({ index, currencyType, value }) => ({
-        url: `phonon/${index}/setDescriptor`,
+      query: ({ index, currencyType, sessionId, value }) => ({
+        url: `cards/${sessionId}/phonon/${index}/setDescriptor`,
         method: "POST",
         body: { currencyType, value },
       }),
       invalidatesTags: ["Phonon"],
     }),
-    redeemPhonon: builder.mutation<{ privateKey: string }, number>({
-      query: (index) => ({
-        url: `phonon/${index}/redeem`,
+    redeemPhonon: builder.mutation<
+      { privateKey: string },
+      { index: number; sessionId: string }
+    >({
+      query: ({ index, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/${index}/redeem`,
         method: "POST",
       }),
       invalidatesTags: ["Phonon"],
     }),
-    sendPhonon: builder.mutation<void, number>({
-      query: (index) => ({
-        url: `phonon/${index}/send`,
+    sendPhonon: builder.mutation<void, { index: number; sessionId: string }>({
+      query: ({ index, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/${index}/send`,
         method: "POST",
       }),
       invalidatesTags: ["Phonon"],

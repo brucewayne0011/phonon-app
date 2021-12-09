@@ -4,7 +4,6 @@ import { api } from "./api";
 
 export const store = configureStore({
   reducer: {
-    // session: sessionReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>

@@ -5,6 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import icon from "../assets/icon.svg";
 
 const Header: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const Header: React.FC = () => {
         <IonButtons slot="start">
           <IonMenuButton />
         </IonButtons>
+        <img src={icon} className="w-1" alt="logo" style={{ width: "70px" }} />
         <IonTitle>PHONON</IonTitle>
       </IonToolbar>
     </IonHeader>

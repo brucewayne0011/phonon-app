@@ -13,35 +13,29 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
-import { Provider } from "react-redux";
 import { Route } from "react-router-dom";
 import Layout from "./layout/Layout";
-import SessionsPage from "./pages/SessionsPage";
-import { store } from "./store";
+import PhononsList from "./pages/PhononsList";
+import SessionsList from "./pages/SessionsList";
 /* Theme variables */
 import "./theme/variables.css";
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <IonApp>
-        <IonReactRouter>
-          {/* <IonSplitPane contentId="main"> */}
-          {/* <Menu /> */}
-          <IonRouterOutlet id="main">
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet id="main">
+          <Layout>
             <Route path="/" exact={true}>
-              <SessionsPage />
+              <SessionsList />
             </Route>
-            <Route path="/page/:name" exact={true}>
-              <Layout>
-                <SessionsPage />
-              </Layout>
+            <Route path="/:sessionId" exact={true}>
+              <PhononsList />
             </Route>
-          </IonRouterOutlet>
-          {/* </IonSplitPane> */}
-        </IonReactRouter>
-      </IonApp>
-    </Provider>
+          </Layout>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
   );
 };
 

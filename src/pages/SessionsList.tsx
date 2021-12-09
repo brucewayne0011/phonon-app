@@ -1,15 +1,17 @@
 import { IonLabel, IonList, IonListHeader } from "@ionic/react";
 import SessionListItem from "../components/SessionListItem";
+import { useFetchSessionsQuery } from "../store/api";
 
-const sessions = ["04a85f4def001272", "04a85f4def001272", "04a85f4def001272"];
 const SessionsPage: React.FC = () => {
+  const { data, isLoading } = useFetchSessionsQuery();
+
   return (
     <>
       <IonListHeader>
         <IonLabel>Sessions</IonLabel>
       </IonListHeader>
       <IonList>
-        {sessions.map((session) => (
+        {data?.Sessions.map((session) => (
           <SessionListItem session={session} />
         ))}
       </IonList>

@@ -26,6 +26,7 @@ export type DescriptorDTO = {
   index: number;
   currencyType: number;
   value: number;
+  sessionId: string;
 };
 
 export type PhononDTO = {

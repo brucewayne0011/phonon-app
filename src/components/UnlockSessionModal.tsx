@@ -1,45 +1,57 @@
-import { IonButton, IonInput } from "@ionic/react";
+import {
+  IonButton,
+  IonContent,
+  IonInput,
+  IonModal,
+  useIonRouter,
+} from "@ionic/react";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useUnlockSessionMutation } from "../store/api";
 
 interface UnlockSessionModalProps {
   session: string;
-  onDismiss: () => void;
-  onSubmit: () => void;
+  isOpen: boolean;
+  setIsOpen: (arg: boolean) => void;
 }
 
 const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   session,
-  onDismiss,
-  onSubmit,
+  isOpen,
+  setIsOpen,
 }) => {
-  const [pin, setPin] = useState<string>();
+  const [pin, setPin] = useState<string>("");
   const [unlockSession] = useUnlockSessionMutation();
-  let navigate = useNavigate();
+  let router = useIonRouter();
 
-  const handleOk = (sessionId: string) => {
-    unlockSession({ sessionId, pin })
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
+
+  const handleLogin = () => {
+    unlockSession({ sessionId: session, pin })
       .unwrap()
       .then(() => {
-        navigate(`/${session}/`);
+        router.push(`/${session}/`);
+        setIsOpen(false);
       })
       // TODO: Handle error and display something to the user
       .catch((err) => "error");
   };
 
   return (
-    <div>
-      <h1>{session}</h1>
-      <IonInput
-        value={pin}
-        placeholder="Enter Password"
-        type="password"
-        onIonChange={(e) => setPin(e.detail.value!)}
-      ></IonInput>
-      <IonButton onClick={() => onDismiss()}>Cancel</IonButton>
-      <IonButton>Login</IonButton>
-    </div>
+    <IonContent>
+      <IonModal isOpen={isOpen}>
+        <h1>{session}</h1>
+        <IonInput
+          value={pin}
+          placeholder="Enter Password"
+          type="password"
+          onIonChange={(e) => setPin(e.detail.value!)}
+        ></IonInput>
+        <IonButton onClick={handleCancel}>Cancel</IonButton>
+        <IonButton onClick={handleLogin}>Login</IonButton>
+      </IonModal>
+    </IonContent>
   );
 };
 
