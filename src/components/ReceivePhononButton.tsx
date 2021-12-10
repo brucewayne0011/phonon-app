@@ -1,4 +1,3 @@
-import { BarcodeScanner } from "@capacitor-community/barcode-scanner";
 import { IonButton, IonIcon, IonInput, IonModal } from "@ionic/react";
 import { download } from "ionicons/icons";
 import { useState } from "react";
@@ -11,19 +10,20 @@ export default function ReceivePhononButton() {
   const [requestPending, setRequestPending] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [pairSession] = usePairSessionMutation();
-  const startScan = async () => {
-    BarcodeScanner.hideBackground(); // make background of WebView transparent
+  // const startScan = async () => {
+  //   BarcodeScanner.hideBackground(); // make background of WebView transparent
 
-    const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
+  //   const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
 
-    // if the result has content
-    if (result.hasContent) {
-      console.log(result.content); // log the raw scanned content
-    }
-  };
+  //   // if the result has content
+  //   if (result.hasContent) {
+  //     console.log(result.content); // log the raw scanned content
+  //   }
+  // };
   const showModal = () => {
     setIsModalVisible(true);
-    startScan();
+
+    // startScan();
   };
 
   const hideModal = () => {
@@ -48,8 +48,8 @@ export default function ReceivePhononButton() {
     hideModal();
   };
 
-  const handleOnChange = (event: any) => {
-    setInputValue(() => event.target.value);
+  const handleOnChange = (value: any) => {
+    setInputValue(value);
   };
 
   return (
@@ -60,6 +60,7 @@ export default function ReceivePhononButton() {
         color="secondary"
         // icon={<InboxOutlined />}
         onClick={showModal}
+        className="shadow-lg shadow-teal-300/20"
       >
         <IonIcon slot="start" icon={download} />
         Receive
@@ -73,7 +74,7 @@ export default function ReceivePhononButton() {
       >
         <IonInput
           placeholder="Sender"
-          onChange={handleOnChange}
+          onIonChange={(e) => handleOnChange(e.detail.value!)}
           disabled={requestPending}
         />
         <IonButton key="back" onClick={handleCancel} disabled={requestPending}>

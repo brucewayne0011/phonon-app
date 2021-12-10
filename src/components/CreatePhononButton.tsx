@@ -6,7 +6,7 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import { add } from "ionicons/icons";
+import { addSharp } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
 import {
@@ -59,8 +59,14 @@ export default function CreatePhononButton() {
 
   return (
     <>
-      <IonButton fill="outline" slot="secondary" onClick={showCreateModal}>
-        <IonIcon slot="start" icon={add} />
+      <IonButton
+        fill="outline"
+        color="primary"
+        slot="secondary"
+        onClick={showCreateModal}
+        className="shadow-lg shadow-blue-300/20"
+      >
+        <IonIcon slot="start" icon={addSharp} />
         Create
       </IonButton>
 

@@ -1,5 +1,5 @@
 import { IonButton, IonIcon, IonInput, IonModal } from "@ionic/react";
-import { sendOutline } from "ionicons/icons";
+import { sendSharp } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { usePairSessionMutation, useSendPhononMutation } from "../store/api";
@@ -41,8 +41,8 @@ export default function SendPhononButton({ index }: { index: number }) {
     hideModal();
   };
 
-  const handleOnChange = (event: any) => {
-    setInputValue(() => event.target.value);
+  const handleOnChange = (value: any) => {
+    setInputValue(value);
     setHasError(false);
   };
 
@@ -50,19 +50,19 @@ export default function SendPhononButton({ index }: { index: number }) {
     <>
       <IonButton
         color="primary"
-        shape="round"
+        fill="clear"
         slot="end"
         onClick={showModal}
-        className="mt-5"
+        // className="shadow-lg shadow-blue-300/30"
       >
-        <IonIcon slot="end" icon={sendOutline} />
+        <IonIcon slot="end" icon={sendSharp} />
         Send
       </IonButton>
       <IonModal isOpen={isModalVisible}>
         {hasError ? "Error sending phonons. Please try again." : null}
         <IonInput
           placeholder="Recipient"
-          onChange={handleOnChange}
+          onIonChange={(e) => handleOnChange(e.detail.value!)}
           disabled={requestPending}
         />
         <IonButton key="back" onClick={handleCancel} disabled={requestPending}>

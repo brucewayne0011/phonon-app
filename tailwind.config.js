@@ -1,10 +1,12 @@
 module.exports = {
   // purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   // jit: true,
-  content: ["./src/**/*.{js,jsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "media", // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: "BandeinsSansBold",
+    },
   },
   variants: {
     extend: {},

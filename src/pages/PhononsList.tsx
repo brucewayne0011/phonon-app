@@ -1,10 +1,4 @@
-import {
-  IonButtons,
-  IonContent,
-  IonList,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButtons, IonContent, IonList } from "@ionic/react";
 import { useParams } from "react-router-dom";
 import CreatePhononButton from "../components/CreatePhononButton";
 import PhononListItem from "../components/PhononListItem";
@@ -17,16 +11,18 @@ const SessionsPage: React.FC = () => {
 
   return (
     <IonContent>
-      <h1>{sessionId}</h1>
-      <IonToolbar>
+      <div className="mt-2 text-center">
+        <p className="text-xs text-zinc-500 font-extrabold">SESSION</p>
+        <p className="mb-2">{sessionId}</p>
+      </div>
+      <div className="flex justify-evenly my-2">
         <IonButtons slot="secondary">
           <CreatePhononButton />
         </IonButtons>
-        <IonTitle>Phonons</IonTitle>
-        <IonButtons slot="primary">
+        <IonButtons slot="end">
           <ReceivePhononButton />
         </IonButtons>
-      </IonToolbar>
+      </div>
 
       <IonList>
         {data?.map((item) => (

@@ -1,12 +1,12 @@
 import { faBtc, faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IonAvatar, IonButton, IonIcon, IonItem, IonLabel } from "@ionic/react";
-import { logOutOutline } from "ionicons/icons";
+import { IonAvatar, IonItem, IonLabel } from "@ionic/react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import "../index.css";
 import { useRedeemPhononMutation } from "../store/api";
 import { Phonon } from "../types";
+import RedeemPhononButton from "./RedeemPhononButton";
 import SendPhononButton from "./SendPhononButton";
 
 const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
@@ -21,6 +21,7 @@ const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
         ({ privateKey }) => {
           const one = 1;
         }
+        // TODO: Add
         // notification["success"]({
         //   message: "Phonon Successfully Redeemed",
         //   description: (
@@ -39,6 +40,7 @@ const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
         <FontAwesomeIcon
           icon={phonon.type === 1 ? faBtc : faEthereum}
           size="2x"
+          className={phonon.type === 1 ? "text-yellow-200" : "text-indigo-300"}
         />
       </IonAvatar>
       <IonLabel>
@@ -46,19 +48,10 @@ const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
           {phonon.value} {phonon.type === 1 ? "BTC" : "ETH"}
         </h2>
         <p>{phonon.pubKey}</p>
-        <h1 className="font-bold underline">Hello world!</h1>
       </IonLabel>
       {/* <IonSendPhononModal index={item.index} />, */}
       <SendPhononButton index={phonon.index} />
-      <IonButton
-        color="danger"
-        shape="round"
-        slot="end"
-        onClick={() => handleRedeem(phonon.index)}
-      >
-        <IonIcon slot="end" icon={logOutOutline} />
-        Redeem
-      </IonButton>
+      <RedeemPhononButton index={phonon.index} />
     </IonItem>
   );
 };
