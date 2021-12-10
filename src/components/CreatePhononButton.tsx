@@ -70,14 +70,7 @@ export default function CreatePhononButton() {
         Create
       </IonButton>
 
-      <IonModal
-        isOpen={isModalVisible}
-        // title="Create Phonon"
-        // visible={isModalVisible}
-        // bodyStyle={{ textAlign: "center" }}
-        // onOk={useHandleOk}
-        // onCancel={handleCancel}
-      >
+      <IonModal isOpen={isModalVisible}>
         <IonInput
           placeholder="Amount"
           type={"number"}

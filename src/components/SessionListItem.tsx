@@ -6,18 +6,20 @@ const SessionListItem: React.FC<{ session: string }> = ({ session }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <IonItem>
-      <IonLabel>{session}</IonLabel>
+    <>
+      <IonItem button onClick={() => setIsOpen(true)} detail>
+        <IonLabel>{session}</IonLabel>
 
-      <IonButton fill="outline" slot="end" onClick={() => setIsOpen(true)}>
-        Unlock
-      </IonButton>
+        <IonButton fill="clear" slot="end">
+          Unlock
+        </IonButton>
+      </IonItem>
       <UnlockSessionModal
         session={session}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
-    </IonItem>
+    </>
   );
 };
 

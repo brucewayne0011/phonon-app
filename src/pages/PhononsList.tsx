@@ -12,10 +12,10 @@ const SessionsPage: React.FC = () => {
   return (
     <IonContent>
       <div className="mt-2 text-center">
-        <p className="text-xs text-zinc-500 font-extrabold">SESSION</p>
-        <p className="mb-2">{sessionId}</p>
+        <p className="text-xs text-zinc-500 font-extrabold">WALLET</p>
+        <p className="mb-3">{sessionId}</p>
       </div>
-      <div className="flex justify-evenly my-2">
+      <div className="flex justify-evenly mb-5">
         <IonButtons slot="secondary">
           <CreatePhononButton />
         </IonButtons>

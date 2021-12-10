@@ -1,6 +1,14 @@
-import { IonButton, IonIcon, IonInput, IonModal } from "@ionic/react";
+import {
+  IonButton,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonModal,
+} from "@ionic/react";
 import { download } from "ionicons/icons";
 import { useState } from "react";
+import QRCode from "react-qr-code";
 import { useParams } from "react-router";
 import { usePairSessionMutation } from "../store/api";
 
@@ -72,22 +80,44 @@ export default function ReceivePhononButton() {
         // onOk={handleOk}
         // onCancel={handleCancel}
       >
-        <IonInput
-          placeholder="Sender"
-          onIonChange={(e) => handleOnChange(e.detail.value!)}
-          disabled={requestPending}
-        />
-        <IonButton key="back" onClick={handleCancel} disabled={requestPending}>
-          Cancel
-        </IonButton>
-        <IonButton
-          key="submit"
-          // type="primary"
-          // loading={requestPending}
-          onClick={handleOk}
-        >
-          Receive
-        </IonButton>
+        <div className="flex flex-col justify-between content-between p-12 h-full">
+          <div>
+            <p className="text-xs text-center text-gray-400">
+              Share Code with Sender
+            </p>
+            <QRCode value={sessionId} size={256} />
+          </div>
+
+          <IonItem>
+            <IonLabel position="stacked">Sender ID</IonLabel>
+            <IonInput
+              placeholder="0xASDASDASD"
+              onIonChange={(e) => handleOnChange(e.detail.value!)}
+              disabled={requestPending}
+            />
+          </IonItem>
+          <div className="flex flex-row justify-evenly">
+            <IonButton
+              key="back"
+              color="medium"
+              fill="outline"
+              onClick={handleCancel}
+              disabled={requestPending}
+            >
+              Cancel
+            </IonButton>
+            <IonButton
+              key="submit"
+              fill="solid"
+              color="primary"
+              // type="primary"
+              // loading={requestPending}
+              onClick={handleOk}
+            >
+              Receive
+            </IonButton>
+          </div>
+        </div>
       </IonModal>
     </>
   );

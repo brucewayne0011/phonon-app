@@ -20,27 +20,35 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   setIsOpen,
 }) => {
   const [pin, setPin] = useState<string>("");
+  const [isUnlocked, setIsUnlocked] = useState(false);
   const [unlockSession] = useUnlockSessionMutation();
   let router = useIonRouter();
 
   const handleCancel = () => {
     setIsOpen(false);
+    setIsUnlocked(false);
   };
 
   const handleLogin = () => {
     unlockSession({ sessionId: session, pin })
       .unwrap()
       .then(() => {
-        router.push(`/${session}/`);
         setIsOpen(false);
+        setIsUnlocked(true);
       })
       // TODO: Handle error and display something to the user
-      .catch((err) => "error");
+      .catch((err) => setIsUnlocked(false));
   };
 
   return (
     <IonContent>
-      <IonModal isOpen={isOpen}>
+      <IonModal
+        // class="py-32"
+        isOpen={isOpen}
+        onDidDismiss={() => {
+          if (isUnlocked) router.push(`/${session}/`);
+        }}
+      >
         <h1>{session}</h1>
         <IonInput
           value={pin}
