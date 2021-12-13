@@ -1,3 +1,4 @@
+import { isPlatform } from "@ionic/core";
 import {
   IonButton,
   IonIcon,
@@ -83,16 +84,17 @@ export default function ReceivePhononButton() {
               onIonChange={(e) => handleOnChange(e.detail.value!)}
               disabled={requestPending}
             ></IonInput>
-            <IonButton
-              fill="clear"
-              color="secondary"
-              slot="end"
-              onClick={() => scanQr(setInputValue)}
-              className="my-auto"
-            >
-              <IonIcon icon={scan} size="large" />
-              {/* TODO: Add QR Code Scanning */}
-            </IonButton>
+            {isPlatform("capacitor") ? (
+              <IonButton
+                fill="clear"
+                color="secondary"
+                slot="end"
+                onClick={() => scanQr(setInputValue)}
+                className="my-auto"
+              >
+                <IonIcon icon={scan} size="large" />
+              </IonButton>
+            ) : null}
           </IonItem>
           <div className="flex flex-row justify-evenly">
             <IonButton

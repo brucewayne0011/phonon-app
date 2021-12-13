@@ -109,7 +109,7 @@ export default function CreatePhononButton() {
             <IonButton
               key="back"
               color="medium"
-              fill="outline"
+              fill="clear"
               expand="block"
               onClick={handleCancel}
               disabled={requestPending}

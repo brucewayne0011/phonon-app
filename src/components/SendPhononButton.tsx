@@ -5,6 +5,7 @@ import {
   IonItem,
   IonLabel,
   IonModal,
+  isPlatform,
 } from "@ionic/react";
 import { scan, sendSharp } from "ionicons/icons";
 import QRCode from "qrcode.react";
@@ -84,22 +85,23 @@ export default function SendPhononButton({ index }: { index: number }) {
               onIonChange={(e) => handleOnChange(e.detail.value!)}
               disabled={requestPending}
             ></IonInput>
-            <IonButton
-              fill="clear"
-              color="secondary"
-              slot="end"
-              onClick={() => scanQr(setInputValue)}
-              className="my-auto"
-            >
-              <IonIcon icon={scan} size="large" />
-              {/* TODO: Add QR Code Scanning */}
-            </IonButton>
+            {isPlatform("capacitor") ? (
+              <IonButton
+                fill="clear"
+                color="secondary"
+                slot="end"
+                onClick={() => scanQr(setInputValue)}
+                className="my-auto"
+              >
+                <IonIcon icon={scan} size="large" />
+              </IonButton>
+            ) : null}
           </IonItem>
           <div className="flex flex-row justify-evenly">
             <IonButton
               key="back"
               color="medium"
-              fill="outline"
+              fill="clear"
               onClick={handleCancel}
               disabled={requestPending}
             >
