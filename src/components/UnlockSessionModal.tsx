@@ -2,6 +2,7 @@ import {
   IonButton,
   IonContent,
   IonInput,
+  IonItem,
   IonModal,
   useIonRouter,
 } from "@ionic/react";
@@ -49,15 +50,28 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
           if (isUnlocked) router.push(`/${session}/`);
         }}
       >
-        <h1>{session}</h1>
-        <IonInput
-          value={pin}
-          placeholder="Enter Password"
-          type="password"
-          onIonChange={(e) => setPin(e.detail.value!)}
-        ></IonInput>
-        <IonButton onClick={handleCancel}>Cancel</IonButton>
-        <IonButton onClick={handleLogin}>Login</IonButton>
+        <div className="flex flex-col justify-center content-center p-10 h-full">
+          <h1>{session}</h1>
+          <IonItem className="my-7">
+            <IonInput
+              value={pin}
+              placeholder="Password"
+              type="password"
+              onIonChange={(e) => setPin(e.detail.value!)}
+            ></IonInput>
+          </IonItem>
+          <div className="flex flex-row justify-evenly">
+            <IonButton color="medium" fill="clear" onClick={handleCancel}>
+              Cancel
+            </IonButton>
+            <IonButton
+              onClick={handleLogin}
+              className="bg-gradient-to-br from-blue-300 to-green-300 shadow-lg shadow-teal-300/40  "
+            >
+              Unlock
+            </IonButton>
+          </div>
+        </div>
       </IonModal>
     </IonContent>
   );

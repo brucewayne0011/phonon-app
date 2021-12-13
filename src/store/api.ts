@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
 
-// const baseUrl = "";
+const baseUrl = "https://phonon.npmaile.com:8080/";
 const bridgeUrl = "https://phonon.npmaile.com:8080/phonon/";
 
 export const api = createApi({
-  // reducerPath: "api",
-  baseQuery: fetchBaseQuery(),
+  baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Session", "Phonon"],
   endpoints: (builder) => ({
     fetchSessions: builder.query<{ Sessions: Session[] }, void>({
@@ -36,7 +35,6 @@ export const api = createApi({
           url: `cards/${sessionId}/phonon/create`,
           method: "POST",
         }),
-        invalidatesTags: ["Phonon"],
       }
     ),
     setDescriptor: builder.mutation<void, DescriptorDTO>({

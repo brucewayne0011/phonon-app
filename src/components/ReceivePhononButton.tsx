@@ -6,10 +6,11 @@ import {
   IonLabel,
   IonModal,
 } from "@ionic/react";
-import { download } from "ionicons/icons";
+import { download, scan } from "ionicons/icons";
+import QRCode from "qrcode.react";
 import { useState } from "react";
-import QRCode from "react-qr-code";
 import { useParams } from "react-router";
+import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation } from "../store/api";
 
 export default function ReceivePhononButton() {
@@ -18,20 +19,9 @@ export default function ReceivePhononButton() {
   const [requestPending, setRequestPending] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [pairSession] = usePairSessionMutation();
-  // const startScan = async () => {
-  //   BarcodeScanner.hideBackground(); // make background of WebView transparent
 
-  //   const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
-
-  //   // if the result has content
-  //   if (result.hasContent) {
-  //     console.log(result.content); // log the raw scanned content
-  //   }
-  // };
   const showModal = () => {
     setIsModalVisible(true);
-
-    // startScan();
   };
 
   const hideModal = () => {
@@ -63,44 +53,52 @@ export default function ReceivePhononButton() {
   return (
     <>
       <IonButton
-        // type="primary"
         fill="outline"
         color="secondary"
-        // icon={<InboxOutlined />}
         onClick={showModal}
         className="shadow-lg shadow-teal-300/20"
       >
         <IonIcon slot="start" icon={download} />
         Receive
       </IonButton>
-      <IonModal
-        // title="Receive Phonon"
-        isOpen={isModalVisible}
-        // bodyStyle={{ textAlign: "center" }}
-        // onOk={handleOk}
-        // onCancel={handleCancel}
-      >
-        <div className="flex flex-col justify-between content-between p-12 h-full">
-          <div>
-            <p className="text-xs text-center text-gray-400">
+      <IonModal isOpen={isModalVisible}>
+        <div className="flex flex-col justify-start content-center p-10 h-full">
+          <div className="mx-auto">
+            <p className="text-xs text-center text-gray-500 uppercase font-bold mb-2">
               Share Code with Sender
             </p>
-            <QRCode value={sessionId} size={256} />
+            <QRCode
+              value={sessionId}
+              size={200}
+              level="H"
+              className="mx-auto"
+            />
           </div>
 
-          <IonItem>
+          <IonItem className="my-7">
             <IonLabel position="stacked">Sender ID</IonLabel>
             <IonInput
-              placeholder="0xASDASDASD"
+              value={inputValue}
+              placeholder="0xPHONON"
               onIonChange={(e) => handleOnChange(e.detail.value!)}
               disabled={requestPending}
-            />
+            ></IonInput>
+            <IonButton
+              fill="clear"
+              color="secondary"
+              slot="end"
+              onClick={() => scanQr(setInputValue)}
+              className="my-auto"
+            >
+              <IonIcon icon={scan} size="large" />
+              {/* TODO: Add QR Code Scanning */}
+            </IonButton>
           </IonItem>
           <div className="flex flex-row justify-evenly">
             <IonButton
               key="back"
               color="medium"
-              fill="outline"
+              fill="clear"
               onClick={handleCancel}
               disabled={requestPending}
             >
@@ -110,9 +108,8 @@ export default function ReceivePhononButton() {
               key="submit"
               fill="solid"
               color="primary"
-              // type="primary"
-              // loading={requestPending}
               onClick={handleOk}
+              className="shadow-lg shadow-teal-300/40"
             >
               Receive
             </IonButton>

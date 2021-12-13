@@ -2,6 +2,7 @@ import {
   IonButton,
   IonIcon,
   IonInput,
+  IonItem,
   IonModal,
   IonSelect,
   IonSelectOption,
@@ -9,6 +10,7 @@ import {
 import { addSharp } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
+import icon from "../assets/icon.svg";
 import {
   useCreatePhononMutation,
   useSetDescriptorMutation,
@@ -71,34 +73,61 @@ export default function CreatePhononButton() {
       </IonButton>
 
       <IonModal isOpen={isModalVisible}>
-        <IonInput
-          placeholder="Amount"
-          type={"number"}
-          min={"1"}
-          defaultValue={1}
-          onIonChange={(e) => handleOnInputChange(parseInt(e.detail.value!))}
-          disabled={requestPending}
-        />
-        <IonSelect
-          placeholder="Currency"
-          onIonChange={(e) => handleOnSelectChange(e.detail.value)}
-          defaultValue={1}
-          disabled={requestPending}
-        >
-          <IonSelectOption value={1}>Bitcoin</IonSelectOption>
-          <IonSelectOption value={2}>Ethereum</IonSelectOption>
-        </IonSelect>
-        <IonButton key="back" onClick={handleCancel} disabled={requestPending}>
-          Cancel
-        </IonButton>
-        <IonButton
-          key="submit"
-          // type="primary"
-          // loading={requestPending}
-          onClick={useHandleOk}
-        >
-          Create
-        </IonButton>
+        <div className="flex flex-col justify-start content-center p-12 h-full">
+          <p className="text-xs text-center text-gray-500 uppercase font-bold mb-2">
+            Create Phonon
+          </p>
+
+          <img src={icon} className="mx-auto w-32" alt="logo" />
+
+          <div>
+            <IonItem className="my-5">
+              <IonInput
+                placeholder="Amount"
+                type={"number"}
+                min={"1"}
+                defaultValue={1}
+                onIonChange={(e) =>
+                  handleOnInputChange(parseInt(e.detail.value!))
+                }
+                disabled={requestPending}
+              />
+            </IonItem>
+            <IonItem className="my-5">
+              <IonSelect
+                placeholder="Currency"
+                onIonChange={(e) => handleOnSelectChange(e.detail.value)}
+                defaultValue={1}
+                disabled={requestPending}
+              >
+                <IonSelectOption value={1}>Bitcoin</IonSelectOption>
+                <IonSelectOption value={2}>Ethereum</IonSelectOption>
+              </IonSelect>
+            </IonItem>
+          </div>
+          <div className="flex flex-row justify-evenly">
+            <IonButton
+              key="back"
+              color="medium"
+              fill="outline"
+              expand="block"
+              onClick={handleCancel}
+              disabled={requestPending}
+            >
+              Cancel
+            </IonButton>
+            <IonButton
+              key="submit"
+              fill="solid"
+              expand="block"
+              color="primary"
+              onClick={useHandleOk}
+              className="shadow-lg shadow-teal-300/40"
+            >
+              Create
+            </IonButton>
+          </div>
+        </div>
       </IonModal>
     </>
   );

@@ -10,3 +10,21 @@
   src: local("BandeinsSansBold"),
     url(./assets/BandeinsSansBold.otf) format("opentype");
 }
+
+.scanner-ui {
+  display: none;
+}
+.scanner-hide {
+  visibility: visible;
+}
+
+body.qrscanner {
+  background-color: transparent;
+  visibility: hidden;
+}
+body.qrscanner .scanner-ui {
+  display: block;
+}
+body.qrscanner .scanner-hide {
+  visibility: hidden;
+}
