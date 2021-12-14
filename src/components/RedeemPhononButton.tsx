@@ -1,5 +1,6 @@
-import { IonButton, IonIcon, IonToast } from "@ionic/react";
-import { informationCircle, logOutOutline } from "ionicons/icons";
+import { Clipboard } from "@capacitor/clipboard";
+import { IonAlert, IonButton, IonIcon } from "@ionic/react";
+import { logOutOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
 import "../index.css";
@@ -8,15 +9,15 @@ import { useRedeemPhononMutation } from "../store/api";
 const RedeemPhononButton: React.FC<{ index: number }> = ({ index }) => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [redeemPhonon] = useRedeemPhononMutation();
-  const [showToast, setShowToast] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [privateKey, setPrivateKey] = useState("");
 
   const handleRedeem = () =>
     redeemPhonon({ index, sessionId })
       .unwrap()
       .then(({ privateKey }) => {
-        setShowToast(true);
         setPrivateKey(privateKey);
+        setShowAlert(true);
       });
 
   return (
@@ -30,18 +31,23 @@ const RedeemPhononButton: React.FC<{ index: number }> = ({ index }) => {
         <IonIcon slot="end" icon={logOutOutline} />
         Redeem
       </IonButton>
-      <IonToast
-        isOpen={showToast}
-        onDidDismiss={() => setShowToast(false)}
-        message={privateKey}
-        icon={informationCircle}
-        position="top"
+      <IonAlert
+        isOpen={showAlert}
+        onDidDismiss={() => setShowAlert(false)}
+        header="Redeemed Phonon"
+        subHeader={privateKey}
         buttons={[
           {
-            text: "Done",
+            text: "Close",
             role: "cancel",
+            cssClass: "secondary",
+            id: "cancel-button",
+          },
+          {
+            text: "Copy",
+            id: "confirm-button",
             handler: () => {
-              console.log("Cancel clicked");
+              Clipboard.write({ string: privateKey });
             },
           },
         ]}
