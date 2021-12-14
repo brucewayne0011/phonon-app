@@ -1,7 +1,10 @@
+import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
 
-const baseUrl = "https://phonon.npmaile.com:8080/";
+const baseUrl = isPlatform("capacitor")
+  ? "https://phonon.npmaile.com:8080/"
+  : "";
 const bridgeUrl = "https://phonon.npmaile.com:8080/phonon/";
 
 export const api = createApi({
