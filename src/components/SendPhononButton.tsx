@@ -33,7 +33,7 @@ export default function SendPhononButton({ index }: { index: number }) {
     setRequestPending(false);
   };
 
-  const handleOk = async () => {
+  const handleSubmit = async () => {
     setRequestPending(true);
     pairSession({ cardId: inputValue, sessionId })
       .unwrap()
@@ -54,6 +54,14 @@ export default function SendPhononButton({ index }: { index: number }) {
   const handleOnChange = (value: any) => {
     setInputValue(value);
     setHasError(false);
+  };
+
+  const handleOnKeyDown = (event: any): void => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      handleSubmit();
+    }
   };
 
   return (
@@ -83,6 +91,7 @@ export default function SendPhononButton({ index }: { index: number }) {
             <IonInput
               value={inputValue}
               placeholder="0xPHONON"
+              onKeyDown={handleOnKeyDown}
               onIonChange={(e) => handleOnChange(e.detail.value!)}
               disabled={requestPending}
             ></IonInput>
@@ -113,7 +122,7 @@ export default function SendPhononButton({ index }: { index: number }) {
               fill="solid"
               color="primary"
               disabled={requestPending}
-              onClick={handleOk}
+              onClick={handleSubmit}
               className="shadow-lg shadow-teal-300/40"
             >
               Send

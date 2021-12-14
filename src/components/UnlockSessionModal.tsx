@@ -30,6 +30,14 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
     setIsUnlocked(false);
   };
 
+  const handleOnKeyDown = (event: any): void => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      handleLogin();
+    }
+  };
+
   const handleLogin = () => {
     unlockSession({ sessionId: session, pin })
       .unwrap()
@@ -58,6 +66,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
               placeholder="Password"
               type="password"
               onIonChange={(e) => setPin(e.detail.value!)}
+              onKeyDown={handleOnKeyDown}
             ></IonInput>
           </IonItem>
           <div className="flex flex-row justify-evenly">

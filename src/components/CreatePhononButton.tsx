@@ -29,7 +29,7 @@ export default function CreatePhononButton() {
     setIsModalVisible(true);
   };
 
-  const useHandleOk = async () => {
+  const handleSubmit = async () => {
     setRequestPending(true);
     createPhonon({ sessionId })
       .unwrap()
@@ -59,6 +59,14 @@ export default function CreatePhononButton() {
     setSelectValue(value);
   };
 
+  const handleOnKeyDown = (event: any): void => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      handleSubmit();
+    }
+  };
+
   return (
     <>
       <IonButton
@@ -86,6 +94,7 @@ export default function CreatePhononButton() {
                 placeholder="Amount"
                 type={"number"}
                 min={"1"}
+                onKeyDown={handleOnKeyDown}
                 defaultValue={1}
                 onIonChange={(e) =>
                   handleOnInputChange(parseInt(e.detail.value!))
@@ -121,7 +130,7 @@ export default function CreatePhononButton() {
               fill="solid"
               expand="block"
               color="primary"
-              onClick={useHandleOk}
+              onClick={handleSubmit}
               className="shadow-lg shadow-teal-300/40"
             >
               Create

@@ -31,7 +31,7 @@ export default function ReceivePhononButton() {
     setRequestPending(false);
   };
 
-  const handleOk = async () => {
+  const handleSubmit = async () => {
     setRequestPending(true);
     pairSession({ cardId: inputValue, sessionId })
       .unwrap()
@@ -49,6 +49,14 @@ export default function ReceivePhononButton() {
 
   const handleOnChange = (value: any) => {
     setInputValue(value);
+  };
+
+  const handleOnKeyDown = (event: any): void => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      handleSubmit();
+    }
   };
 
   return (
@@ -112,7 +120,8 @@ export default function ReceivePhononButton() {
               fill="solid"
               color="primary"
               disabled={requestPending}
-              onClick={handleOk}
+              onKeyDown={handleOnKeyDown}
+              onClick={handleSubmit}
               className="shadow-lg shadow-teal-300/40"
             >
               Receive
