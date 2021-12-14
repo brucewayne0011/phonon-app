@@ -110,6 +110,7 @@ export default function ReceivePhononButton() {
               key="submit"
               fill="solid"
               color="primary"
+              disabled={requestPending}
               onClick={handleOk}
               className="shadow-lg shadow-teal-300/40"
             >

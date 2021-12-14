@@ -111,6 +111,7 @@ export default function SendPhononButton({ index }: { index: number }) {
               key="submit"
               fill="solid"
               color="primary"
+              disabled={requestPending}
               onClick={handleOk}
               className="shadow-lg shadow-teal-300/40"
             >

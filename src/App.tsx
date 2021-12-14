@@ -26,7 +26,7 @@ const App: React.FC = () => {
   });
 
   return (
-    <IonApp>
+    <IonApp className="container mx-auto">
       <IonReactRouter>
         <IonRouterOutlet id="main">
           <Layout>

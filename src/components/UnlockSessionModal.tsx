@@ -64,12 +64,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
             <IonButton color="medium" fill="clear" onClick={handleCancel}>
               Cancel
             </IonButton>
-            <IonButton
-              onClick={handleLogin}
-              className="bg-gradient-to-br from-blue-300 to-green-300 shadow-lg shadow-teal-300/40  "
-            >
-              Unlock
-            </IonButton>
+            <IonButton onClick={handleLogin}>Unlock</IonButton>
           </div>
         </div>
       </IonModal>
