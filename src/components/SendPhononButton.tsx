@@ -73,7 +73,8 @@ export default function SendPhononButton({ index }: { index: number }) {
               value={sessionId}
               size={200}
               level="H"
-              className="mx-auto border-8 border-white"
+              className="mx-auto"
+              includeMargin
             />
           </div>
 
