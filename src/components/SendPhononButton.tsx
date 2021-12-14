@@ -73,8 +73,8 @@ export default function SendPhononButton({ index }: { index: number }) {
               value={sessionId}
               size={200}
               level="H"
-              className="mx-auto"
-            />{" "}
+              className="mx-auto border-8 border-white"
+            />
           </div>
 
           <IonItem className="my-7">
