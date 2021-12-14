@@ -4,8 +4,8 @@ import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
 
 const baseUrl = isPlatform("capacitor")
   ? "https://phonon.npmaile.com:8080/"
-  : "";
-const bridgeUrl = "https://phonon.npmaile.com:8080/phonon/";
+  : "http://localhost:8080/";
+const bridgeUrl = "https://phonon.npmaile.com:443/phonon/";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
