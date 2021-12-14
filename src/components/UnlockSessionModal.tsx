@@ -51,7 +51,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
         }}
       >
         <div className="flex flex-col justify-center content-center p-10 h-full">
-          <h1>{session}</h1>
+          <h1 className="text-lg mx-auto">{session}</h1>
           <IonItem className="my-7">
             <IonInput
               value={pin}
