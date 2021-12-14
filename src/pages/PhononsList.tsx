@@ -1,4 +1,10 @@
-import { IonButtons, IonContent, IonList } from "@ionic/react";
+import {
+  IonButtons,
+  IonContent,
+  IonList,
+  IonRefresher,
+  IonRefresherContent,
+} from "@ionic/react";
 import { useParams } from "react-router-dom";
 import CreatePhononButton from "../components/CreatePhononButton";
 import PhononListItem from "../components/PhononListItem";
@@ -7,7 +13,12 @@ import { useFetchPhononsQuery } from "../store/api";
 
 const SessionsPage: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
-  const { data, isLoading } = useFetchPhononsQuery({ sessionId });
+  const { data, refetch } = useFetchPhononsQuery({ sessionId });
+
+  async function refresh(event: CustomEvent<any>) {
+    await refetch();
+    event.detail.complete();
+  }
 
   return (
     <IonContent>
@@ -24,11 +35,20 @@ const SessionsPage: React.FC = () => {
         </IonButtons>
       </div>
 
-      <IonList>
-        {data?.map((item) => (
-          <PhononListItem phonon={item} />
-        ))}
-      </IonList>
+      <IonContent>
+        <IonRefresher
+          slot="fixed"
+          onIonRefresh={refresh}
+          closeDuration={"50ms"}
+        >
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
+        <IonList>
+          {data?.map((item) => (
+            <PhononListItem phonon={item} />
+          ))}
+        </IonList>
+      </IonContent>
     </IonContent>
   );
 };
