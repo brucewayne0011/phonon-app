@@ -111,7 +111,6 @@ export default function ReceivePhononButton() {
               color="medium"
               fill="clear"
               onClick={handleCancel}
-              disabled={requestPending}
             >
               Cancel
             </IonButton>

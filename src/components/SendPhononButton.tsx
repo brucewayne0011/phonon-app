@@ -113,7 +113,6 @@ export default function SendPhononButton({ index }: { index: number }) {
               color="medium"
               fill="clear"
               onClick={handleCancel}
-              disabled={requestPending}
             >
               Cancel
             </IonButton>
