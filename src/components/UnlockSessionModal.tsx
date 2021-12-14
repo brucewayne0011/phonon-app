@@ -4,6 +4,7 @@ import {
   IonInput,
   IonItem,
   IonModal,
+  IonText,
   useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
@@ -52,14 +53,15 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   return (
     <IonContent>
       <IonModal
-        // class="py-32"
         isOpen={isOpen}
         onDidDismiss={() => {
           if (isUnlocked) router.push(`/${session}/`);
         }}
       >
         <div className="flex flex-col justify-center content-center p-10 h-full">
-          <h1 className="text-lg mx-auto">{session}</h1>
+          <IonText color="light">
+            <h1 className="text-lg text-center mx-auto">Unlock {session}</h1>
+          </IonText>
           <IonItem className="my-7">
             <IonInput
               value={pin}
