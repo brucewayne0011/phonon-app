@@ -4,7 +4,11 @@
 
 # phonon-app
 
-The application for creating, sending, and redeeming Phonons. It can be built to target Web, iOS, and Android platforms. 
+The application for creating, sending, and redeeming Phonons. 
+
+It can be built to target Web, iOS, and Android platforms. 
+
+To learn more about Phonon, visit [phonon.network](https://phonon.network) and to get help [join the PhononDAO Discord](https://discord.gg/8EhKQXsm).
 
 ## Dependencies
 
@@ -24,9 +28,13 @@ The application for creating, sending, and redeeming Phonons. It can be built to
 
 ## Getting started
 
-To run the app locally, or to begin developing new features for the Phonon App, you'll need to run [phonon-client](https://github.com/GridPlus/phonon-client) locally on your machine. 
+To run the app locally, or to begin developing new features for the Phonon App, you'll need to run [phonon-client](https://github.com/GridPlus/phonon-client) locally on your machine. This is the service that the phonon-app talks to in order to securely interact with the phonon network.
 
-### Start the Client
+Most of the time, you'll be working with the web app. Many web features will work just fine across all platforms, but since we are engineers, we always test on the mobile platforms as well.
+
+To check if any particular web platform feature works on mobile browsers, we suggest putting the name of that feature into [CanIUse.com](https://caniuse.com/) to see how well it is supported.
+
+### Start the phonon-client
 
 1. [Install Go](https://go.dev/doc/install) (if you don't already have it on your machine).
 2. `git clone https://github.com/GridPlus/phonon-client.git` - Clone the [phonon-client](https://github.com/GridPlus/phonon-client) git repository to your machine.
@@ -41,11 +49,19 @@ To run the app locally, or to begin developing new features for the Phonon App, 
 
 ### Start the iOS App
 
-You'll need a computer running macOS to work on the iOS app. There is quite a bit of preparation required, which you can do by following along with the [Ionic Documentation](https://ionicframework.com/docs/developing/ios). Once you're set up, you'll run `$ ionic capacitor run ios -l --external` to get the development environment set up to allow for live-reloading while working. 
+You'll need a computer running macOS to work on the iOS app. There is quite a bit of preparation required, which you can do by following along with the [Ionic Documentation](https://ionicframework.com/docs/developing/ios). Once you're set up, you'll run: 
+
+`$ ionic capacitor run ios -l --external` 
+
+to get the development environment set up to allow for live-reloading while working. 
 
 ### Start the Android App
 
-As with iOS development, Android also requires preparation of your machine before you can get started with development. Visit the [Ionic Documentation](https://ionicframework.com/docs/developing/android) to learn how to set up your computer. Running `$ ionic capacitor run android -l --host=YOUR_IP_ADDRESS` with your IP address in the command, so the app knows where to look for changes.
+As with iOS development, Android also requires preparation of your machine before you can get started with development. Visit the [Ionic Documentation](https://ionicframework.com/docs/developing/android) to learn how to set up your computer. The following command:  
+
+`$ ionic capacitor run android -l --host=YOUR_IP_ADDRESS` 
+
+with your IP address in the command, so the app knows where to look for changes.
 
 ## Architecture
 
@@ -63,4 +79,4 @@ State is managed using [Redux Toolkit](https://redux-toolkit.js.org/). This give
 
 ## Contributing
 
-Open a PR targeting the `master` branch.
+Pick up an unassigned ticket from the issues on this repo, do your work on a new branch, then open a PR targeting the `master` branch.
