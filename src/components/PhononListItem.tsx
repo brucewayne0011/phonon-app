@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IonAvatar, IonItem, IonLabel } from "@ionic/react";
-
+import React from "react";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
 import { Phonon } from "../types";
-
 import RedeemPhononButton from "./RedeemPhononButton";
 import SendPhononButton from "./SendPhononButton";
 

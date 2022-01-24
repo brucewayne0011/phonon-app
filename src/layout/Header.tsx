@@ -7,9 +7,8 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-
 import icon from "../assets/icon.svg";
 
 const Header: React.FC = () => {

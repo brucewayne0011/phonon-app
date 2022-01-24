@@ -13,13 +13,13 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
+import React from "react";
 import { Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 import PhononsList from "./pages/PhononsList";
 import SessionsList from "./pages/SessionsList";
 /* Theme variables */
 import "./theme/variables.css";
-
 const App: React.FC = () => {
   setupIonicReact({
     mode: "md",

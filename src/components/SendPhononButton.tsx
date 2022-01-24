@@ -9,9 +9,8 @@ import {
 } from "@ionic/react";
 import { scan, sendSharp } from "ionicons/icons";
 import QRCode from "qrcode.react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
-
 import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation, useSendPhononMutation } from "../store/api";
 
@@ -34,15 +33,15 @@ export default function SendPhononButton({ index }: { index: number }) {
     setRequestPending(false);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setRequestPending(true);
     pairSession({ cardId: inputValue, sessionId })
       .unwrap()
       .then(() => {
-        sendPhonon({ index, sessionId });
+        sendPhonon({ index, sessionId }).catch(console.error);
         hideModal();
       })
-      .catch((err) => {
+      .catch(() => {
         setHasError(true);
         setRequestPending(false);
       });
@@ -93,7 +92,7 @@ export default function SendPhononButton({ index }: { index: number }) {
               value={inputValue}
               placeholder="0xPHONON"
               onKeyDown={handleOnKeyDown}
-              onIonChange={(e) => handleOnChange(e.detail.value!)}
+              onIonChange={(e) => handleOnChange(e.detail.value)}
               disabled={requestPending}
             ></IonInput>
             {isPlatform("capacitor") ? (

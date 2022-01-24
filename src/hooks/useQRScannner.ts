@@ -3,7 +3,7 @@ import { BarcodeScanner } from "@capacitor-community/barcode-scanner";
 export const scanQr = async (callback: (x: string) => void) => {
   const isPermissionGranted = await didUserGrantPermission();
   if (isPermissionGranted) {
-    BarcodeScanner.hideBackground();
+    BarcodeScanner.hideBackground().catch(console.error);
     document.body.classList.add("qrscanner");
     const result = await BarcodeScanner.startScan();
     document.body.classList.remove("qrscanner");

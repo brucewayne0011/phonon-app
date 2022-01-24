@@ -1,6 +1,5 @@
 import { IonButton, IonItem, IonLabel } from "@ionic/react";
-import { useState } from "react";
-
+import React, { useState } from "react";
 import UnlockSessionModal from "./UnlockSessionModal";
 
 const SessionListItem: React.FC<{ session: string }> = ({ session }) => {

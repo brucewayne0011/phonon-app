@@ -1,9 +1,8 @@
 import { Clipboard } from "@capacitor/clipboard";
 import { IonAlert, IonButton, IonIcon } from "@ionic/react";
 import { logOutOutline } from "ionicons/icons";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
-
 import "../index.css";
 import { useRedeemPhononMutation } from "../store/api";
 
@@ -48,7 +47,7 @@ const RedeemPhononButton: React.FC<{ index: number }> = ({ index }) => {
             text: "Copy",
             id: "confirm-button",
             handler: () => {
-              Clipboard.write({ string: privateKey });
+              Clipboard.write({ string: privateKey }).catch(console.error);
             },
           },
         ]}

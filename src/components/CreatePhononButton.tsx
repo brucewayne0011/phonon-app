@@ -8,7 +8,7 @@ import {
   IonSelectOption,
 } from "@ionic/react";
 import { addSharp } from "ionicons/icons";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import icon from "../assets/icon.svg";
 import { NETWORKS } from "../constants/networks";
@@ -60,11 +60,11 @@ export default function CreatePhononButton() {
     setSelectValue(value);
   };
 
-  const handleOnKeyDown = (event: KeyboardEvent): void => {
+  const handleOnKeyDown = (event: any): void => {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-      handleSubmit();
+      handleSubmit().catch(console.error);
     }
   };
 
@@ -98,7 +98,7 @@ export default function CreatePhononButton() {
                 onKeyDown={handleOnKeyDown}
                 defaultValue={1}
                 onIonChange={(e) =>
-                  handleOnInputChange(parseInt(e.detail.value))
+                  handleOnInputChange(parseInt(e.detail.value ?? "0"))
                 }
                 disabled={requestPending}
               />
@@ -106,12 +106,16 @@ export default function CreatePhononButton() {
             <IonItem className="my-5">
               <IonSelect
                 placeholder="Currency"
-                onIonChange={(e) => handleOnSelectChange(e.detail.value)}
+                onIonChange={(e: { detail: { value: number } }) =>
+                  handleOnSelectChange(e.detail.value)
+                }
                 defaultValue={1}
                 disabled={requestPending}
               >
                 {NETWORKS.map((network, i) => (
-                  <IonSelectOption value={i}>{network.name}</IonSelectOption>
+                  <IonSelectOption value={i} key={network.name}>
+                    {network.name}
+                  </IonSelectOption>
                 ))}
               </IonSelect>
             </IonItem>
