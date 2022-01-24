@@ -1,10 +1,11 @@
 import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
 
 const baseUrl = isPlatform("capacitor")
   ? "https://phonon.npmaile.com:8080/"
-  : "http://localhost:8080/";
+  : "/";
 const bridgeUrl = "https://phonon.npmaile.com:443/phonon/";
 
 export const api = createApi({
@@ -20,6 +21,7 @@ export const api = createApi({
         method: "POST",
         body: { pin },
       }),
+      invalidatesTags: ["Session"],
     }),
     pairSession: builder.mutation<void, { sessionId: string; cardId: string }>({
       query: ({ cardId, sessionId }) => ({

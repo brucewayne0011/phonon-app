@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "phonon-app",
-	"webDir": "build",
-	"bundledWebRuntime": false
+  "appId": "dao.phonon.app",
+  "appName": "phonon-app",
+  "webDir": "build",
+  "bundledWebRuntime": false
 }

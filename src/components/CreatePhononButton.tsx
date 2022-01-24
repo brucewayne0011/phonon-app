@@ -11,6 +11,7 @@ import { addSharp } from "ionicons/icons";
 import { useState } from "react";
 import { useParams } from "react-router";
 import icon from "../assets/icon.svg";
+import { NETWORKS } from "../constants/networks";
 import {
   useCreatePhononMutation,
   useSetDescriptorMutation,
@@ -31,7 +32,7 @@ export default function CreatePhononButton() {
 
   const handleSubmit = async () => {
     setRequestPending(true);
-    createPhonon({ sessionId })
+    await createPhonon({ sessionId })
       .unwrap()
       .then((payload) =>
         setDescriptor({
@@ -59,7 +60,7 @@ export default function CreatePhononButton() {
     setSelectValue(value);
   };
 
-  const handleOnKeyDown = (event: any): void => {
+  const handleOnKeyDown = (event: KeyboardEvent): void => {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
@@ -81,12 +82,12 @@ export default function CreatePhononButton() {
       </IonButton>
 
       <IonModal isOpen={isModalVisible}>
-        <div className="flex flex-col justify-start content-center p-12 h-full">
-          <p className="text-xs text-center text-gray-500 uppercase font-bold mb-2">
+        <div className="flex flex-col content-center justify-start h-full p-12">
+          <p className="mb-2 text-xs font-bold text-center text-gray-500 uppercase">
             Create Phonon
           </p>
 
-          <img src={icon} className="mx-auto w-32" alt="logo" />
+          <img src={icon} className="w-32 mx-auto" alt="logo" />
 
           <div>
             <IonItem className="my-5">
@@ -97,7 +98,7 @@ export default function CreatePhononButton() {
                 onKeyDown={handleOnKeyDown}
                 defaultValue={1}
                 onIonChange={(e) =>
-                  handleOnInputChange(parseInt(e.detail.value!))
+                  handleOnInputChange(parseInt(e.detail.value))
                 }
                 disabled={requestPending}
               />
@@ -109,8 +110,9 @@ export default function CreatePhononButton() {
                 defaultValue={1}
                 disabled={requestPending}
               >
-                <IonSelectOption value={1}>Bitcoin</IonSelectOption>
-                <IonSelectOption value={2}>Ethereum</IonSelectOption>
+                {NETWORKS.map((network, i) => (
+                  <IonSelectOption value={i}>{network.name}</IonSelectOption>
+                ))}
               </IonSelect>
             </IonItem>
           </div>

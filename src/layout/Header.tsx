@@ -9,6 +9,7 @@ import {
 import { chevronBack } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+
 import icon from "../assets/icon.svg";
 
 const Header: React.FC = () => {
@@ -17,7 +18,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     setIsSessionActive(!!sessionId);
   }, [sessionId]);
-  let router = useIonRouter();
+  const router = useIonRouter();
 
   return (
     <IonHeader>

@@ -11,6 +11,7 @@ import { scan, sendSharp } from "ionicons/icons";
 import QRCode from "qrcode.react";
 import { useState } from "react";
 import { useParams } from "react-router";
+
 import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation, useSendPhononMutation } from "../store/api";
 
@@ -72,9 +73,9 @@ export default function SendPhononButton({ index }: { index: number }) {
       </IonButton>
       <IonModal isOpen={isModalVisible}>
         {hasError ? "Error sending phonons. Please try again." : null}
-        <div className="flex flex-col justify-start content-between p-10 h-full">
+        <div className="flex flex-col content-between justify-start h-full p-10">
           <div className="mx-auto">
-            <p className="text-xs text-center text-gray-500 uppercase font-bold mb-2">
+            <p className="mb-2 text-xs font-bold text-center text-gray-500 uppercase">
               Share Code with Receiver
             </p>
             <QRCode

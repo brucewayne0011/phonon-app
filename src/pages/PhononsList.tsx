@@ -6,6 +6,7 @@ import {
   IonRefresherContent,
 } from "@ionic/react";
 import { useParams } from "react-router-dom";
+
 import CreatePhononButton from "../components/CreatePhononButton";
 import PhononListItem from "../components/PhononListItem";
 import ReceivePhononButton from "../components/ReceivePhononButton";
@@ -23,10 +24,10 @@ const SessionsPage: React.FC = () => {
   return (
     <IonContent>
       <div className="mt-2 text-center">
-        <p className="text-xs text-zinc-500 font-extrabold">WALLET</p>
+        <p className="text-xs font-extrabold text-zinc-500">WALLET</p>
         <p className="mb-3">{sessionId}</p>
       </div>
-      <div className="flex justify-evenly mb-5">
+      <div className="flex mb-5 justify-evenly">
         <IonButtons slot="secondary">
           <CreatePhononButton />
         </IonButtons>

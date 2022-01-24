@@ -8,6 +8,7 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
+
 import { useUnlockSessionMutation } from "../store/api";
 
 interface UnlockSessionModalProps {
@@ -24,7 +25,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   const [pin, setPin] = useState<string>("");
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [unlockSession] = useUnlockSessionMutation();
-  let router = useIonRouter();
+  const router = useIonRouter();
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -58,9 +59,9 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
           if (isUnlocked) router.push(`/${session}/`);
         }}
       >
-        <div className="flex flex-col justify-center content-center p-10 h-full">
+        <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
-            <h1 className="text-lg text-center mx-auto">Unlock {session}</h1>
+            <h1 className="mx-auto text-lg text-center">Unlock {session}</h1>
           </IonText>
           <IonItem className="my-7">
             <IonInput

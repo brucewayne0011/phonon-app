@@ -4,9 +4,9 @@
 
 # phonon-app
 
-The application for creating, sending, and redeeming Phonons. 
+The application for creating, sending, and redeeming Phonons.
 
-It can be built to target Web, iOS, and Android platforms. 
+It can be built to target Web, iOS, and Android platforms.
 
 To learn more about Phonon, visit [phonon.network](https://phonon.network) and to get help [join the PhononDAO Discord](https://discord.gg/8EhKQXsm).
 
@@ -44,22 +44,22 @@ To check if any particular web platform feature works on mobile browsers, we sug
 
 1. `npm install` - Install dependencies
 1. `npm run start` - Start the web app
-    - It should either start up at `localhost:3000` or if something is already running at that address, it will prompt you to start at a new address.
-1. At this point, your browser should open the app for you. If not, visit the address displayed in your terminal, which is `localhost:3000` by default. 
+   - It should either start up at `localhost:3000` or if something is already running at that address, it will prompt you to start at a new address.
+1. At this point, your browser should open the app for you. If not, visit the address displayed in your terminal, which is `localhost:3000` by default.
 
 ### Start the iOS App
 
-You'll need a computer running macOS to work on the iOS app. There is quite a bit of preparation required, which you can do by following along with the [Ionic Documentation](https://ionicframework.com/docs/developing/ios). Once you're set up, you'll run: 
+You'll need a computer running macOS to work on the iOS app. There is quite a bit of preparation required, which you can do by following along with the [Ionic Documentation](https://ionicframework.com/docs/developing/ios). Once you're set up, you'll run:
 
-`$ ionic capacitor run ios -l --external` 
+`$ ionic capacitor run ios -l --external`
 
-to get the development environment set up to allow for live-reloading while working. 
+to get the development environment set up to allow for live-reloading while working.
 
 ### Start the Android App
 
-As with iOS development, Android also requires preparation of your machine before you can get started with development. Visit the [Ionic Documentation](https://ionicframework.com/docs/developing/android) to learn how to set up your computer. The following command:  
+As with iOS development, Android also requires preparation of your machine before you can get started with development. Visit the [Ionic Documentation](https://ionicframework.com/docs/developing/android) to learn how to set up your computer. The following command:
 
-`$ ionic capacitor run android -l --host=YOUR_IP_ADDRESS` 
+`$ ionic capacitor run android -l --host=YOUR_IP_ADDRESS`
 
 with your IP address in the command, so the app knows where to look for changes.
 
@@ -69,7 +69,7 @@ This application uses the [Ionic Framework](https://ionicframework.com) to both 
 
 The web app works the same as any other website, the browser renders our HTML, JS, and CSS. The mobile apps work by wrapping our app in a "webview" that uses the native browser on the device to render our web app as though it were an actual native application.
 
-### User Interface 
+### User Interface
 
 The user interface is built using [React](https://reactjs.org) with [Tailwind](https://tailwindcss.com) for styling. And it is written with [TypeScript](https://www.typescriptlang.org/).
 

@@ -1,4 +1,5 @@
 import { IonContent, IonPage } from "@ionic/react";
+
 import Header from "./Header";
 
 const Layout: React.FC = ({ children }) => {

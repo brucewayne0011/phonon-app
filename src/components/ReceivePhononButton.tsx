@@ -11,6 +11,7 @@ import { download, scan } from "ionicons/icons";
 import QRCode from "qrcode.react";
 import { useState } from "react";
 import { useParams } from "react-router";
+
 import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation } from "../store/api";
 
@@ -71,9 +72,9 @@ export default function ReceivePhononButton() {
         Receive
       </IonButton>
       <IonModal isOpen={isModalVisible}>
-        <div className="flex flex-col justify-start content-center p-10 h-full">
+        <div className="flex flex-col content-center justify-start h-full p-10">
           <div className="mx-auto">
-            <p className="text-xs text-center text-gray-500 uppercase font-bold mb-2">
+            <p className="mb-2 text-xs font-bold text-center text-gray-500 uppercase">
               Share Code with Sender
             </p>
             <QRCode
