@@ -80,3 +80,27 @@ State is managed using [Redux Toolkit](https://redux-toolkit.js.org/). This give
 ## Contributing
 
 Pick up an unassigned ticket from the issues on this repo, do your work on a new branch, then open a PR targeting the `master` branch.
+
+```mermaid
+sequenceDiagram
+    participant Client
+
+    App->>Client: Deposit Phonons
+    Client->>App: Create Phonon
+    Note over Client,App: { pubKey: string }
+    App->>MetaMask: Request Signature
+
+    alt
+      MetaMask->>MetaMask: Transaction Approved
+      MetaMask->>App: Transaction Confirmed
+      App->>Client: Set Phonon Descriptor
+      Client->>Client: Set Descriptor
+    else
+      MetaMask->>MetaMask: Transaction Rejected
+      MetaMask->>App: Transaction Failed
+      App->>Client: Destroy Phonon
+      Client->>Client: Destroy Phonon
+    end
+      Client->>Client: Confirm Completion 
+      Client->>App: Report Phonon Status
+```

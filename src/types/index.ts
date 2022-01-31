@@ -12,6 +12,11 @@ export type Phonon = {
   value: number;
 };
 
+export type NetworkValue = {
+  networkId: number;
+  value: number | undefined;
+};
+
 export type PhononPair = {
   url: string;
 };

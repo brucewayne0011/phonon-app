@@ -9,6 +9,7 @@ import SendPhononButton from "./SendPhononButton";
 
 const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
   const network = NETWORKS[phonon.type];
+
   return (
     <IonItem>
       <IonAvatar slot="start">
@@ -24,7 +25,6 @@ const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
         </h2>
         <p>{phonon.pubKey}</p>
       </IonLabel>
-      {/* <IonSendPhononModal index={item.index} />, */}
       <SendPhononButton index={phonon.index} />
       <RedeemPhononButton index={phonon.index} />
     </IonItem>

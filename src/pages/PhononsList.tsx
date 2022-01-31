@@ -5,28 +5,46 @@ import {
   IonRefresher,
   IonRefresherContent,
 } from "@ionic/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CreatePhononButton from "../components/CreatePhononButton";
 import PhononListItem from "../components/PhononListItem";
 import ReceivePhononButton from "../components/ReceivePhononButton";
+import { NETWORKS } from "../constants/networks";
 import { useFetchPhononsQuery } from "../store/api";
 
 const SessionsPage: React.FC = () => {
-  const { sessionId } = useParams<{ sessionId: string }>();
+  const { sessionId, networkId } = useParams<{
+    sessionId: string;
+    networkId: string;
+  }>();
   const { data, refetch } = useFetchPhononsQuery({ sessionId });
+  const network = NETWORKS[parseInt(networkId)];
 
   function refresh(event: CustomEvent<any>) {
     refetch();
     event.detail.complete();
   }
 
+  const [total, setTotal] = useState<number | null>(null);
+
+  useEffect(() => {
+    const total = data
+      ?.filter((p) => p.type === parseInt(networkId))
+      .map((p) => p.value)
+      .reduce((prev, cur) => prev + cur, 0);
+    setTotal(total ? total : 0);
+  }, [data, networkId]);
+
   return (
     <IonContent>
       <div className="mt-2 text-center">
         <p className="text-xs font-extrabold text-zinc-500">WALLET</p>
-        <p className="mb-3">{sessionId}</p>
+        <p className="mb-3">
+          {total} {network?.symbol}
+        </p>
       </div>
+
       <div className="flex mb-5 justify-evenly">
         <IonButtons slot="secondary">
           <CreatePhononButton />
@@ -45,9 +63,11 @@ const SessionsPage: React.FC = () => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
         <IonList>
-          {data?.map((item) => (
-            <PhononListItem phonon={item} key={item.pubKey} />
-          ))}
+          {data
+            ?.filter((item) => item.type === parseInt(networkId))
+            .map((item) => (
+              <PhononListItem phonon={item} key={item.pubKey} />
+            ))}
         </IonList>
       </IonContent>
     </IonContent>

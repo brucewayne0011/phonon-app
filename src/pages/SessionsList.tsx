@@ -4,7 +4,7 @@ import SessionListItem from "../components/SessionListItem";
 import { useFetchSessionsQuery } from "../store/api";
 
 const SessionsPage: React.FC = () => {
-  const { data, isLoading } = useFetchSessionsQuery();
+  const { data } = useFetchSessionsQuery();
 
   return (
     <>
