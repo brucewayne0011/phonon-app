@@ -1,20 +1,38 @@
+import bigDecimal from "js-big-decimal";
 import { denominations } from "../constants/denominations";
 
+export type DenominationAmount = {
+  denomination: number;
+  amount: number;
+};
+
 export const makeChange = (total: number) => {
-  const piles = denominations.map((denomination) => ({
-    denomination,
-    amount: 0,
-  }));
+  let _total = new bigDecimal(total);
+  const totalAboveZero = () => _total.compareTo(new bigDecimal(0)) === 1;
+
+  const denominationAmounts: DenominationAmount[] = denominations.map(
+    (denomination) => ({
+      denomination,
+      amount: 0,
+    })
+  );
   let step = 0;
-  while (total > 0 && step < denominations.length) {
-    const denomination = denominations[step];
-    const amount = Math.floor(total / denomination);
-    total -= denomination * amount;
-    piles[step] = { denomination, amount };
+  while (totalAboveZero() && step < denominations.length) {
+    const denomination = new bigDecimal(denominations[step]);
+    const amount = _total.divide(denomination, 8).floor();
+    _total = _total.subtract(denomination.multiply(amount));
+    denominationAmounts[step] = {
+      denomination: parseFloat(denomination.getValue()),
+      amount: parseFloat(amount.getValue()),
+    };
     step++;
   }
-  if (total > 0) {
-    console.error("Making change failed", total);
+  if (totalAboveZero()) {
+    console.error("Making change failed", _total.getValue());
   }
-  return piles;
+  return denominationAmounts.filter((x) => x.amount);
+};
+
+export const rollupChange = (denominations: DenominationAmount[]) => {
+  return denominations.reduce((a, b) => a + b.amount * b.denomination, 0);
 };
