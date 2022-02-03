@@ -1,4 +1,5 @@
-import { DenominationAmount, makeChange, rollupChange } from "./../index";
+import { DenominationAmount, makeChange, rollupChange } from "../math";
+
 describe("change making", () => {
   test("should make change", () => {
     const mock: DenominationAmount[] = [

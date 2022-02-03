@@ -19,7 +19,7 @@ import {
   // eslint-disable-next-line prettier/prettier
   useSetDescriptorMutation
 } from "../store/api";
-import { makeChange, rollupChange } from "../utils";
+import { makeChange, rollupChange } from "../utils/math";
 
 const CreatePhononPage: React.FC = () => {
   const { sessionId, networkId } = useParams<{
