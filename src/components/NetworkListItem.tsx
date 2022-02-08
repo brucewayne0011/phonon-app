@@ -1,12 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IonAvatar, IonItem, IonLabel, IonText } from "@ionic/react";
+import {
+  IonAvatar,
+  IonItem,
+  IonLabel,
+  IonSpinner,
+  IonText,
+} from "@ionic/react";
 import React from "react";
 import { useParams } from "react-router";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
 import { NetworkValue } from "../types";
 
-const NetworkListItem: React.FC<NetworkValue> = ({ networkId, value }) => {
+const NetworkListItem: React.FC<NetworkValue & { isLoading: boolean }> = ({
+  networkId,
+  value,
+  isLoading,
+}) => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const network = NETWORKS[networkId];
 
@@ -22,7 +32,7 @@ const NetworkListItem: React.FC<NetworkValue> = ({ networkId, value }) => {
       <IonLabel>
         <IonText color="light">
           <h1 className="text-xl">
-            {value} {network.ticker}
+            {isLoading ? <IonSpinner /> : value} {network.ticker}
           </h1>
         </IonText>
       </IonLabel>

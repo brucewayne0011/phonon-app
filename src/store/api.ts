@@ -1,7 +1,13 @@
 import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
+import {
+  CreatePhononResponse,
+  DepositConfirmation,
+  DepositRequest,
+  DescriptorDTO,
+  Phonon,
+  Session,
+} from "../types";
 
 const baseUrl = isPlatform("capacitor")
   ? "https://phonon.npmaile.com:8080/"
@@ -64,6 +70,28 @@ export const api = createApi({
       query: ({ index, sessionId }) => ({
         url: `cards/${sessionId}/phonon/${index}/send`,
         method: "POST",
+      }),
+      invalidatesTags: ["Phonon"],
+    }),
+    initDeposit: builder.mutation<
+      void,
+      { depositRequest: DepositRequest; sessionId: string }
+    >({
+      query: ({ depositRequest, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/initDeposit`,
+        method: "POST",
+        body: depositRequest,
+      }),
+      invalidatesTags: ["Phonon"],
+    }),
+    finalizeDeposit: builder.mutation<
+      void,
+      { depositConfirmation: DepositConfirmation; sessionId: string }
+    >({
+      query: ({ depositConfirmation, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/finalizeDeposit`,
+        method: "POST",
+        body: depositConfirmation,
       }),
       invalidatesTags: ["Phonon"],
     }),

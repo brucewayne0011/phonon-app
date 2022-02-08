@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IonAvatar, IonItem, IonLabel } from "@ionic/react";
+import { IonAvatar, IonItem, IonLabel, IonSpinner } from "@ionic/react";
 import React from "react";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
@@ -21,7 +21,7 @@ const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
       </IonAvatar>
       <IonLabel>
         <h2>
-          {phonon.value} {network.ticker}
+          {phonon.value > 0 ? phonon.value : <IonSpinner />} {network.ticker}
         </h2>
         <p>{phonon.pubKey}</p>
       </IonLabel>

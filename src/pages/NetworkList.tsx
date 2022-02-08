@@ -14,7 +14,7 @@ import { NetworkValue, Phonon } from "../types";
 
 const NetworkList: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
-  const { data, refetch } = useFetchPhononsQuery({ sessionId });
+  const { data, refetch, isLoading } = useFetchPhononsQuery({ sessionId });
   const [networkValues, setNetworkValues] = useState<NetworkValue[] | null>(
     null
   );
@@ -58,9 +58,8 @@ const NetworkList: React.FC = () => {
         <IonList>
           {networkValues?.map(({ networkId, value }) => (
             <NetworkListItem
-              networkId={networkId}
-              value={value}
               key={networkId}
+              {...{ isLoading, networkId, value }}
             />
           ))}
         </IonList>

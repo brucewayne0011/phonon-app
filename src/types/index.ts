@@ -34,7 +34,24 @@ export type DescriptorDTO = {
   sessionId: string;
 };
 
+export type DepositRequest = {
+  CurrencyType: number;
+  Denominations: number[];
+};
+
+export type DepositConfirmation = {
+  Phonon: Phonon;
+  ConfirmedOnChain: boolean;
+  ConfirmedOnCard: boolean;
+};
+
 export type PhononDTO = {
-  sessionId: string;
-  index: number;
+  KeyIndex: number;
+  PubKey: string;
+  Address: string;
+  AddressType: number;
+  SchemaVersion: number;
+  ExtendedSchemaVersion: number;
+  Denomination: number;
+  CurrencyType: number;
 };

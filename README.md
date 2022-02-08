@@ -93,7 +93,7 @@ sequenceDiagram
     alt
       MetaMask->>MetaMask: Transaction Approved
       MetaMask->>App: Transaction Confirmed
-      App->>Client: Set Phonon Descriptor
+      App->>Client: Finalize Deposit
       Client->>Client: Set Descriptor
     else
       MetaMask->>MetaMask: Transaction Rejected

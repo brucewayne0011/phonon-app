@@ -8,7 +8,7 @@ export type DenominationAmount = {
 
 export const makeChange = (total: number) => {
   let _total = new bigDecimal(total);
-  const totalAboveZero = () => _total.compareTo(new bigDecimal(0)) === 1;
+  const isTotalAboveZero = () => _total.compareTo(new bigDecimal(0)) === 1;
 
   const denominationAmounts: DenominationAmount[] = denominations.map(
     (denomination) => ({
@@ -17,7 +17,7 @@ export const makeChange = (total: number) => {
     })
   );
   let step = 0;
-  while (totalAboveZero() && step < denominations.length) {
+  while (isTotalAboveZero() && step < denominations.length) {
     const denomination = new bigDecimal(denominations[step]);
     const amount = _total.divide(denomination, 8).floor();
     _total = _total.subtract(denomination.multiply(amount));
@@ -27,12 +27,18 @@ export const makeChange = (total: number) => {
     };
     step++;
   }
-  if (totalAboveZero()) {
+  if (isTotalAboveZero()) {
     console.error("Making change failed", _total.getValue());
   }
   return denominationAmounts.filter((x) => x.amount);
 };
 
 export const rollupChange = (denominations: DenominationAmount[]) => {
-  return denominations.reduce((a, b) => a + b.amount * b.denomination, 0);
+  return denominations.reduce((a, b) => {
+    const prev = new bigDecimal(a);
+    const amount = new bigDecimal(b.amount);
+    const denom = new bigDecimal(b.denomination);
+    const curr = denom.multiply(amount);
+    return parseFloat(prev.add(curr).getValue());
+  }, 0);
 };

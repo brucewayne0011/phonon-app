@@ -18,7 +18,9 @@ const SessionsPage: React.FC = () => {
     sessionId: string;
     networkId: string;
   }>();
-  const { data, refetch } = useFetchPhononsQuery({ sessionId });
+  const { data, refetch, isLoading, isUninitialized } = useFetchPhononsQuery({
+    sessionId,
+  });
   const network = NETWORKS[parseInt(networkId)];
 
   function refresh(event: CustomEvent<any>) {
@@ -36,6 +38,12 @@ const SessionsPage: React.FC = () => {
     setTotal(total ? total : 0);
   }, [data, networkId]);
 
+  useEffect(() => {
+    console.log({ isLoading });
+  }, [isLoading]);
+  useEffect(() => {
+    console.log({ isUninitialized });
+  }, [isUninitialized]);
   return (
     <IonContent>
       <div className="mt-2 text-center">
