@@ -2,13 +2,14 @@ import { IonButton } from "@ionic/react";
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import useNetwork from "../hooks/useNetwork";
-import { makeChange } from "../utils/math";
+import { usePhonons } from "../hooks/usePhonons";
+import { makeChangeWithPhonons } from "../utils/math";
 
-export type CreatePhononFormSuggestedValues = {
+export type RedeemPhononFormSuggestedValues = {
   amount: number;
 };
 
-export const CreatePhononFormSuggested: React.FC<{
+export const RedeemPhononFormSuggested: React.FC<{
   handleCustomize: () => void;
   onSubmit: any;
   isPending: boolean;
@@ -16,17 +17,23 @@ export const CreatePhononFormSuggested: React.FC<{
   const { network } = useNetwork();
 
   const { register, handleSubmit, control } =
-    useForm<CreatePhononFormSuggestedValues>();
+    useForm<RedeemPhononFormSuggestedValues>();
   const formValues = useWatch({
     name: "amount",
     control,
   });
-  const denominationAmounts = makeChange(formValues);
+
+  const { phonons } = usePhonons();
+  const denominations = makeChangeWithPhonons(formValues, phonons);
+  const total =
+    denominations
+      .map((phonon) => phonon.Denomination)
+      .reduce((prev, cur) => prev + cur, 0) ?? 0;
 
   return (
     <form
       className="flex flex-col content-center justify-start h-full gap-2 p-2"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit(denominations))}
     >
       <input
         className="text-bold p-2 text-xl bg-zinc-800 shadow-inner"
@@ -35,18 +42,16 @@ export const CreatePhononFormSuggested: React.FC<{
         disabled={isPending}
         {...register("amount", { required: true })}
       />
+      <p className="text-sm text-gray-400 font-bold text-center">{total}</p>
       <p className="text-sm text-gray-400 font-bold text-center">SUGGESTED</p>
-      {denominationAmounts
-        .filter((x) => x.amount)
-        .map((denom) => (
-          <p
-            key={denom.denomination}
-            className="text-md text-gray-200 font-bold text-center"
-          >
-            {denom.amount}x {network.symbol}
-            {denom.denomination}
-          </p>
-        ))}
+      {denominations.map((phonon) => (
+        <p
+          key={phonon.PubKey}
+          className="text-md text-gray-200 font-bold text-center"
+        >
+          {phonon.Denomination} {network.symbol}
+        </p>
+      ))}
       <div className="pinned">
         <IonButton
           key="back"
@@ -69,7 +74,7 @@ export const CreatePhononFormSuggested: React.FC<{
           className="shadow-lg shadow-teal-300/40"
           disabled={isPending}
         >
-          Create
+          Redeem
         </IonButton>
       </div>
     </form>

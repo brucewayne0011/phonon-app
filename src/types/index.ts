@@ -40,10 +40,10 @@ export type DepositRequest = {
 };
 
 export type DepositConfirmation = {
-  Phonon: Phonon;
+  Phonon: PhononDTO;
   ConfirmedOnChain: boolean;
   ConfirmedOnCard: boolean;
-};
+}[];
 
 export type PhononDTO = {
   KeyIndex: number;

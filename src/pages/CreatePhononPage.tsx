@@ -1,43 +1,96 @@
-import { IonModal } from "@ionic/react";
+import { IonModal, useIonRouter } from "@ionic/react";
+import { ethers } from "ethers";
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import { CreatePhononFormCustom } from "../components/CreatePhononFormCustom";
-import { CreatePhononFormSuggested } from "../components/CreatePhononFormSuggested";
+import {
+  CreatePhononFormCustom,
+  CreatePhononFormCustomValues,
+} from "../components/CreatePhononFormCustom";
+import {
+  CreatePhononFormSuggested,
+  CreatePhononFormSuggestedValues,
+} from "../components/CreatePhononFormSuggested";
 import useNetwork from "../hooks/useNetwork";
 import {
   useCreatePhononMutation,
+  useFinalizeDepositMutation,
+  useInitDepositMutation,
   // eslint-disable-next-line prettier/prettier
   useSetDescriptorMutation,
 } from "../store/api";
+import { makeChange } from "../utils/math";
 
 const CreatePhononPage: React.FC = () => {
   const { sessionId, networkId } = useParams<{
     sessionId: string;
     networkId: string;
   }>();
+  const router = useIonRouter();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [initDeposit] = useInitDepositMutation();
+  const [finalizeDeposit] = useFinalizeDepositMutation();
   const [createPhonon] = useCreatePhononMutation();
   const [setDescriptor] = useSetDescriptorMutation();
   const { network } = useNetwork();
 
-  const onSubmit = async (data: any) => {
-    console.log({ data });
-    if (!data || !data.amount) return;
+  const onSubmitSuggested = (data: CreatePhononFormSuggestedValues) =>
+    onSubmit(makeChange(data.amount));
+
+  const onSubmitCustomized = (data: CreatePhononFormCustomValues) =>
+    onSubmit(data.phononsToCreate);
+
+  const onSubmit = async (
+    data: {
+      amount: number;
+      denomination: number;
+    }[]
+  ) => {
     setIsPending(true);
-    await createPhonon({ sessionId })
+    const Denominations = data.flatMap(
+      (d) => Array(d.amount).fill(d.denomination) as number[]
+    );
+    const CurrencyType = parseInt(networkId);
+    const payload = { CurrencyType, Denominations };
+    await initDeposit({ payload, sessionId })
       .unwrap()
-      .then((payload) =>
-        setDescriptor({
-          index: payload.index,
-          currencyType: parseFloat(networkId),
-          value: data.amount,
-          sessionId,
-        })
-      );
-    setIsPending(false);
-    setIsModalVisible(false);
+      .then(async (payload) => {
+        // @ts-expect-error - window
+        if (window.ethereum) {
+          // @ts-expect-error - window
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          const signer = provider.getSigner();
+          const balance = await signer.getBalance();
+
+          console.log({ balance: balance.toString() });
+          await Promise.all(
+            payload.map(async (phonon) => {
+              const response = await signer
+                .sendTransaction({
+                  to: phonon.Address,
+                  value: phonon.Denomination,
+                })
+                .catch(console.error);
+              if (response) {
+                const payload = [
+                  {
+                    Phonon: phonon,
+                    ConfirmedOnChain: true,
+                    ConfirmedOnCard: true,
+                  },
+                ];
+                finalizeDeposit({ payload, sessionId }).catch(console.error);
+              }
+            })
+          );
+          router.push(`/${sessionId}/${networkId}/`);
+        } else {
+          // TODO: Show an error message to the user about MetaMask not being installed or available
+          setIsPending(false);
+        }
+      });
   };
 
   const handleCustomize = () => {
@@ -55,10 +108,12 @@ const CreatePhononPage: React.FC = () => {
         Create {network.ticker}
       </p>
       {isCustomizing ? (
-        <CreatePhononFormCustom {...{ handleSuggest, onSubmit, isPending }} />
+        <CreatePhononFormCustom
+          {...{ handleSuggest, onSubmit: onSubmitCustomized, isPending }}
+        />
       ) : (
         <CreatePhononFormSuggested
-          {...{ handleCustomize, onSubmit, isPending }}
+          {...{ handleCustomize, onSubmit: onSubmitSuggested, isPending }}
         />
       )}
       <IonModal isOpen={isModalVisible}></IonModal>

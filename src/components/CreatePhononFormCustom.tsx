@@ -6,30 +6,25 @@ import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { denominations } from "../constants/denominations";
 import useNetwork from "../hooks/useNetwork";
 import { rollupChange } from "../utils/math";
-type FormValues = {
+
+export type CreatePhononFormCustomValues = {
   phononsToCreate: {
     amount: number;
     denomination: number;
   }[];
 };
 
-type CreatePhononFormCustomProps = {
+export const CreatePhononFormCustom: React.FC<{
   handleSuggest: () => void;
   onSubmit: any;
   isPending: boolean;
-};
-
-export const CreatePhononFormCustom: React.FC<CreatePhononFormCustomProps> = ({
-  handleSuggest,
-  onSubmit,
-  isPending,
-}) => {
+}> = ({ handleSuggest, onSubmit, isPending }) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<CreatePhononFormCustomValues>({
     defaultValues: {
       phononsToCreate: [{ amount: 1, denomination: 1 }],
     },

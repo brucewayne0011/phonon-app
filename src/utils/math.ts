@@ -1,10 +1,14 @@
 import bigDecimal from "js-big-decimal";
 import { denominations } from "../constants/denominations";
+import { PhononDTO } from "./../types/index";
 
 export type DenominationAmount = {
   denomination: number;
   amount: number;
 };
+
+const isGreaterThanOrEqualTo = (number: bigDecimal, x: number) =>
+  number.compareTo(new bigDecimal(x)) > -1;
 
 export const makeChange = (total: number) => {
   let _total = new bigDecimal(total);
@@ -41,4 +45,20 @@ export const rollupChange = (denominations: DenominationAmount[]) => {
     const curr = denom.multiply(amount);
     return parseFloat(prev.add(curr).getValue());
   }, 0);
+};
+
+export const makeChangeWithPhonons = (total: number, phonons: PhononDTO[]) => {
+  let _total = new bigDecimal(total);
+  return phonons
+    .filter((d) => isGreaterThanOrEqualTo(_total, d.Denomination))
+    .sort((a, b) => b.Denomination - a.Denomination)
+    .filter((phonon) => {
+      const denomination = new bigDecimal(phonon.Denomination);
+      const amount = _total.subtract(denomination);
+      if (isGreaterThanOrEqualTo(amount, 0)) {
+        _total = amount;
+        return true;
+      }
+      return false;
+    });
 };

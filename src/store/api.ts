@@ -5,7 +5,7 @@ import {
   DepositConfirmation,
   DepositRequest,
   DescriptorDTO,
-  Phonon,
+  PhononDTO,
   Session,
 } from "../types";
 
@@ -36,7 +36,7 @@ export const api = createApi({
         body: { url: `${bridgeUrl}${cardId}` },
       }),
     }),
-    fetchPhonons: builder.query<Phonon[], { sessionId: string }>({
+    fetchPhonons: builder.query<PhononDTO[], { sessionId: string }>({
       query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
       providesTags: ["Phonon"],
     }),
@@ -58,10 +58,10 @@ export const api = createApi({
     }),
     redeemPhonon: builder.mutation<
       { privateKey: string },
-      { index: number; sessionId: string }
+      { payload: PhononDTO[]; sessionId: string }
     >({
-      query: ({ index, sessionId }) => ({
-        url: `cards/${sessionId}/phonon/${index}/redeem`,
+      query: ({ sessionId }) => ({
+        url: `cards/${sessionId}/phonon/redeem`,
         method: "POST",
       }),
       invalidatesTags: ["Phonon"],
@@ -74,24 +74,23 @@ export const api = createApi({
       invalidatesTags: ["Phonon"],
     }),
     initDeposit: builder.mutation<
-      void,
-      { depositRequest: DepositRequest; sessionId: string }
+      PhononDTO[],
+      { payload: DepositRequest; sessionId: string }
     >({
-      query: ({ depositRequest, sessionId }) => ({
+      query: ({ payload, sessionId }) => ({
         url: `cards/${sessionId}/phonon/initDeposit`,
         method: "POST",
-        body: depositRequest,
+        body: payload,
       }),
-      invalidatesTags: ["Phonon"],
     }),
     finalizeDeposit: builder.mutation<
-      void,
-      { depositConfirmation: DepositConfirmation; sessionId: string }
+      DepositConfirmation,
+      { payload: DepositConfirmation; sessionId: string }
     >({
-      query: ({ depositConfirmation, sessionId }) => ({
+      query: ({ payload, sessionId }) => ({
         url: `cards/${sessionId}/phonon/finalizeDeposit`,
         method: "POST",
-        body: depositConfirmation,
+        body: payload,
       }),
       invalidatesTags: ["Phonon"],
     }),
@@ -104,6 +103,8 @@ export const {
   usePairSessionMutation,
   useFetchPhononsQuery,
   useCreatePhononMutation,
+  useInitDepositMutation,
+  useFinalizeDepositMutation,
   useSetDescriptorMutation,
   useRedeemPhononMutation,
   useSendPhononMutation,

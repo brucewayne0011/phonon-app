@@ -26,8 +26,8 @@ const NetworkList: React.FC = () => {
 
     const totalValueByNetwork: NetworkValue[] = NETWORKS.map((network, i) => ({
       value: data
-        ?.filter((p) => p.type === i)
-        .map((p) => p.value)
+        ?.filter((p) => p.CurrencyType === i)
+        .map((p) => p.Denomination)
         .reduce((prev, cur) => prev + cur, 0),
       networkId: i,
     }));

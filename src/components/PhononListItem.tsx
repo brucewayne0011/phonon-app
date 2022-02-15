@@ -3,12 +3,12 @@ import { IonAvatar, IonItem, IonLabel, IonSpinner } from "@ionic/react";
 import React from "react";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
-import { Phonon } from "../types";
-import RedeemPhononButton from "./RedeemPhononButton";
+import { PhononDTO } from "../types";
+import RedeemPhononButton from "./RedeemPhononInlineButton";
 import SendPhononButton from "./SendPhononButton";
 
-const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
-  const network = NETWORKS[phonon.type];
+const PhononListItem: React.FC<{ phonon: PhononDTO }> = ({ phonon }) => {
+  const network = NETWORKS[phonon.CurrencyType];
 
   return (
     <IonItem>
@@ -21,12 +21,13 @@ const PhononListItem: React.FC<{ phonon: Phonon }> = ({ phonon }) => {
       </IonAvatar>
       <IonLabel>
         <h2>
-          {phonon.value > 0 ? phonon.value : <IonSpinner />} {network.ticker}
+          {phonon.Denomination > 0 ? phonon.Denomination : <IonSpinner />}{" "}
+          {network.ticker}
         </h2>
-        <p>{phonon.pubKey}</p>
+        <p>{phonon.PubKey}</p>
       </IonLabel>
-      <SendPhononButton index={phonon.index} />
-      <RedeemPhononButton index={phonon.index} />
+      <SendPhononButton index={phonon.KeyIndex} />
+      <RedeemPhononButton index={phonon.KeyIndex} />
     </IonItem>
   );
 };
