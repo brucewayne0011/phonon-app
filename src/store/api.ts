@@ -60,9 +60,10 @@ export const api = createApi({
       { privateKey: string },
       { payload: PhononDTO[]; sessionId: string }
     >({
-      query: ({ sessionId }) => ({
+      query: ({ payload, sessionId }) => ({
         url: `cards/${sessionId}/phonon/redeem`,
         method: "POST",
+        body: payload,
       }),
       invalidatesTags: ["Phonon"],
     }),
