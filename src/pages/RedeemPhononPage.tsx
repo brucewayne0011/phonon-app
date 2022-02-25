@@ -24,6 +24,13 @@ const RedeemPhononPage: React.FC = () => {
   const { network } = useNetwork();
   const { phonons } = usePhonons();
 
+  const onSubmit = (payload: PhononDTO[]) => {
+    // setIsPending(true);
+    if (payload.length) {
+      redeemPhonon({ payload, sessionId }).catch(console.error);
+    }
+  };
+
   const onSubmitSuggested = (data: RedeemPhononFormSuggestedValues) =>
     onSubmit(makeChangeWithPhonons(data.amount, phonons));
 
@@ -31,13 +38,6 @@ const RedeemPhononPage: React.FC = () => {
     onSubmit(
       phonons.filter((p) => data.phononsToRedeem.some((d) => d === p.PubKey))
     );
-
-  const onSubmit = (payload: PhononDTO[]) => {
-    // setIsPending(true);
-    if (payload.length)
-      redeemPhonon({ payload, sessionId }).catch(console.error);
-    console.log({ payload });
-  };
 
   const handleCustomize = () => {
     setIsCustomizing(true);

@@ -33,7 +33,8 @@ export const RedeemPhononFormSuggested: React.FC<{
   return (
     <form
       className="flex flex-col content-center justify-start h-full gap-2 p-2"
-      onSubmit={handleSubmit(onSubmit(denominations))}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      onSubmit={handleSubmit((data) => onSubmit({ ...data, denominations }))}
     >
       <input
         className="text-bold p-2 text-xl bg-zinc-800 shadow-inner"
