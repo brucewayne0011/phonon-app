@@ -1,4 +1,4 @@
-import { IonModal, useIonRouter } from "@ionic/react";
+import { IonButton, IonModal, useIonRouter } from "@ionic/react";
 import { ethers } from "ethers";
 import React, { useState } from "react";
 import { useParams } from "react-router";
@@ -6,6 +6,10 @@ import {
   CreatePhononFormCustom,
   CreatePhononFormCustomValues,
 } from "../components/CreatePhononFormCustom";
+import {
+  CreatePhononFormSingle,
+  CreatePhononFormSingleValues,
+} from "../components/CreatePhononFormSingle";
 import {
   CreatePhononFormSuggested,
   CreatePhononFormSuggestedValues,
@@ -29,6 +33,7 @@ const CreatePhononPage: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [isMassCreating, setIsMassCreating] = useState(false);
   const [initDeposit] = useInitDepositMutation();
   const [finalizeDeposit] = useFinalizeDepositMutation();
   const [createPhonon] = useCreatePhononMutation();
@@ -40,6 +45,9 @@ const CreatePhononPage: React.FC = () => {
 
   const onSubmitCustomized = (data: CreatePhononFormCustomValues) =>
     onSubmit(data.phononsToCreate);
+
+  const onSubmitSingle = (data: CreatePhononFormSingleValues) =>
+    onSubmit([{ amount: 1, denomination: parseInt(data.amount) }]);
 
   const onSubmit = async (
     data: {
@@ -66,11 +74,13 @@ const CreatePhononPage: React.FC = () => {
           const signer = provider.getSigner();
           await Promise.all(
             payload.map(async (phonon) => {
+              const to = phonon.Address;
+              const value = ethers.utils.parseEther(
+                phonon.Denomination.toString()
+              );
+
               const response = await signer
-                .sendTransaction({
-                  to: phonon.Address,
-                  value: phonon.Denomination,
-                })
+                .sendTransaction({ to, value })
                 .catch(console.error);
               if (response) {
                 console.log(response);
@@ -105,11 +115,16 @@ const CreatePhononPage: React.FC = () => {
     // setInputValue(rollupChange(denominationAmounts));
   };
 
-  return (
-    <div>
-      <p className="text-xl font-bold text-center text-gray-300 uppercase">
-        Create {network.ticker}
-      </p>
+  const renderMassCreate = () => (
+    <>
+      <IonButton
+        expand="full"
+        fill="clear"
+        type="button"
+        onClick={() => setIsMassCreating(false)}
+      >
+        Creating Many Phonons
+      </IonButton>
       {isCustomizing ? (
         <CreatePhononFormCustom
           {...{ handleSuggest, onSubmit: onSubmitCustomized, isPending }}
@@ -119,6 +134,32 @@ const CreatePhononPage: React.FC = () => {
           {...{ handleCustomize, onSubmit: onSubmitSuggested, isPending }}
         />
       )}
+    </>
+  );
+
+  return (
+    <div>
+      <p className="text-xl font-bold text-center text-gray-300 uppercase">
+        CREATE {network.ticker} PHONON
+      </p>
+      {isMassCreating ? (
+        renderMassCreate()
+      ) : (
+        <>
+          <IonButton
+            expand="full"
+            fill="clear"
+            type="button"
+            onClick={() => setIsMassCreating(true)}
+          >
+            Creating Single Phonon
+          </IonButton>{" "}
+          <CreatePhononFormSingle
+            {...{ handleCustomize, onSubmit: onSubmitSingle, isPending }}
+          />
+        </>
+      )}
+
       <IonModal isOpen={isModalVisible}></IonModal>
     </div>
   );
