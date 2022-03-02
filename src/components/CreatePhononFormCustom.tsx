@@ -10,7 +10,7 @@ import { rollupChange } from "../utils/math";
 export type CreatePhononFormCustomValues = {
   phononsToCreate: {
     amount: number;
-    denomination: number;
+    denomination: string;
   }[];
 };
 
@@ -26,7 +26,7 @@ export const CreatePhononFormCustom: React.FC<{
     formState: { errors },
   } = useForm<CreatePhononFormCustomValues>({
     defaultValues: {
-      phononsToCreate: [{ amount: 1, denomination: 1 }],
+      phononsToCreate: [{ amount: 1, denomination: "1" }],
     },
     mode: "onBlur",
   });
@@ -65,7 +65,6 @@ export const CreatePhononFormCustom: React.FC<{
               <input
                 placeholder="Amount"
                 {...register(`phononsToCreate.${index}.amount` as const, {
-                  valueAsNumber: true,
                   required: true,
                 })}
                 className={clsx(

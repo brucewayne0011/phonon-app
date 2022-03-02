@@ -36,7 +36,7 @@ export type DescriptorDTO = {
 
 export type DepositRequest = {
   CurrencyType: number;
-  Denominations: number[];
+  Denominations: string[];
 };
 
 export type DepositConfirmation = {

@@ -3,7 +3,7 @@ import { denominations } from "../constants/denominations";
 import { PhononDTO } from "./../types/index";
 
 export type DenominationAmount = {
-  denomination: number;
+  denomination: string;
   amount: number;
 };
 
@@ -26,7 +26,7 @@ export const makeChange = (total: number) => {
     const amount = _total.divide(denomination, 8).floor();
     _total = _total.subtract(denomination.multiply(amount));
     denominationAmounts[step] = {
-      denomination: parseFloat(denomination.getValue()),
+      denomination: denomination.getValue(),
       amount: parseFloat(amount.getValue()),
     };
     step++;

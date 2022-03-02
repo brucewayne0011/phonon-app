@@ -20,7 +20,6 @@ export const CreatePhononFormSingle: React.FC<{
       <input
         className="text-bold p-2 text-xl bg-zinc-800 shadow-inner"
         placeholder="Amount"
-        type={"number"}
         disabled={isPending}
         {...register("amount", { required: true })}
       />

@@ -5,7 +5,7 @@ import useNetwork from "../hooks/useNetwork";
 import { makeChange } from "../utils/math";
 
 export type CreatePhononFormSuggestedValues = {
-  amount: number;
+  amount: string;
 };
 
 export const CreatePhononFormSuggested: React.FC<{
@@ -21,7 +21,7 @@ export const CreatePhononFormSuggested: React.FC<{
     name: "amount",
     control,
   });
-  const denominationAmounts = makeChange(formValues);
+  const denominationAmounts = makeChange(parseFloat(formValues));
 
   return (
     <form
@@ -31,7 +31,6 @@ export const CreatePhononFormSuggested: React.FC<{
       <input
         className="text-bold p-2 text-xl bg-zinc-800 shadow-inner"
         placeholder="Amount"
-        type={"number"}
         disabled={isPending}
         {...register("amount", { required: true })}
       />

@@ -16,11 +16,8 @@ import {
 } from "../components/CreatePhononFormSuggested";
 import useNetwork from "../hooks/useNetwork";
 import {
-  useCreatePhononMutation,
   useFinalizeDepositMutation,
   useInitDepositMutation,
-  // eslint-disable-next-line prettier/prettier
-  useSetDescriptorMutation,
 } from "../store/api";
 import { makeChange } from "../utils/math";
 
@@ -30,35 +27,35 @@ const CreatePhononPage: React.FC = () => {
     networkId: string;
   }>();
   const router = useIonRouter();
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [isMassCreating, setIsMassCreating] = useState(false);
   const [initDeposit] = useInitDepositMutation();
   const [finalizeDeposit] = useFinalizeDepositMutation();
-  const [createPhonon] = useCreatePhononMutation();
-  const [setDescriptor] = useSetDescriptorMutation();
   const { network } = useNetwork();
 
   const onSubmitSuggested = (data: CreatePhononFormSuggestedValues) =>
-    onSubmit(makeChange(data.amount));
+    onSubmit(makeChange(parseFloat(data.amount)));
 
   const onSubmitCustomized = (data: CreatePhononFormCustomValues) =>
     onSubmit(data.phononsToCreate);
 
   const onSubmitSingle = (data: CreatePhononFormSingleValues) =>
-    onSubmit([{ amount: 1, denomination: parseInt(data.amount) }]);
+    onSubmit([{ amount: 1, denomination: data.amount }]);
 
   const onSubmit = async (
     data: {
       amount: number;
-      denomination: number;
+      denomination: string;
     }[]
   ) => {
     setIsPending(true);
-    const Denominations = data.flatMap(
-      (d) => Array(d.amount).fill(d.denomination) as number[]
-    );
+    const Denominations = data.flatMap((d) => {
+      const denomination = ethers.utils
+        .parseEther(d.denomination.toString())
+        .toString();
+      return Array(d.amount).fill(denomination) as string[];
+    });
     const CurrencyType = parseInt(networkId);
     const payload = { CurrencyType, Denominations };
     await initDeposit({ payload, sessionId })
@@ -159,8 +156,6 @@ const CreatePhononPage: React.FC = () => {
           />
         </>
       )}
-
-      <IonModal isOpen={isModalVisible}></IonModal>
     </div>
   );
 };
