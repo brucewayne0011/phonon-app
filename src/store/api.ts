@@ -1,13 +1,14 @@
-import { isPlatform } from "@ionic/react";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  RedeemPhononDTO,
   CreatePhononResponse,
   DepositConfirmation,
   DepositRequest,
   DescriptorDTO,
   PhononDTO,
   Session,
-} from "../types";
+} from "./../types/index";
+import { isPlatform } from "@ionic/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = isPlatform("capacitor")
   ? "https://phonon.npmaile.com:8080/"
@@ -58,7 +59,7 @@ export const api = createApi({
     }),
     redeemPhonon: builder.mutation<
       { privateKey: string },
-      { payload: PhononDTO[]; sessionId: string }
+      { payload: RedeemPhononDTO[]; sessionId: string }
     >({
       query: ({ payload, sessionId }) => ({
         url: `cards/${sessionId}/phonon/redeem`,

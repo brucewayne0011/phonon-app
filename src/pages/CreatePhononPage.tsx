@@ -61,10 +61,9 @@ const CreatePhononPage: React.FC = () => {
           // @ts-expect-error - window
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
+          const network = await provider.getNetwork();
+          const ChainID = network.chainId;
           const signer = provider.getSigner();
-          const balance = await signer.getBalance();
-
-          console.log({ balance: balance.toString() });
           await Promise.all(
             payload.map(async (phonon) => {
               const response = await signer
@@ -74,13 +73,17 @@ const CreatePhononPage: React.FC = () => {
                 })
                 .catch(console.error);
               if (response) {
+                console.log(response);
+                console.log(phonon);
+                const Phonon = { ...phonon, ChainID };
                 const payload = [
                   {
-                    Phonon: phonon,
+                    Phonon,
                     ConfirmedOnChain: true,
                     ConfirmedOnCard: true,
                   },
                 ];
+                console.log(payload);
                 finalizeDeposit({ payload, sessionId }).catch(console.error);
               }
             })

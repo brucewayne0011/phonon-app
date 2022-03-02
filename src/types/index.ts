@@ -55,3 +55,8 @@ export type PhononDTO = {
   Denomination: number;
   CurrencyType: number;
 };
+
+export type RedeemPhononDTO = {
+  P: PhononDTO;
+  RedeemAddress: string;
+};

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useIonRouter } from "@ionic/react";
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import {
   RedeemPhononFormCustom,
@@ -11,32 +13,60 @@ import {
 import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
 import { useRedeemPhononMutation } from "../store/api";
-import { PhononDTO } from "../types";
+import { PhononDTO, RedeemPhononDTO } from "../types";
 import { makeChangeWithPhonons } from "../utils/math";
 
 const RedeemPhononPage: React.FC = () => {
-  const { sessionId } = useParams<{
+  const { sessionId, networkId } = useParams<{
     sessionId: string;
+    networkId: string;
   }>();
+  const router = useIonRouter();
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [RedeemAddress, setRedeemAddress] = useState("");
   const [redeemPhonon] = useRedeemPhononMutation();
   const { network } = useNetwork();
   const { phonons } = usePhonons();
 
-  const onSubmit = (payload: PhononDTO[]) => {
+  const getAddress = async () => {
+    // @ts-expect-error window.ethereum needs to be added to namespace
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    setRedeemAddress(address);
+    // console.log("Account:", await signer.getAddress());
+  };
+
+  useEffect(() => {
+    getAddress().catch((err) => console.error(err));
+  }, []);
+
+  const onSubmit = (payload: RedeemPhononDTO[]) => {
     // setIsPending(true);
     if (payload.length) {
-      redeemPhonon({ payload, sessionId }).catch(console.error);
+      redeemPhonon({ payload, sessionId })
+        .then((res) => {
+          router.push(`/${sessionId}/${networkId}/`);
+        })
+        .catch(console.error);
     }
   };
 
   const onSubmitSuggested = (data: RedeemPhononFormSuggestedValues) =>
-    onSubmit(makeChangeWithPhonons(data.amount, phonons));
+    onSubmit(
+      makeChangeWithPhonons(data.amount, phonons).map((P) => ({
+        P,
+        RedeemAddress,
+      }))
+    );
 
   const onSubmitCustomized = (data: RedeemPhononFormCustomValues) =>
     onSubmit(
-      phonons.filter((p) => data.phononsToRedeem.some((d) => d === p.PubKey))
+      phonons
+        .filter((p) => data.phononsToRedeem.some((d) => d === p.PubKey))
+        .map((P) => ({ P, RedeemAddress }))
     );
 
   const handleCustomize = () => {
@@ -49,10 +79,16 @@ const RedeemPhononPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col content-center justify-start h-full gap-2">
       <p className="text-xl font-bold text-center text-gray-300 uppercase">
         Redeem {network.ticker}
       </p>
+      <input
+        className="text-bold p-2 text-xl bg-zinc-800 shadow-inner w-auto"
+        placeholder="Redeem Address"
+        value={RedeemAddress}
+        disabled={isPending}
+      />
       {isCustomizing ? (
         <RedeemPhononFormCustom
           {...{ handleSuggest, onSubmit: onSubmitCustomized, isPending }}
