@@ -3,7 +3,7 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
-import { makeChangeWithPhonons, sortDenominations } from "../utils/math";
+import { makeChangeWithPhonons, reduceDenominations } from "../utils/math";
 
 export type RedeemPhononFormSuggestedValues = {
   amount: number;
@@ -27,7 +27,7 @@ export const RedeemPhononFormSuggested: React.FC<{
   const denominations = makeChangeWithPhonons(formValues, phonons);
   const total = denominations
     .map((phonon) => phonon.Denomination)
-    .reduce(sortDenominations);
+    .reduce(reduceDenominations, "0");
 
   return (
     <form

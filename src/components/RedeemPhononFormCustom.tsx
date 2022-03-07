@@ -4,7 +4,8 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
-import { sortDenominations } from "../utils/math";
+import { weiToEth } from "../utils/denomination";
+import { reduceDenominations } from "../utils/math";
 
 export type RedeemPhononFormCustomValues = {
   phononsToRedeem: string[];
@@ -35,7 +36,7 @@ export const RedeemPhononFormCustom: React.FC<{
   const total = phonons
     .filter((p) => formValues.some((fv) => fv === p.PubKey))
     .map((phonon) => phonon.Denomination)
-    .reduce(sortDenominations);
+    .reduce(reduceDenominations, "0");
 
   return (
     <div>
@@ -62,7 +63,7 @@ export const RedeemPhononFormCustom: React.FC<{
                 "text-bold p-2 text-xl bg-zinc-800 shadow-inner w-1/3"
               )}
             >
-              {network.symbol} {phonon.Denomination}
+              {network.symbol} {weiToEth(phonon.Denomination)}
             </div>
           </div>
         ))}

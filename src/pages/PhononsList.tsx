@@ -14,7 +14,7 @@ import RedeemPhononButton from "../components/RedeemPhononButton";
 import { NETWORKS } from "../constants/networks";
 import { useFetchPhononsQuery } from "../store/api";
 import { weiToEth } from "../utils/denomination";
-import { sortDenominations } from "../utils/math";
+import { reduceDenominations } from "../utils/math";
 
 const PhononsList: React.FC = () => {
   const { sessionId, networkId } = useParams<{
@@ -35,7 +35,7 @@ const PhononsList: React.FC = () => {
     data
       ?.filter((p) => p.CurrencyType === parseInt(networkId))
       .map((p) => p.Denomination)
-      .reduce(sortDenominations) ?? "0";
+      .reduce(reduceDenominations, "0") ?? "0";
 
   return (
     <IonContent>
