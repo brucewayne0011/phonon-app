@@ -4,7 +4,8 @@ import React from "react";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
 import { PhononDTO } from "../types";
-import RedeemPhononButton from "./RedeemPhononInlineButton";
+import { weiToEth } from "../utils/denomination";
+import { isGreaterThan } from "../utils/math";
 import SendPhononButton from "./SendPhononButton";
 
 const PhononListItem: React.FC<{ phonon: PhononDTO }> = ({ phonon }) => {
@@ -21,13 +22,17 @@ const PhononListItem: React.FC<{ phonon: PhononDTO }> = ({ phonon }) => {
       </IonAvatar>
       <IonLabel>
         <h2>
-          {phonon.Denomination > 0 ? phonon.Denomination : <IonSpinner />}{" "}
+          {isGreaterThan(phonon.Denomination, 0) ? (
+            weiToEth(phonon.Denomination)
+          ) : (
+            <IonSpinner />
+          )}{" "}
           {network.ticker}
         </h2>
         <p>{phonon.PubKey}</p>
       </IonLabel>
       <SendPhononButton index={phonon.KeyIndex} />
-      <RedeemPhononButton index={phonon.KeyIndex} />
+      {/* <RedeemPhononButton index={phonon.KeyIndex} /> */}
     </IonItem>
   );
 };

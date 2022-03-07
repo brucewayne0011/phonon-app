@@ -1,4 +1,6 @@
 export type Session = string;
+export type Eth = string;
+export type Wei = string;
 
 export type CreatePhononResponse = {
   index: number;
@@ -36,7 +38,7 @@ export type DescriptorDTO = {
 
 export type DepositRequest = {
   CurrencyType: number;
-  Denominations: string[];
+  Denominations: Wei[];
 };
 
 export type DepositConfirmation = {
@@ -52,7 +54,7 @@ export type PhononDTO = {
   AddressType: number;
   SchemaVersion: number;
   ExtendedSchemaVersion: number;
-  Denomination: number;
+  Denomination: string;
   CurrencyType: number;
 };
 

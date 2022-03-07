@@ -1,4 +1,4 @@
-import { IonButton, IonModal, useIonRouter } from "@ionic/react";
+import { IonButton, useIonRouter } from "@ionic/react";
 import { ethers } from "ethers";
 import React, { useState } from "react";
 import { useParams } from "react-router";
@@ -19,6 +19,7 @@ import {
   useFinalizeDepositMutation,
   useInitDepositMutation,
 } from "../store/api";
+import { ethToBn, ethToWei, weiToEth } from "../utils/denomination";
 import { makeChange } from "../utils/math";
 
 const CreatePhononPage: React.FC = () => {
@@ -51,10 +52,10 @@ const CreatePhononPage: React.FC = () => {
   ) => {
     setIsPending(true);
     const Denominations = data.flatMap((d) => {
-      const denomination = ethers.utils
-        .parseEther(d.denomination.toString())
-        .toString();
-      return Array(d.amount).fill(denomination) as string[];
+      const denomination = ethToWei(d.denomination);
+      const arr = Array(d.amount);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return arr.fill(denomination);
     });
     const CurrencyType = parseInt(networkId);
     const payload = { CurrencyType, Denominations };
@@ -72,16 +73,12 @@ const CreatePhononPage: React.FC = () => {
           await Promise.all(
             payload.map(async (phonon) => {
               const to = phonon.Address;
-              const value = ethers.utils.parseEther(
-                phonon.Denomination.toString()
-              );
+              const value = ethToBn(weiToEth(phonon.Denomination));
 
               const response = await signer
                 .sendTransaction({ to, value })
                 .catch(console.error);
               if (response) {
-                console.log(response);
-                console.log(phonon);
                 const Phonon = { ...phonon, ChainID };
                 const payload = [
                   {
@@ -90,7 +87,6 @@ const CreatePhononPage: React.FC = () => {
                     ConfirmedOnCard: true,
                   },
                 ];
-                console.log(payload);
                 finalizeDeposit({ payload, sessionId }).catch(console.error);
               }
             })

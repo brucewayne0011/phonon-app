@@ -4,13 +4,13 @@ import {
   IonRefresher,
   IonRefresherContent,
 } from "@ionic/react";
-import uniqBy from "lodash/uniqBy";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NetworkListItem from "../components/NetworkListItem";
 import { NETWORKS } from "../constants/networks";
 import { useFetchPhononsQuery } from "../store/api";
-import { NetworkValue, Phonon } from "../types";
+import { NetworkValue } from "../types";
+import { reduceDenominations } from "../utils/math";
 
 const NetworkList: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -20,17 +20,22 @@ const NetworkList: React.FC = () => {
   );
 
   useEffect(() => {
-    const networks: number[] = uniqBy(data, "type")
-      .map((p: Phonon) => p.type)
-      .sort() as number[];
+    // const networks: number[] = uniqBy(data, "type")
+    //   .map((p: Phonon) => p.type)
+    //   .sort() as number[];
 
-    const totalValueByNetwork: NetworkValue[] = NETWORKS.map((network, i) => ({
-      value: data
-        ?.filter((p) => p.CurrencyType === i)
-        .map((p) => p.Denomination)
-        .reduce((prev, cur) => prev + cur, 0),
-      networkId: i,
-    }));
+    const totalValueByNetwork: NetworkValue[] = NETWORKS.map((network, i) => {
+      console.log({ data });
+      return {
+        value: parseInt(
+          data
+            ?.filter((p) => p.CurrencyType === i)
+            .map((p) => p.Denomination)
+            .reduce(reduceDenominations, "0") ?? ""
+        ),
+        networkId: i,
+      };
+    });
 
     setNetworkValues(totalValueByNetwork);
   }, [data]);

@@ -13,6 +13,8 @@ import PhononListItem from "../components/PhononListItem";
 import RedeemPhononButton from "../components/RedeemPhononButton";
 import { NETWORKS } from "../constants/networks";
 import { useFetchPhononsQuery } from "../store/api";
+import { weiToEth } from "../utils/denomination";
+import { sortDenominations } from "../utils/math";
 
 const PhononsList: React.FC = () => {
   const { sessionId, networkId } = useParams<{
@@ -33,14 +35,14 @@ const PhononsList: React.FC = () => {
     data
       ?.filter((p) => p.CurrencyType === parseInt(networkId))
       .map((p) => p.Denomination)
-      .reduce((prev, cur) => prev + cur, 0) ?? 0;
+      .reduce(sortDenominations) ?? "0";
 
   return (
     <IonContent>
       <div className="mt-2 text-center">
         <p className="text-xs font-extrabold text-zinc-500">WALLET</p>
         <p className="mb-3">
-          {total} {network?.symbol}
+          {weiToEth(total)} {network?.symbol}
         </p>
       </div>
 

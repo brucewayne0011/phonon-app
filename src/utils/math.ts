@@ -7,7 +7,12 @@ export type DenominationAmount = {
   amount: number;
 };
 
-const isGreaterThanOrEqualTo = (number: bigDecimal, x: number) =>
+export const isGreaterThan = (num: string, x: number) => {
+  const bigNum = new bigDecimal(num);
+  return bigNum.compareTo(new bigDecimal(x)) > 0;
+};
+
+const isGreaterThanOrEqualTo = (number: bigDecimal, x: string) =>
   number.compareTo(new bigDecimal(x)) > -1;
 
 export const makeChange = (total: number) => {
@@ -51,14 +56,37 @@ export const makeChangeWithPhonons = (total: number, phonons: PhononDTO[]) => {
   let _total = new bigDecimal(total);
   return phonons
     .filter((d) => isGreaterThanOrEqualTo(_total, d.Denomination))
-    .sort((a, b) => b.Denomination - a.Denomination)
+    .sort(sortPhonon)
     .filter((phonon) => {
       const denomination = new bigDecimal(phonon.Denomination);
       const amount = _total.subtract(denomination);
-      if (isGreaterThanOrEqualTo(amount, 0)) {
+      if (isGreaterThanOrEqualTo(amount, "0")) {
         _total = amount;
         return true;
       }
       return false;
     });
+};
+
+export const sortPhonon = (a: PhononDTO, b: PhononDTO) => {
+  const prev = new bigDecimal(a.Denomination);
+  const cur = new bigDecimal(b.Denomination);
+  return parseFloat(cur.subtract(prev).getValue());
+};
+
+export const sortDenominations = (_prev: string, _cur: string) => {
+  console.log({ _prev, _cur });
+  const prev = new bigDecimal(_prev);
+  const cur = new bigDecimal(_cur);
+  return prev.add(cur).getValue();
+};
+
+export const reduceDenominations = (_prev: string, _cur: string) => {
+  console.log({ _prev, _cur });
+  const prev = new bigDecimal(_prev);
+  const cur = new bigDecimal(_cur);
+  console.log({ prev: prev.getValue(), cur: cur.getValue() });
+  const val = prev.add(cur);
+  console.log({ val: val.getValue() });
+  return val.getValue();
 };
