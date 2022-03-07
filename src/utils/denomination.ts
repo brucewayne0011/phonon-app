@@ -12,6 +12,7 @@ export type Denomination = {
 export const ethToWei = (eth: Eth) => ethers.utils.parseEther(eth).toString();
 
 export const weiToEth = (wei: Wei) => {
+  if (wei === "NaN") return "0";
   const bnValue = ethers.BigNumber.from(wei);
   return ethers.utils.formatEther(bnValue);
 };

@@ -11,6 +11,7 @@ import { useParams } from "react-router";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
 import { NetworkValue } from "../types";
+import { weiToEth } from "../utils/denomination";
 
 const NetworkListItem: React.FC<NetworkValue & { isLoading: boolean }> = ({
   networkId,
@@ -19,6 +20,7 @@ const NetworkListItem: React.FC<NetworkValue & { isLoading: boolean }> = ({
 }) => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const network = NETWORKS[networkId];
+  const label = weiToEth(value?.toString() ?? "0");
 
   return (
     <IonItem routerLink={`/${sessionId}/${networkId}/`}>
@@ -32,7 +34,7 @@ const NetworkListItem: React.FC<NetworkValue & { isLoading: boolean }> = ({
       <IonLabel>
         <IonText color="light">
           <h1 className="text-xl">
-            {isLoading ? <IonSpinner /> : value} {network.ticker}
+            {isLoading ? <IonSpinner /> : label} {network.ticker}
           </h1>
         </IonText>
       </IonLabel>
