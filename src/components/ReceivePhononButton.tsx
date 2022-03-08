@@ -35,7 +35,7 @@ export default function ReceivePhononButton() {
     setRequestPending(true);
     pairSession({ cardId: inputValue, sessionId })
       .unwrap()
-      .then((data) => {
+      .then(() => {
         hideModal();
       })
       .catch((err) => {

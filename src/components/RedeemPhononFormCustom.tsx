@@ -16,17 +16,13 @@ export const RedeemPhononFormCustom: React.FC<{
   onSubmit: any;
   isPending: boolean;
 }> = ({ handleSuggest, onSubmit, isPending }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RedeemPhononFormCustomValues>({
-    defaultValues: {
-      phononsToRedeem: [],
-    },
-    mode: "onBlur",
-  });
+  const { register, control, handleSubmit } =
+    useForm<RedeemPhononFormCustomValues>({
+      defaultValues: {
+        phononsToRedeem: [],
+      },
+      mode: "onBlur",
+    });
   const formValues = useWatch({
     name: "phononsToRedeem",
     control,

@@ -8,7 +8,6 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
-
 import { useUnlockSessionMutation } from "../store/api";
 
 interface UnlockSessionModalProps {
@@ -48,7 +47,10 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
         setIsUnlocked(true);
       })
       // TODO: Handle error and display something to the user
-      .catch((err) => setIsUnlocked(false));
+      .catch((err) => {
+        console.error(err);
+        setIsUnlocked(false);
+      });
   };
 
   return (
@@ -68,7 +70,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
               value={pin}
               placeholder="Password"
               type="password"
-              onIonChange={(e) => setPin(e.detail.value!)}
+              onIonChange={(e) => setPin(e?.detail?.value ?? "")}
               onKeyDown={handleOnKeyDown}
             ></IonInput>
           </IonItem>

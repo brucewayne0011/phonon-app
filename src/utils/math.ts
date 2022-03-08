@@ -1,7 +1,7 @@
 import bigDecimal from "js-big-decimal";
 import { denominations } from "../constants/denominations";
 import { PhononDTO } from "./../types/index";
-import { ethToWei, weiToEth } from "./denomination";
+import { ethToWei } from "./denomination";
 
 export type DenominationAmount = {
   denomination: string;
