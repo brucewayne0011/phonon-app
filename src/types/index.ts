@@ -1,4 +1,6 @@
 export type Session = string;
+export type Eth = string | number;
+export type Wei = string | number;
 
 export type CreatePhononResponse = {
   index: number;
@@ -10,6 +12,11 @@ export type Phonon = {
   pubKey: string;
   type: number;
   value: number;
+};
+
+export type NetworkValue = {
+  networkId: number;
+  value: number | undefined;
 };
 
 export type PhononPair = {
@@ -29,7 +36,29 @@ export type DescriptorDTO = {
   sessionId: string;
 };
 
+export type DepositRequest = {
+  CurrencyType: number;
+  Denominations: Wei[];
+};
+
+export type DepositConfirmation = {
+  Phonon: PhononDTO;
+  ConfirmedOnChain: boolean;
+  ConfirmedOnCard: boolean;
+}[];
+
 export type PhononDTO = {
-  sessionId: string;
-  index: number;
+  KeyIndex: number;
+  PubKey: string;
+  Address: string;
+  AddressType: number;
+  SchemaVersion: number;
+  ExtendedSchemaVersion: number;
+  Denomination: string;
+  CurrencyType: number;
+};
+
+export type RedeemPhononDTO = {
+  P: PhononDTO;
+  RedeemAddress: string;
 };

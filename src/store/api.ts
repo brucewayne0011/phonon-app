@@ -1,7 +1,14 @@
+import {
+  RedeemPhononDTO,
+  CreatePhononResponse,
+  DepositConfirmation,
+  DepositRequest,
+  DescriptorDTO,
+  PhononDTO,
+  Session,
+} from "./../types/index";
 import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-import { CreatePhononResponse, DescriptorDTO, Phonon, Session } from "../types";
 
 const baseUrl = isPlatform("capacitor")
   ? "https://phonon.npmaile.com:8080/"
@@ -30,7 +37,7 @@ export const api = createApi({
         body: { url: `${bridgeUrl}${cardId}` },
       }),
     }),
-    fetchPhonons: builder.query<Phonon[], { sessionId: string }>({
+    fetchPhonons: builder.query<PhononDTO[], { sessionId: string }>({
       query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
       providesTags: ["Phonon"],
     }),
@@ -52,11 +59,12 @@ export const api = createApi({
     }),
     redeemPhonon: builder.mutation<
       { privateKey: string },
-      { index: number; sessionId: string }
+      { payload: RedeemPhononDTO[]; sessionId: string }
     >({
-      query: ({ index, sessionId }) => ({
-        url: `cards/${sessionId}/phonon/${index}/redeem`,
+      query: ({ payload, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/redeem`,
         method: "POST",
+        body: payload,
       }),
       invalidatesTags: ["Phonon"],
     }),
@@ -64,6 +72,27 @@ export const api = createApi({
       query: ({ index, sessionId }) => ({
         url: `cards/${sessionId}/phonon/${index}/send`,
         method: "POST",
+      }),
+      invalidatesTags: ["Phonon"],
+    }),
+    initDeposit: builder.mutation<
+      PhononDTO[],
+      { payload: DepositRequest; sessionId: string }
+    >({
+      query: ({ payload, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/initDeposit`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    finalizeDeposit: builder.mutation<
+      DepositConfirmation,
+      { payload: DepositConfirmation; sessionId: string }
+    >({
+      query: ({ payload, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/finalizeDeposit`,
+        method: "POST",
+        body: payload,
       }),
       invalidatesTags: ["Phonon"],
     }),
@@ -76,6 +105,8 @@ export const {
   usePairSessionMutation,
   useFetchPhononsQuery,
   useCreatePhononMutation,
+  useInitDepositMutation,
+  useFinalizeDepositMutation,
   useSetDescriptorMutation,
   useRedeemPhononMutation,
   useSendPhononMutation,

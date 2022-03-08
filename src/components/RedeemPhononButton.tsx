@@ -1,59 +1,31 @@
-import { Clipboard } from "@capacitor/clipboard";
-import { IonAlert, IonButton, IonIcon } from "@ionic/react";
+import { IonButton, IonIcon, useIonRouter } from "@ionic/react";
 import { logOutOutline } from "ionicons/icons";
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
-import "../index.css";
-import { useRedeemPhononMutation } from "../store/api";
 
-const RedeemPhononButton: React.FC<{ index: number }> = ({ index }) => {
-  const { sessionId } = useParams<{ sessionId: string }>();
-  const [redeemPhonon] = useRedeemPhononMutation();
-  const [showAlert, setShowAlert] = useState(false);
-  const [privateKey, setPrivateKey] = useState("");
+export default function RedeemPhononButton() {
+  const { sessionId, networkId } = useParams<{
+    sessionId: string;
+    networkId: string;
+  }>();
+  const router = useIonRouter();
 
-  const handleRedeem = () =>
-    redeemPhonon({ index, sessionId })
-      .unwrap()
-      .then(({ privateKey }) => {
-        setPrivateKey(privateKey);
-        setShowAlert(true);
-      });
+  const goToRedeemPage = () => {
+    router.push(`/${sessionId}/${networkId}/redeem`);
+  };
 
   return (
     <>
       <IonButton
+        fill="outline"
         color="tertiary"
-        fill="clear"
-        slot="end"
-        onClick={() => handleRedeem()}
+        slot="secondary"
+        onClick={goToRedeemPage}
+        className="shadow-lg shadow-blue-300/20"
       >
         <IonIcon slot="end" icon={logOutOutline} />
         Redeem
       </IonButton>
-      <IonAlert
-        isOpen={showAlert}
-        onDidDismiss={() => setShowAlert(false)}
-        header="Redeemed Phonon"
-        subHeader={privateKey}
-        buttons={[
-          {
-            text: "Close",
-            role: "cancel",
-            cssClass: "secondary",
-            id: "cancel-button",
-          },
-          {
-            text: "Copy",
-            id: "confirm-button",
-            handler: () => {
-              Clipboard.write({ string: privateKey }).catch(console.error);
-            },
-          },
-        ]}
-      />
     </>
   );
-};
-
-export default RedeemPhononButton;
+}

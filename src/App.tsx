@@ -16,10 +16,15 @@ import "@ionic/react/css/typography.css";
 import React from "react";
 import { Route } from "react-router-dom";
 import Layout from "./layout/Layout";
+import "./output.css";
+import CreatePhononPage from "./pages/CreatePhononPage";
+import NetworkList from "./pages/NetworkList";
 import PhononsList from "./pages/PhononsList";
+import RedeemPhononPage from "./pages/RedeemPhononPage";
 import SessionsList from "./pages/SessionsList";
 /* Theme variables */
 import "./theme/variables.css";
+
 const App: React.FC = () => {
   setupIonicReact({
     mode: "md",
@@ -30,12 +35,23 @@ const App: React.FC = () => {
       <IonReactRouter>
         <IonRouterOutlet id="main">
           <Layout>
-            <Route path="/" exact={true}>
-              <SessionsList />
-            </Route>
-            <Route path="/:sessionId" exact={true}>
-              <PhononsList />
-            </Route>
+            <Route exact path="/" component={SessionsList} />
+            <Route exact path="/:sessionId" component={NetworkList} />
+            <Route
+              exact
+              path="/:sessionId/:networkId"
+              component={PhononsList}
+            />
+            <Route
+              exact
+              path="/:sessionId/:networkId/create"
+              component={CreatePhononPage}
+            />
+            <Route
+              exact
+              path="/:sessionId/:networkId/redeem"
+              component={RedeemPhononPage}
+            />
           </Layout>
         </IonRouterOutlet>
       </IonReactRouter>
