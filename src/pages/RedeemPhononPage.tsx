@@ -36,7 +36,6 @@ const RedeemPhononPage: React.FC = () => {
     const signer = provider.getSigner();
     const address = await signer.getAddress();
     setRedeemAddress(address);
-    // console.log("Account:", await signer.getAddress());
   };
 
   useEffect(() => {

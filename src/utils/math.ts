@@ -54,7 +54,6 @@ export const rollupChange = (denominations: DenominationAmount[]) => {
 };
 
 export const makeChangeWithPhonons = (total: number, phonons: PhononDTO[]) => {
-  console.log({ total });
   try {
     if (!total) return [];
     let _total = new bigDecimal(ethToWei(total));

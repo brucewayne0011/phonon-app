@@ -22,8 +22,6 @@ export const CreatePhononFormSingle: React.FC<{
     formState: { errors },
   } = useForm<CreatePhononFormSingleValues>();
 
-  console.log(errors);
-
   return (
     <form
       className="flex flex-col content-center justify-start h-full gap-2 p-2"

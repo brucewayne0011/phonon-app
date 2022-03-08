@@ -25,7 +25,6 @@ const NetworkList: React.FC = () => {
     //   .sort() as number[];
 
     const totalValueByNetwork: NetworkValue[] = NETWORKS.map((network, i) => {
-      console.log({ data });
       return {
         value: parseInt(
           data
