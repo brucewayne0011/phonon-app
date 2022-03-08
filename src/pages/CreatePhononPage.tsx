@@ -75,23 +75,28 @@ const CreatePhononPage: React.FC = () => {
               const to = phonon.Address;
               const value = ethToBn(weiToEth(phonon.Denomination));
 
-              const response = await signer
+              return signer
                 .sendTransaction({ to, value })
-                .catch(console.error);
-              if (response) {
-                const Phonon = { ...phonon, ChainID };
-                const payload = [
-                  {
-                    Phonon,
-                    ConfirmedOnChain: true,
-                    ConfirmedOnCard: true,
-                  },
-                ];
-                finalizeDeposit({ payload, sessionId }).catch(console.error);
-              }
+                .then((response) => {
+                  if (response) {
+                    const Phonon = { ...phonon, ChainID };
+                    const payload = [
+                      {
+                        Phonon,
+                        ConfirmedOnChain: true,
+                        ConfirmedOnCard: true,
+                      },
+                    ];
+                    finalizeDeposit({ payload, sessionId }).catch(
+                      console.error
+                    );
+                    router.push(`/${sessionId}/${networkId}/`);
+                  }
+                })
+                .catch(console.error)
+                .finally(() => setIsPending(false));
             })
           );
-          router.push(`/${sessionId}/${networkId}/`);
         } else {
           // TODO: Show an error message to the user about MetaMask not being installed or available
           setIsPending(false);

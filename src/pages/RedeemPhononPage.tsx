@@ -77,6 +77,10 @@ const RedeemPhononPage: React.FC = () => {
     // setInputValue(rollupChange(denominationAmounts));
   };
 
+  const onChangeRedeemAddress = (value: string) => {
+    setRedeemAddress(value);
+  };
+
   return (
     <div className="flex flex-col content-center justify-start h-full gap-2">
       <p className="text-xl font-bold text-center text-gray-300 uppercase">
@@ -85,6 +89,7 @@ const RedeemPhononPage: React.FC = () => {
       <input
         className="text-bold p-2 text-xl bg-zinc-800 shadow-inner w-auto"
         placeholder="Redeem Address"
+        onChange={(event) => onChangeRedeemAddress(event.target.value)}
         value={RedeemAddress}
         disabled={isPending}
       />
