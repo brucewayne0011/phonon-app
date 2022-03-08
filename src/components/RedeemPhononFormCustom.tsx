@@ -33,15 +33,37 @@ export const RedeemPhononFormCustom: React.FC<{
   });
   const { network } = useNetwork();
   const { phonons } = usePhonons();
-  const total = phonons
-    .filter((p) => formValues.some((fv) => fv === p.PubKey))
-    .map((phonon) => phonon.Denomination)
-    .reduce(reduceDenominations, "0");
+
+  const getTotal = () => {
+    try {
+      const total = reduceSelectedPhononTotals();
+      return total ? weiToEth(total) : 0;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const reduceSelectedPhononTotals = () => {
+    try {
+      if (typeof formValues === "boolean") {
+        return formValues ? phonons[0].Denomination : 0;
+      }
+      if (typeof formValues === "string") {
+        return phonons.filter((p) => formValues === p.PubKey)[0].Denomination;
+      }
+      return phonons
+        .filter((p) => formValues.some((fv) => fv === p.PubKey))
+        .map((phonon) => phonon.Denomination)
+        .reduce(reduceDenominations, "0");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div>
       <div className="text-bold p-2 text-xl font-center text-zinc-400">
-        {total}
+        {getTotal()}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         {phonons.map((phonon) => (

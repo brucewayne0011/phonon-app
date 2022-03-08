@@ -3,6 +3,7 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
+import { weiToEth } from "../utils/denomination";
 import { makeChangeWithPhonons, reduceDenominations } from "../utils/math";
 
 export type RedeemPhononFormSuggestedValues = {
@@ -38,18 +39,19 @@ export const RedeemPhononFormSuggested: React.FC<{
       <input
         className="text-bold p-2 text-xl bg-zinc-800 shadow-inner"
         placeholder="Amount"
-        type={"number"}
         disabled={isPending}
         {...register("amount", { required: true })}
       />
-      <p className="text-sm text-gray-400 font-bold text-center">{total}</p>
+      <p className="text-sm text-gray-400 font-bold text-center">
+        {weiToEth(total)}
+      </p>
       <p className="text-sm text-gray-400 font-bold text-center">SUGGESTED</p>
       {denominations.map((phonon) => (
         <p
           key={phonon.PubKey}
           className="text-md text-gray-200 font-bold text-center"
         >
-          {phonon.Denomination} {network.symbol}
+          {weiToEth(phonon.Denomination)} {network.symbol}
         </p>
       ))}
       <div className="pinned">

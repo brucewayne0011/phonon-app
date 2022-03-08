@@ -1,6 +1,7 @@
 import bigDecimal from "js-big-decimal";
 import { denominations } from "../constants/denominations";
 import { PhononDTO } from "./../types/index";
+import { ethToWei, weiToEth } from "./denomination";
 
 export type DenominationAmount = {
   denomination: string;
@@ -53,19 +54,26 @@ export const rollupChange = (denominations: DenominationAmount[]) => {
 };
 
 export const makeChangeWithPhonons = (total: number, phonons: PhononDTO[]) => {
-  let _total = new bigDecimal(total);
-  return phonons
-    .filter((d) => isGreaterThanOrEqualTo(_total, d.Denomination))
-    .sort(sortPhonon)
-    .filter((phonon) => {
-      const denomination = new bigDecimal(phonon.Denomination);
-      const amount = _total.subtract(denomination);
-      if (isGreaterThanOrEqualTo(amount, "0")) {
-        _total = amount;
-        return true;
-      }
-      return false;
-    });
+  console.log({ total });
+  try {
+    if (!total) return [];
+    let _total = new bigDecimal(ethToWei(total));
+    return phonons
+      .filter((d) => isGreaterThanOrEqualTo(_total, d.Denomination))
+      .sort(sortPhonon)
+      .filter((phonon) => {
+        const denomination = new bigDecimal(phonon.Denomination);
+        const amount = _total.subtract(denomination);
+        if (isGreaterThanOrEqualTo(amount, "0")) {
+          _total = amount;
+          return true;
+        }
+        return false;
+      });
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 };
 
 export const sortPhonon = (a: PhononDTO, b: PhononDTO) => {
@@ -74,19 +82,9 @@ export const sortPhonon = (a: PhononDTO, b: PhononDTO) => {
   return parseFloat(cur.subtract(prev).getValue());
 };
 
-export const sortDenominations = (_prev: string, _cur: string) => {
-  console.log({ _prev, _cur });
-  const prev = new bigDecimal(_prev);
-  const cur = new bigDecimal(_cur);
-  return prev.add(cur).getValue();
-};
-
 export const reduceDenominations = (_prev: string, _cur: string) => {
-  console.log({ _prev, _cur });
   const prev = new bigDecimal(_prev);
   const cur = new bigDecimal(_cur);
-  console.log({ prev: prev.getValue(), cur: cur.getValue() });
   const val = prev.add(cur);
-  console.log({ val: val.getValue() });
   return val.getValue();
 };

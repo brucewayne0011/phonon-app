@@ -9,7 +9,10 @@ export type Denomination = {
   getBn: () => bigDecimal;
 };
 
-export const ethToWei = (eth: Eth) => ethers.utils.parseEther(eth).toString();
+export const ethToWei = (eth: Eth) => {
+  const _eth = typeof eth === "number" ? eth.toString() : eth;
+  return ethers.utils.parseEther(_eth).toString();
+};
 
 export const weiToEth = (wei: Wei) => {
   if (wei === "NaN") return "0";
@@ -18,5 +21,5 @@ export const weiToEth = (wei: Wei) => {
 };
 
 export const ethToBn = (eth: Eth) => {
-  return ethers.utils.parseEther(eth);
+  if (typeof eth === "string") return ethers.utils.parseEther(eth);
 };

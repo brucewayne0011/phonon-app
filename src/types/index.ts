@@ -1,6 +1,6 @@
 export type Session = string;
-export type Eth = string;
-export type Wei = string;
+export type Eth = string | number;
+export type Wei = string | number;
 
 export type CreatePhononResponse = {
   index: number;

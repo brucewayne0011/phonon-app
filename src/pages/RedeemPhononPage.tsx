@@ -13,7 +13,7 @@ import {
 import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
 import { useRedeemPhononMutation } from "../store/api";
-import { PhononDTO, RedeemPhononDTO } from "../types";
+import { RedeemPhononDTO } from "../types";
 import { makeChangeWithPhonons } from "../utils/math";
 
 const RedeemPhononPage: React.FC = () => {
@@ -44,13 +44,12 @@ const RedeemPhononPage: React.FC = () => {
   }, []);
 
   const onSubmit = (payload: RedeemPhononDTO[]) => {
-    // setIsPending(true);
+    setIsPending(true);
     if (payload.length) {
       redeemPhonon({ payload, sessionId })
-        .then((res) => {
-          router.push(`/${sessionId}/${networkId}/`);
-        })
-        .catch(console.error);
+        .then(() => router.push(`/${sessionId}/${networkId}/`))
+        .catch(console.error)
+        .finally(() => setIsPending(false));
     }
   };
 
