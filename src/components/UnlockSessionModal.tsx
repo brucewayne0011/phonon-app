@@ -9,6 +9,7 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import { useUnlockSessionMutation } from "../store/api";
+import { logger } from "../utils/logger";
 
 interface UnlockSessionModalProps {
   session: string;
@@ -48,7 +49,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
       })
       // TODO: Handle error and display something to the user
       .catch((err) => {
-        console.error(err);
+        logger.error(err);
         setIsUnlocked(false);
       });
   };

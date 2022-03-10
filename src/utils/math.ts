@@ -2,6 +2,7 @@ import bigDecimal from "js-big-decimal";
 import { denominations } from "../constants/denominations";
 import { PhononDTO } from "./../types/index";
 import { ethToWei } from "./denomination";
+import { logger } from "./logger";
 
 export type DenominationAmount = {
   denomination: string;
@@ -38,7 +39,7 @@ export const makeChange = (total: number) => {
     step++;
   }
   if (isTotalAboveZero()) {
-    console.error("Making change failed", _total.getValue());
+    logger.error("Making change failed", _total.getValue());
   }
   return denominationAmounts.filter((x) => x.amount);
 };
@@ -70,7 +71,7 @@ export const makeChangeWithPhonons = (total: number, phonons: PhononDTO[]) => {
         return false;
       });
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     return [];
   }
 };

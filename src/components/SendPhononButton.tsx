@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router";
 import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation, useSendPhononMutation } from "../store/api";
+import { logger } from "../utils/logger";
 
 export default function SendPhononButton({ index }: { index: number }) {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -38,7 +39,7 @@ export default function SendPhononButton({ index }: { index: number }) {
     pairSession({ cardId: inputValue, sessionId })
       .unwrap()
       .then(() => {
-        sendPhonon({ index, sessionId }).catch(console.error);
+        sendPhonon({ index, sessionId }).catch(logger.error);
         hideModal();
       })
       .catch(() => {

@@ -14,6 +14,7 @@ import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
 import { useRedeemPhononMutation } from "../store/api";
 import { RedeemPhononDTO } from "../types";
+import { logger } from "../utils/logger";
 import { makeChangeWithPhonons } from "../utils/math";
 
 const RedeemPhononPage: React.FC = () => {
@@ -39,7 +40,7 @@ const RedeemPhononPage: React.FC = () => {
   };
 
   useEffect(() => {
-    getAddress().catch((err) => console.error(err));
+    getAddress().catch(logger.error);
   }, []);
 
   const onSubmit = (payload: RedeemPhononDTO[]) => {
@@ -47,7 +48,7 @@ const RedeemPhononPage: React.FC = () => {
     if (payload.length) {
       redeemPhonon({ payload, sessionId })
         .then(() => router.push(`/${sessionId}/${networkId}/`))
-        .catch(console.error)
+        .catch(logger.error)
         .finally(() => setIsPending(false));
     }
   };

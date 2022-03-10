@@ -5,6 +5,7 @@ import { useForm, useWatch } from "react-hook-form";
 import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
 import { weiToEth } from "../utils/denomination";
+import { logger } from "../utils/logger";
 import { reduceDenominations } from "../utils/math";
 
 export type RedeemPhononFormCustomValues = {
@@ -35,7 +36,7 @@ export const RedeemPhononFormCustom: React.FC<{
       const total = reduceSelectedPhononTotals();
       return total ? weiToEth(total) : 0;
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   };
 
@@ -52,7 +53,7 @@ export const RedeemPhononFormCustom: React.FC<{
         .map((phonon) => phonon.Denomination)
         .reduce(reduceDenominations, "0");
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   };
 

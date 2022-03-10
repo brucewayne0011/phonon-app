@@ -20,6 +20,7 @@ import {
   useInitDepositMutation,
 } from "../store/api";
 import { ethToBn, ethToWei, weiToEth } from "../utils/denomination";
+import { logger } from "../utils/logger";
 import { makeChange } from "../utils/math";
 
 const CreatePhononPage: React.FC = () => {
@@ -87,13 +88,11 @@ const CreatePhononPage: React.FC = () => {
                         ConfirmedOnCard: true,
                       },
                     ];
-                    finalizeDeposit({ payload, sessionId }).catch(
-                      console.error
-                    );
+                    finalizeDeposit({ payload, sessionId }).catch(logger.error);
                     router.push(`/${sessionId}/${networkId}/`);
                   }
                 })
-                .catch(console.error)
+                .catch(logger.error)
                 .finally(() => setIsPending(false));
             })
           );
