@@ -14,11 +14,17 @@ export const logger = pino({
     serialize: true,
     transmit: {
       send: function (level, logEvent) {
-        if (logEvent.level.value >= LOG_LEVEL.ERROR) {
-          // covers error and fatal
+        const msg = {
+          ...logEvent,
+          userAgent: navigator.userAgent,
+          env: process.env.NODE_ENV,
+          version: process.env.REACT_APP_VERSION,
+        };
+
+        if (logEvent.level.value >= LOG_LEVEL.DEBUG) {
           fetch("/log", {
             method: "post",
-            body: JSON.stringify(logEvent),
+            body: JSON.stringify(msg),
           }).catch(logger.error);
         }
       },
