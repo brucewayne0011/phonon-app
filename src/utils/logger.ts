@@ -21,12 +21,12 @@ export const logger = pino({
           version: process.env.REACT_APP_VERSION,
         };
 
-        if (logEvent.level.value >= LOG_LEVEL.DEBUG) {
-          fetch("/log", {
-            method: "post",
-            body: JSON.stringify(msg),
-          }).catch(logger.error);
-        }
+        // if (logEvent.level.value >= LOG_LEVEL.DEBUG) {
+        fetch("/logs", {
+          method: "post",
+          body: JSON.stringify(msg),
+        }).catch(logger.error);
+        // }
       },
     },
   },
