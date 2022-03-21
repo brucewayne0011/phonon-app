@@ -33,7 +33,7 @@ export const CreatePhononFormSingle: React.FC<{
         disabled={isPending}
         {...register("amount", {
           required: true,
-          pattern: validPhononValue,
+          // pattern: validPhononValue,
         })}
       />
       {errors?.amount?.type === "required" && (
