@@ -8,11 +8,6 @@ export type CreatePhononFormSingleValues = {
   amount: string;
 };
 
-const validPhononValue = /^((([0-1]?[0-9]?[0-9]?|2[0-4][0-9]|25[0-5]))[0-9]?)$/;
-// const CreatePhononSchema = yup.object().shape({
-//   amount: yup.string().trim().matches(validPhononValue),
-// });
-
 export const CreatePhononFormSingle: React.FC<{
   onSubmit: any;
   isPending: boolean;
