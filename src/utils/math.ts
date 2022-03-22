@@ -76,6 +76,7 @@ export const makeChangeWithPhonons = (total: number, phonons: PhononDTO[]) => {
 };
 
 export const sortPhonon = (a: PhononDTO, b: PhononDTO) => {
+  if (a.Denomination === "0" || b.Denomination === "0") return 0;
   const prev = new bigDecimal(a.Denomination);
   const cur = new bigDecimal(b.Denomination);
   return parseFloat(cur.subtract(prev).getValue());

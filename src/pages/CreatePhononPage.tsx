@@ -99,6 +99,7 @@ const CreatePhononPage: React.FC = () => {
           );
         } else {
           // TODO: Show an error message to the user about MetaMask not being installed or available
+          throw new Error("MetaMask is not installed.");
           setIsPending(false);
         }
       });
@@ -113,35 +114,31 @@ const CreatePhononPage: React.FC = () => {
     // setInputValue(rollupChange(denominationAmounts));
   };
 
-  const renderMassCreate = () => (
-    <>
-      <IonButton
-        expand="full"
-        fill="clear"
-        type="button"
-        onClick={() => setIsMassCreating(false)}
-      >
-        Creating Many Phonons
-      </IonButton>
-      {isCustomizing ? (
-        <CreatePhononFormCustom
-          {...{ handleSuggest, onSubmit: onSubmitCustomized, isPending }}
-        />
-      ) : (
-        <CreatePhononFormSuggested
-          {...{ handleCustomize, onSubmit: onSubmitSuggested, isPending }}
-        />
-      )}
-    </>
-  );
-
   return (
     <div>
       <p className="text-xl font-bold text-center text-gray-300 uppercase">
         CREATE {network.ticker} PHONON
       </p>
       {isMassCreating ? (
-        renderMassCreate()
+        <>
+          <IonButton
+            expand="full"
+            fill="clear"
+            type="button"
+            onClick={() => setIsMassCreating(false)}
+          >
+            Creating Many Phonons
+          </IonButton>
+          {isCustomizing ? (
+            <CreatePhononFormCustom
+              {...{ handleSuggest, onSubmit: onSubmitCustomized, isPending }}
+            />
+          ) : (
+            <CreatePhononFormSuggested
+              {...{ handleCustomize, onSubmit: onSubmitSuggested, isPending }}
+            />
+          )}
+        </>
       ) : (
         <>
           <IonButton
