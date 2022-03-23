@@ -5,6 +5,8 @@ describe("validation", () => {
     const mock = [
       { input: "10", output: true },
       { input: "100", output: true },
+      { input: ".1", output: true },
+      { input: "0.00001", output: true },
       { input: "155", output: true },
       { input: "199", output: true },
       { input: "15000", output: true },
@@ -14,6 +16,7 @@ describe("validation", () => {
       { input: "256", output: false },
       { input: "956", output: false },
       { input: "0.000001956", output: false },
+      { input: ".000001956", output: false },
       { input: "0.1000750000", output: false },
       { input: "0.10010", output: false },
     ];
