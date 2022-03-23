@@ -1,7 +1,7 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { areFirstThreeCharsLessThan256 } from "../utils/validation";
+import { isValidPhononDenomination } from "../utils/validation";
 // import * as yup from "yup";
 
 export type CreatePhononFormSingleValues = {
@@ -29,7 +29,7 @@ export const CreatePhononFormSingle: React.FC<{
         disabled={isPending}
         {...register("amount", {
           required: true,
-          validate: areFirstThreeCharsLessThan256,
+          validate: isValidPhononDenomination,
         })}
       />
       {errors?.amount?.type === "required" && (

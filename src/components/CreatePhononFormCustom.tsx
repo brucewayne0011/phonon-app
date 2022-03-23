@@ -6,7 +6,7 @@ import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { denominations } from "../constants/denominations";
 import useNetwork from "../hooks/useNetwork";
 import { rollupChange } from "../utils/math";
-import { areFirstThreeCharsLessThan256 } from "../utils/validation";
+import { isValidPhononDenomination } from "../utils/validation";
 
 export type CreatePhononFormCustomValues = {
   phononsToCreate: {
@@ -67,7 +67,7 @@ export const CreatePhononFormCustom: React.FC<{
                 placeholder="Amount"
                 {...register(`phononsToCreate.${index}.amount` as const, {
                   required: true,
-                  validate: areFirstThreeCharsLessThan256,
+                  validate: isValidPhononDenomination,
                 })}
                 className={clsx(
                   "text-bold p-2 text-xl bg-zinc-800 shadow-inner w-1/3",
