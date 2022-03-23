@@ -12,6 +12,7 @@ describe("validation", () => {
       { input: "15000", output: true },
       { input: "12000", output: true },
       { input: "254", output: true },
+      { input: "255", output: true },
       { input: "0.000195", output: true },
       { input: "256", output: false },
       { input: "956", output: false },
