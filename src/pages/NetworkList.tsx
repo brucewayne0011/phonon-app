@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NetworkListItem from "../components/NetworkListItem";
 import { NETWORKS } from "../constants/networks";
+import useSessionDisplayName from "../hooks/useSessionDisplayName";
 import { useFetchPhononsQuery } from "../store/api";
 import { NetworkValue } from "../types";
 import { reduceDenominations } from "../utils/math";
@@ -48,7 +49,7 @@ const NetworkList: React.FC = () => {
     <IonContent>
       <div className="mt-2 text-center">
         <p className="text-xs font-extrabold text-zinc-500">WALLET</p>
-        <p className="mb-3">{sessionId}</p>
+        <p className="mb-3">{useSessionDisplayName(sessionId)}</p>
       </div>
 
       <IonContent>
