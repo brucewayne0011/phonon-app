@@ -62,3 +62,7 @@ export type RedeemPhononDTO = {
   P: PhononDTO;
   RedeemAddress: string;
 };
+
+export type SessionNames = {
+  [key: string]: string | undefined;
+};

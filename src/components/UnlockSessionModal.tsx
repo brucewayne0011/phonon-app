@@ -8,16 +8,17 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
+import useSessionDisplayName from "../hooks/useSessionDisplayName";
 import { useUnlockSessionMutation } from "../store/api";
 
 interface UnlockSessionModalProps {
-  session: string;
+  sessionId: string;
   isOpen: boolean;
   setIsOpen: (arg: boolean) => void;
 }
 
 const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
-  session,
+  sessionId,
   isOpen,
   setIsOpen,
 }) => {
@@ -40,7 +41,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   };
 
   const handleLogin = () => {
-    unlockSession({ sessionId: session, pin })
+    unlockSession({ sessionId, pin })
       .unwrap()
       .then(() => {
         setIsOpen(false);
@@ -53,17 +54,21 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
       });
   };
 
+  const displayName = useSessionDisplayName(sessionId);
+
   return (
     <IonContent>
       <IonModal
         isOpen={isOpen}
         onDidDismiss={() => {
-          if (isUnlocked) router.push(`/${session}/`);
+          if (isUnlocked) router.push(`/${sessionId}/`);
         }}
       >
         <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
-            <h1 className="mx-auto text-lg text-center">Unlock {session}</h1>
+            <h1 className="mx-auto text-lg text-center">
+              Unlock {displayName}
+            </h1>
           </IonText>
           <IonItem className="my-7">
             <IonInput
