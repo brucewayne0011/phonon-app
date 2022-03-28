@@ -1,23 +1,47 @@
 import { IonButton, IonItem, IonLabel } from "@ionic/react";
 import React, { useState } from "react";
 import UnlockSessionModal from "./UnlockSessionModal";
+import SetSessionNameModal from "./SetSessionNameModal";
+import useSessionDisplayName from "../hooks/useSessionDisplayName";
 
-const SessionListItem: React.FC<{ session: string }> = ({ session }) => {
-  const [isOpen, setIsOpen] = useState(false);
+type Props = {
+  sessionId: string;
+};
+
+const SessionListItem: React.FC<Props> = ({ sessionId }) => {
+  const [isUnlockOpen, setIsUnlockOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
+
+  const displayName = useSessionDisplayName(sessionId);
 
   return (
     <>
-      <IonItem button onClick={() => setIsOpen(true)} detail>
-        <IonLabel>{session}</IonLabel>
-
-        <IonButton fill="clear" slot="end">
+      <IonItem detail>
+        <IonLabel>{displayName}</IonLabel>
+        <IonButton
+          fill="clear"
+          slot="end"
+          onClick={() => setIsRenameOpen(true)}
+        >
+          Rename
+        </IonButton>
+        <IonButton
+          fill="clear"
+          slot="end"
+          onClick={() => setIsUnlockOpen(true)}
+        >
           Unlock
         </IonButton>
       </IonItem>
       <UnlockSessionModal
-        session={session}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        sessionId={sessionId}
+        isOpen={isUnlockOpen}
+        setIsOpen={setIsUnlockOpen}
+      />
+      <SetSessionNameModal
+        sessionId={sessionId}
+        isOpen={isRenameOpen}
+        setIsOpen={setIsRenameOpen}
       />
     </>
   );
