@@ -31,8 +31,9 @@ const RedeemPhononPage: React.FC = () => {
   const { phonons } = usePhonons();
 
   const getAddress = async () => {
-    // @ts-expect-error window.ethereum needs to be added to namespace
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(
+      (window as any).ethereum
+    );
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const address = await signer.getAddress();
@@ -50,6 +51,8 @@ const RedeemPhononPage: React.FC = () => {
         .then(() => router.push(`/${sessionId}/${networkId}/`))
         .catch(logger.error)
         .finally(() => setIsPending(false));
+    } else {
+      setIsPending(false);
     }
   };
 
