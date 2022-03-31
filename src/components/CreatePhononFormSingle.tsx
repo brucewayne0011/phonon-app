@@ -1,16 +1,12 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { isValidPhononDenomination } from "../utils/validation";
 // import * as yup from "yup";
 
 export type CreatePhononFormSingleValues = {
   amount: string;
 };
-
-const validPhononValue = /^((([0-1]?[0-9]?[0-9]?|2[0-4][0-9]|25[0-5]))[0-9]?)$/;
-// const CreatePhononSchema = yup.object().shape({
-//   amount: yup.string().trim().matches(validPhononValue),
-// });
 
 export const CreatePhononFormSingle: React.FC<{
   onSubmit: any;
@@ -33,7 +29,7 @@ export const CreatePhononFormSingle: React.FC<{
         disabled={isPending}
         {...register("amount", {
           required: true,
-          pattern: validPhononValue,
+          validate: isValidPhononDenomination,
         })}
       />
       {errors?.amount?.type === "required" && (
@@ -41,7 +37,7 @@ export const CreatePhononFormSingle: React.FC<{
           Amount is required.
         </p>
       )}
-      {errors?.amount?.type === "pattern" && (
+      {errors?.amount?.type === "validate" && (
         <p className="text-bold p-2 text-xl text-zinc-200 shadow-inner">
           First three digits must be less than 255.
         </p>

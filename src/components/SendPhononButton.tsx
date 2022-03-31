@@ -15,7 +15,7 @@ import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation, useSendPhononMutation } from "../store/api";
 import { logger } from "../utils/logger";
 
-export default function SendPhononButton({ index }: { index: number }) {
+export default function SendPhononButton() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [requestPending, setRequestPending] = useState(false);
@@ -39,7 +39,8 @@ export default function SendPhononButton({ index }: { index: number }) {
     pairSession({ cardId: inputValue, sessionId })
       .unwrap()
       .then(() => {
-        sendPhonon({ index, sessionId }).catch(logger.error);
+        // @ts-expect-error - sending shouldn't require index
+        sendPhonon({ sessionId }).catch(console.error);
         hideModal();
       })
       .catch(() => {
@@ -67,7 +68,13 @@ export default function SendPhononButton({ index }: { index: number }) {
 
   return (
     <>
-      <IonButton color="primary" fill="clear" slot="end" onClick={showModal}>
+      <IonButton
+        color="primary"
+        fill="outline"
+        slot="end"
+        onClick={showModal}
+        disabled={true}
+      >
         <IonIcon slot="end" icon={sendSharp} />
         Send
       </IonButton>

@@ -16,7 +16,7 @@ export const ethToWei = (eth: Eth) => {
 
 export const weiToEth = (wei: Wei) => {
   if (wei === "NaN") return "0";
-  const bnValue = ethers.BigNumber.from(wei);
+  const bnValue = ethers.BigNumber.from(`${wei}`);
   return ethers.utils.formatEther(bnValue);
 };
 

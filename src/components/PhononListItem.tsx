@@ -4,9 +4,9 @@ import React from "react";
 import { NETWORKS } from "../constants/networks";
 import "../index.css";
 import { PhononDTO } from "../types";
+import { abbreviateHash } from "../utils/addresses";
 import { weiToEth } from "../utils/denomination";
 import { isGreaterThan } from "../utils/math";
-import SendPhononButton from "./SendPhononButton";
 
 const PhononListItem: React.FC<{ phonon: PhononDTO }> = ({ phonon }) => {
   const network = NETWORKS[phonon.CurrencyType];
@@ -29,10 +29,8 @@ const PhononListItem: React.FC<{ phonon: PhononDTO }> = ({ phonon }) => {
           )}{" "}
           {network.ticker}
         </h2>
-        <p>{phonon.PubKey}</p>
+        <p>{abbreviateHash(phonon.PubKey)}</p>
       </IonLabel>
-      <SendPhononButton index={phonon.KeyIndex} />
-      {/* <RedeemPhononButton index={phonon.KeyIndex} /> */}
     </IonItem>
   );
 };

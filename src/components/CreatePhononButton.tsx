@@ -19,11 +19,11 @@ export default function CreatePhononButton() {
       <IonButton
         fill="outline"
         color="primary"
-        slot="secondary"
+        slot="end"
         onClick={goToCreatePage}
         className="shadow-lg shadow-blue-300/20"
       >
-        <IonIcon slot="start" icon={addSharp} />
+        <IonIcon slot="end" icon={addSharp} />
         Create
       </IonButton>
     </>
