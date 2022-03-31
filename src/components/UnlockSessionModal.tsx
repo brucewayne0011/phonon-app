@@ -10,6 +10,7 @@ import {
 import React, { useState } from "react";
 import useSessionDisplayName from "../hooks/useSessionDisplayName";
 import { useUnlockSessionMutation } from "../store/api";
+import { logger } from "../utils/logger";
 
 interface UnlockSessionModalProps {
   sessionId: string;
@@ -49,7 +50,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
       })
       // TODO: Handle error and display something to the user
       .catch((err) => {
-        console.error(err);
+        logger.error(err);
         setIsUnlocked(false);
       });
   };

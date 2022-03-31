@@ -14,6 +14,7 @@ import useNetwork from "../hooks/useNetwork";
 import { usePhonons } from "../hooks/usePhonons";
 import { useRedeemPhononMutation } from "../store/api";
 import { RedeemPhononDTO } from "../types";
+import { logger } from "../utils/logger";
 import { makeChangeWithPhonons } from "../utils/math";
 
 const RedeemPhononPage: React.FC = () => {
@@ -30,8 +31,9 @@ const RedeemPhononPage: React.FC = () => {
   const { phonons } = usePhonons();
 
   const getAddress = async () => {
-    // @ts-expect-error window.ethereum needs to be added to namespace
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(
+      (window as any).ethereum
+    );
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const address = await signer.getAddress();
@@ -39,7 +41,7 @@ const RedeemPhononPage: React.FC = () => {
   };
 
   useEffect(() => {
-    getAddress().catch((err) => console.error(err));
+    getAddress().catch(logger.error);
   }, []);
 
   const onSubmit = (payload: RedeemPhononDTO[]) => {
@@ -47,8 +49,10 @@ const RedeemPhononPage: React.FC = () => {
     if (payload.length) {
       redeemPhonon({ payload, sessionId })
         .then(() => router.push(`/${sessionId}/${networkId}/`))
-        .catch(console.error)
+        .catch(logger.error)
         .finally(() => setIsPending(false));
+    } else {
+      setIsPending(false);
     }
   };
 

@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router";
 import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation } from "../store/api";
+import { logger } from "../utils/logger";
 
 export default function ReceivePhononButton() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -38,9 +39,7 @@ export default function ReceivePhononButton() {
       .then(() => {
         hideModal();
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(logger.error);
   };
 
   const handleCancel = () => {
