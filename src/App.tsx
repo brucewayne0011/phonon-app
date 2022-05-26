@@ -14,13 +14,10 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
 import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { Route } from "react-router-dom";
-import Layout from "./layout/Layout";
 import "./output.css";
-import CreatePhononPage from "./pages/CreatePhononPage";
-import NetworkList from "./pages/NetworkList";
 import PhononsList from "./pages/PhononsList";
-import RedeemPhononPage from "./pages/RedeemPhononPage";
 import SessionsList from "./pages/SessionsList";
 /* Theme variables */
 import "./theme/variables.css";
@@ -34,25 +31,8 @@ const App: React.FC = () => {
     <IonApp className="container mx-auto">
       <IonReactRouter>
         <IonRouterOutlet id="main">
-          <Layout>
-            <Route exact path="/" component={SessionsList} />
-            <Route exact path="/:sessionId" component={NetworkList} />
-            <Route
-              exact
-              path="/:sessionId/:networkId"
-              component={PhononsList}
-            />
-            <Route
-              exact
-              path="/:sessionId/:networkId/create"
-              component={CreatePhononPage}
-            />
-            <Route
-              exact
-              path="/:sessionId/:networkId/redeem"
-              component={RedeemPhononPage}
-            />
-          </Layout>
+          <Route exact path="/" component={SessionsList} />
+          <Route exact path="/:sessionId" component={PhononsList} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

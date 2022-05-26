@@ -6,6 +6,7 @@ import {
   DescriptorDTO,
   PhononDTO,
   Session,
+  SendPhononDTO,
 } from "./../types/index";
 import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -21,6 +22,7 @@ export const api = createApi({
   endpoints: (builder) => ({
     fetchSessions: builder.query<{ Sessions: Session[] }, void>({
       query: () => "listSessions",
+      providesTags: ["Session"],
     }),
     unlockSession: builder.mutation<void, { sessionId: string; pin: string }>({
       query: ({ sessionId, pin }) => ({
@@ -30,12 +32,22 @@ export const api = createApi({
       }),
       invalidatesTags: ["Session"],
     }),
-    pairSession: builder.mutation<void, { sessionId: string; cardId: string }>({
+    pair: builder.mutation<void, { sessionId: string; cardId: string }>({
       query: ({ cardId, sessionId }) => ({
-        url: `cards/${sessionId}/Pair`,
+        url: `cards/${sessionId}/pair`,
         method: "POST",
-        body: { url: `${bridgeUrl}${cardId}` },
+        body: { CardID: `${cardId}` },
       }),
+    }),
+    connect: builder.mutation<void, { sessionId: string }>({
+      query: ({ sessionId }) => ({
+        url: `cards/${sessionId}/connect`,
+        method: "POST",
+        body: { url: `${bridgeUrl}` },
+      }),
+    }),
+    connectionStatus: builder.query<boolean, { sessionId: string }>({
+      query: ({ sessionId }) => `/cards/${sessionId}/connectionStatus`,
     }),
     fetchPhonons: builder.query<PhononDTO[], { sessionId: string }>({
       query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
@@ -68,12 +80,16 @@ export const api = createApi({
       }),
       invalidatesTags: ["Phonon"],
     }),
-    sendPhonon: builder.mutation<void, { index: number; sessionId: string }>({
-      query: ({ index, sessionId }) => ({
-        url: `cards/${sessionId}/phonon/${index}/send`,
+    sendPhonon: builder.mutation<
+      void,
+      { payload: SendPhononDTO; sessionId: string }
+    >({
+      query: ({ payload, sessionId }) => ({
+        url: `cards/${sessionId}/phonon/send`,
         method: "POST",
+        body: payload,
       }),
-      invalidatesTags: ["Phonon"],
+      // invalidatesTags: ["Phonon"],
     }),
     initDeposit: builder.mutation<
       PhononDTO[],
@@ -102,7 +118,9 @@ export const api = createApi({
 export const {
   useFetchSessionsQuery,
   useUnlockSessionMutation,
-  usePairSessionMutation,
+  usePairMutation,
+  useConnectMutation,
+  useConnectionStatusQuery,
   useFetchPhononsQuery,
   useCreatePhononMutation,
   useInitDepositMutation,

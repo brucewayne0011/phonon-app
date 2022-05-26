@@ -1,31 +1,45 @@
-import { IonButton, IonIcon, useIonRouter } from "@ionic/react";
-import { logOutOutline } from "ionicons/icons";
+import { IonButton, IonIcon, useIonToast } from "@ionic/react";
+import { lockClosedOutline, logOutOutline } from "ionicons/icons";
 import React from "react";
-import { useParams } from "react-router";
+import { useModal } from "../hooks/useModal";
+import { PhononDTO } from "../types";
+import RedeemPhononModal from "./RedeemPhononModal";
 
-export default function RedeemPhononButton() {
-  const { sessionId, networkId } = useParams<{
-    sessionId: string;
-    networkId: string;
-  }>();
-  const router = useIonRouter();
+export default function RedeemPhononButton({ phonon }: { phonon?: PhononDTO }) {
+  const { showModal, hideModal, isModalVisible } = useModal();
+  const [present] = useIonToast();
 
-  const goToRedeemPage = () => {
-    router.push(`/${sessionId}/${networkId}/redeem`);
+  const handleOnClick = () => {
+    if (!phonon) {
+      return present({
+        header: "Error",
+        message: "Must select a Phonon to redeem",
+        icon: lockClosedOutline,
+        duration: 2000,
+        color: "danger",
+        cssClass: "text-md text-center font-black uppercase",
+        translucent: true,
+        position: "top",
+      });
+    } else {
+      showModal();
+    }
   };
 
   return (
     <>
       <IonButton
         fill="outline"
-        color="tertiary"
-        slot="secondary"
-        onClick={goToRedeemPage}
-        className="shadow-lg shadow-blue-300/20"
+        color={"tertiary"}
+        onClick={handleOnClick}
+        slot="end"
       >
         <IonIcon slot="end" icon={logOutOutline} />
         Redeem
       </IonButton>
+      {phonon ? (
+        <RedeemPhononModal {...{ isModalVisible, hideModal, phonon }} />
+      ) : null}
     </>
   );
 }

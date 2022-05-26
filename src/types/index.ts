@@ -14,8 +14,8 @@ export type Phonon = {
   value: number;
 };
 
-export type NetworkValue = {
-  networkId: number;
+export type ChainValue = {
+  chainId: number;
   value: number | undefined;
 };
 
@@ -56,12 +56,15 @@ export type PhononDTO = {
   ExtendedSchemaVersion: number;
   Denomination: string;
   CurrencyType: number;
+  ChainID: number;
 };
 
 export type RedeemPhononDTO = {
   P: PhononDTO;
   RedeemAddress: string;
 };
+
+export type SendPhononDTO = PhononDTO[];
 
 export type SessionNames = {
   [key: string]: string | undefined;
