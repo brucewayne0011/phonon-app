@@ -13,7 +13,6 @@ import React, { useState } from "react";
 import { useParams } from "react-router";
 import { scanQr } from "../hooks/useQRScannner";
 import { usePairSessionMutation, useSendPhononMutation } from "../store/api";
-import { logger } from "../utils/logger";
 
 export default function SendPhononButton() {
   const { sessionId } = useParams<{ sessionId: string }>();

@@ -1,13 +1,5 @@
 import pino from "pino";
 
-const LOG_LEVEL = {
-  DEBUG: 20,
-  INFO: 30,
-  WARN: 40,
-  ERROR: 50,
-  CRITICAL: 60,
-};
-
 export const logger = pino({
   browser: {
     asObject: true,
