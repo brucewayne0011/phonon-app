@@ -2,7 +2,6 @@ import { IonButton, IonModal } from "@ionic/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CHAINS } from "../constants/chains";
-import useChain from "../hooks/useChain";
 import { useSession } from "../hooks/useSession";
 import { useRedeemPhononMutation } from "../store/api";
 import { PhononDTO } from "../types";

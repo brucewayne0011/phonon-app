@@ -4,11 +4,7 @@ import { useForm } from "react-hook-form";
 import useChainByCurrencyType from "../hooks/useChainByCurrencyType";
 import { useIsConnected } from "../hooks/useIsConnected";
 import { useSession } from "../hooks/useSession";
-import {
-  useFetchPhononsQuery,
-  usePairMutation,
-  useSendPhononMutation,
-} from "../store/api";
+import { usePairMutation, useSendPhononMutation } from "../store/api";
 import { PhononDTO, SendPhononDTO } from "../types";
 import { weiToEth } from "../utils/denomination";
 
@@ -40,12 +36,7 @@ export default function SendPhononModal({
     reset();
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<SendPhononFormData>();
+  const { register, handleSubmit, reset } = useForm<SendPhononFormData>();
 
   const onSubmit = async (data: SendPhononFormData, event) => {
     event.preventDefault();

@@ -1,5 +1,4 @@
-import { IonButton, IonIcon } from "@ionic/react";
-import { lockClosedOutline, lockOpenOutline } from "ionicons/icons";
+import { IonButton } from "@ionic/react";
 import React from "react";
 import useChain from "../hooks/useChain";
 

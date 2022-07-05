@@ -1,6 +1,6 @@
 import { IonButton, IonIcon } from "@ionic/react";
 import { qrCode } from "ionicons/icons";
-import React, { useState } from "react";
+import React from "react";
 import { useModal } from "../hooks/useModal";
 import ReceivePhononModal from "./ReceivePhononModal";
 

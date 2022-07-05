@@ -7,8 +7,6 @@ import { abbreviateHash } from "../utils/addresses";
 import { weiToEth } from "../utils/denomination";
 import { isGreaterThan } from "../utils/math";
 import ChainBadge from "./ChainBadge";
-import RedeemPhononButton from "./RedeemPhononButton";
-import SendPhononButton from "./SendPhononButton";
 
 const PhononListItem: React.FC<{
   phonon: PhononDTO;

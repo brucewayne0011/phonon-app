@@ -89,7 +89,7 @@ export const api = createApi({
         method: "POST",
         body: payload,
       }),
-      // invalidatesTags: ["Phonon"],
+      invalidatesTags: ["Phonon"],
     }),
     initDeposit: builder.mutation<
       PhononDTO[],
