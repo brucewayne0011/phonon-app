@@ -7,10 +7,11 @@ import { useConnectionStatusQuery, useConnectMutation } from "../store/api";
 export const ConnectButton: React.FC = () => {
   const { sessionId } = useSession();
   const [connect, { isLoading }] = useConnectMutation();
-  const { data: isConnected } = useConnectionStatusQuery(
+  const { data, refetch } = useConnectionStatusQuery(
     { sessionId },
-    { pollingInterval: 5000 }
+    { pollingInterval: 1000 }
   );
+  const isConnected = !!data?.ConnectionStatus;
 
   const getLabel = () => {
     if (isLoading) {
@@ -36,7 +37,9 @@ export const ConnectButton: React.FC = () => {
     <IonButton
       shape="round"
       onClick={() => {
-        connect({ sessionId }).catch(console.error);
+        connect({ sessionId })
+          .then(() => refetch())
+          .catch(console.error);
       }}
     >
       {getLabel()}
