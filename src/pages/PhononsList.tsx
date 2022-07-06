@@ -1,62 +1,40 @@
 import {
-  IonButtons,
-  IonContent,
   IonList,
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
 } from "@ionic/react";
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import CreatePhononButton from "../components/CreatePhononButton";
 import PhononListItem from "../components/PhononListItem";
+import ReceivePhononButton from "../components/ReceivePhononButton";
 import RedeemPhononButton from "../components/RedeemPhononButton";
 import SendPhononButton from "../components/SendPhononButton";
-import { NETWORKS } from "../constants/networks";
+import { useSession } from "../hooks/useSession";
+import Layout from "../layout/Layout";
 import { useFetchPhononsQuery } from "../store/api";
-import { weiToEth } from "../utils/denomination";
-import { reduceDenominations, sortPhonon } from "../utils/math";
+import { PhononDTO } from "../types";
 
 const PhononsList: React.FC = () => {
-  const { sessionId, networkId } = useParams<{
-    sessionId: string;
-    networkId: string;
-  }>();
+  const { sessionId } = useSession();
+  const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
   const { data, refetch, isLoading, isFetching } = useFetchPhononsQuery({
     sessionId,
   });
-  const network = NETWORKS[parseInt(networkId)];
 
   function refresh(event: CustomEvent<any>) {
     refetch();
     event.detail.complete();
   }
 
-  const total =
-    data
-      ?.filter((p) => p.CurrencyType === parseInt(networkId))
-      .map((p) => p.Denomination)
-      .reduce(reduceDenominations, "0") ?? "0";
-
   return (
-    <IonContent>
-      <div className="mt-2 text-center">
-        <p className="text-md font-extrabold text-zinc-500">WALLET</p>
-        <p className="text-xl mb-5">
-          {weiToEth(total)} {network?.symbol}
-        </p>
-      </div>
-
-      <div className="flex mb-5 justify-evenly">
-        <IonButtons slot="primary">
-          <CreatePhononButton />
-        </IonButtons>
-        <IonButtons slot="secondary">
-          <SendPhononButton />
-        </IonButtons>
-        <IonButtons slot="end">
-          <RedeemPhononButton />
-        </IonButtons>
+    <Layout>
+      <div className="flex my-3 justify-evenly items-center">
+        <CreatePhononButton />
+        <SendPhononButton phonon={selectedPhonon} />
+        <RedeemPhononButton phonon={selectedPhonon} />
+        <ReceivePhononButton />
       </div>
 
       {isLoading || isFetching ? (
@@ -64,7 +42,7 @@ const PhononsList: React.FC = () => {
           <IonSpinner />
         </div>
       ) : (
-        <IonContent>
+        <>
           <IonRefresher
             slot="fixed"
             onIonRefresh={refresh}
@@ -73,16 +51,26 @@ const PhononsList: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonList>
-            {data
-              ?.filter((item) => item.CurrencyType === parseInt(networkId))
-              .sort(sortPhonon)
-              .map((item) => (
-                <PhononListItem phonon={item} key={item.PubKey} />
-              ))}
+            {data?.map((p) => (
+              <ErrorBoundary
+                FallbackComponent={({ error }) => (
+                  <div className="p-3 uppercase font-black">
+                    <p className="text-xs">Failed to load phonon</p>
+                    <p className="text-xs text-red-400">{error.message}</p>
+                  </div>
+                )}
+                key={p.PubKey}
+              >
+                <PhononListItem
+                  phonon={p}
+                  {...{ selectedPhonon, setSelectedPhonon }}
+                />
+              </ErrorBoundary>
+            ))}
           </IonList>
-        </IonContent>
+        </>
       )}
-    </IonContent>
+    </Layout>
   );
 };
 
