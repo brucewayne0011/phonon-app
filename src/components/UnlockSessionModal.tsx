@@ -25,7 +25,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
 }) => {
   const [pin, setPin] = useState<string>("");
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [unlockSession, { isError }] = useUnlockSessionMutation();
+  const [unlockSession, { isError, isLoading }] = useUnlockSessionMutation();
   const router = useIonRouter();
 
   const handleCancel = () => {
@@ -86,13 +86,21 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
               className="text-white"
               onIonChange={(e) => setPin(e?.detail?.value ?? "")}
               onKeyDown={handleOnKeyDown}
+              disabled={isLoading}
             ></IonInput>
           </IonItem>
           <div className="flex flex-row justify-evenly">
-            <IonButton color="medium" fill="clear" onClick={handleCancel}>
+            <IonButton
+              color="medium"
+              fill="clear"
+              onClick={handleCancel}
+              disabled={isLoading}
+            >
               Cancel
             </IonButton>
-            <IonButton onClick={handleLogin}>Unlock</IonButton>
+            <IonButton onClick={handleLogin} disabled={isLoading}>
+              Unlock
+            </IonButton>
           </div>
         </div>
       </IonModal>

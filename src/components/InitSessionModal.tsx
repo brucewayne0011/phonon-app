@@ -23,7 +23,7 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
   setIsOpen,
 }) => {
   const [pin, setPin] = useState<string>("");
-  const [initSession, { isError }] = useInitSessionMutation();
+  const [initSession, { isError, isLoading }] = useInitSessionMutation();
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -72,16 +72,24 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
               value={pin}
               placeholder="Password"
               type="password"
+              disabled={isLoading}
               className="text-white"
               onIonChange={(e) => setPin(e?.detail?.value ?? "")}
               onKeyDown={handleOnKeyDown}
             ></IonInput>
           </IonItem>
           <div className="flex flex-row justify-evenly">
-            <IonButton color="medium" fill="clear" onClick={handleCancel}>
+            <IonButton
+              color="medium"
+              fill="clear"
+              onClick={handleCancel}
+              disabled={isLoading}
+            >
               Cancel
             </IonButton>
-            <IonButton onClick={handleInit}>Initialize</IonButton>
+            <IonButton onClick={handleInit} disabled={isLoading}>
+              Initialize
+            </IonButton>
           </div>
         </div>
       </IonModal>
