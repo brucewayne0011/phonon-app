@@ -5,7 +5,6 @@ import {
   IonItem,
   IonModal,
   IonText,
-  useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
 import useSessionDisplayName from "../hooks/useSessionDisplayName";
@@ -24,34 +23,29 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
   setIsOpen,
 }) => {
   const [pin, setPin] = useState<string>("");
-  const [isInited, setIsInited] = useState(false);
   const [initSession, { isError }] = useInitSessionMutation();
-  const router = useIonRouter();
 
   const handleCancel = () => {
     setIsOpen(false);
-    setIsInited(false);
   };
 
   const handleOnKeyDown = (event: any): void => {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-      handleLogin();
+      handleInit();
     }
   };
 
-  const handleLogin = () => {
+  const handleInit = () => {
     initSession({ sessionId, pin })
       .unwrap()
       .then(() => {
         setIsOpen(false);
-        setIsInited(true);
       })
       // TODO: Handle error and display something to the user
       .catch((err) => {
         logger.error(err);
-        setIsInited(false);
       });
   };
 
@@ -59,12 +53,7 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
 
   return (
     <IonContent>
-      <IonModal
-        isOpen={isOpen}
-        onDidDismiss={() => {
-          if (isInited) router.push(`/${sessionId}/`);
-        }}
-      >
+      <IonModal isOpen={isOpen}>
         <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
             <h1 className="mx-auto text-lg text-center">
@@ -92,7 +81,7 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
             <IonButton color="medium" fill="clear" onClick={handleCancel}>
               Cancel
             </IonButton>
-            <IonButton onClick={handleLogin}>Initialize</IonButton>
+            <IonButton onClick={handleInit}>Initialize</IonButton>
           </div>
         </div>
       </IonModal>
