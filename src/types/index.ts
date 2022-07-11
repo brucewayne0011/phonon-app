@@ -1,4 +1,10 @@
-export type Session = string;
+export type Session = {
+  Name: string;
+  Initialized: boolean;
+  TerminalPaired: boolean;
+  PinVerified: boolean;
+};
+
 export type Eth = string | number;
 export type Wei = string | number;
 

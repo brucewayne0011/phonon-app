@@ -10,8 +10,8 @@ const SessionsPage: React.FC = () => {
     <>
       <h2 className="my-2 text-lg text-center">Wallets</h2>
       <IonList>
-        {data?.Sessions.map((session) => (
-          <SessionListItem sessionId={session} key={session} />
+        {data?.map((session) => (
+          <SessionListItem session={session} key={session.Name} />
         ))}
       </IonList>
     </>

@@ -9,28 +9,28 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import useSessionDisplayName from "../hooks/useSessionDisplayName";
-import { useUnlockSessionMutation } from "../store/api";
+import { useInitSessionMutation } from "../store/api";
 import { logger } from "../utils/logger";
 
-interface UnlockSessionModalProps {
+interface InitSessionModalProps {
   sessionId: string;
   isOpen: boolean;
   setIsOpen: (arg: boolean) => void;
 }
 
-const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
+const InitSessionModal: React.FC<InitSessionModalProps> = ({
   sessionId,
   isOpen,
   setIsOpen,
 }) => {
   const [pin, setPin] = useState<string>("");
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [unlockSession, { isError }] = useUnlockSessionMutation();
+  const [isInited, setIsInited] = useState(false);
+  const [initSession, { isError }] = useInitSessionMutation();
   const router = useIonRouter();
 
   const handleCancel = () => {
     setIsOpen(false);
-    setIsUnlocked(false);
+    setIsInited(false);
   };
 
   const handleOnKeyDown = (event: any): void => {
@@ -42,16 +42,16 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   };
 
   const handleLogin = () => {
-    unlockSession({ sessionId, pin })
+    initSession({ sessionId, pin })
       .unwrap()
       .then(() => {
         setIsOpen(false);
-        setIsUnlocked(true);
+        setIsInited(true);
       })
       // TODO: Handle error and display something to the user
       .catch((err) => {
         logger.error(err);
-        setIsUnlocked(false);
+        setIsInited(false);
       });
   };
 
@@ -62,13 +62,13 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
       <IonModal
         isOpen={isOpen}
         onDidDismiss={() => {
-          if (isUnlocked) router.push(`/${sessionId}/`);
+          if (isInited) router.push(`/${sessionId}/`);
         }}
       >
         <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
             <h1 className="mx-auto text-lg text-center">
-              Unlock {displayName}
+              Initialize {displayName}
             </h1>
           </IonText>
           {isError && (
@@ -92,7 +92,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
             <IonButton color="medium" fill="clear" onClick={handleCancel}>
               Cancel
             </IonButton>
-            <IonButton onClick={handleLogin}>Unlock</IonButton>
+            <IonButton onClick={handleLogin}>Initialize</IonButton>
           </div>
         </div>
       </IonModal>
@@ -100,4 +100,4 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   );
 };
 
-export default UnlockSessionModal;
+export default InitSessionModal;

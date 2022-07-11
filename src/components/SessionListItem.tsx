@@ -3,16 +3,19 @@ import React, { useState } from "react";
 import UnlockSessionModal from "./UnlockSessionModal";
 import SetSessionNameModal from "./SetSessionNameModal";
 import useSessionDisplayName from "../hooks/useSessionDisplayName";
+import { Session } from "../types";
+import InitSessionModal from "./InitSessionModal";
 
 type Props = {
-  sessionId: string;
+  session: Session;
 };
 
-const SessionListItem: React.FC<Props> = ({ sessionId }) => {
+const SessionListItem: React.FC<Props> = ({ session }) => {
   const [isUnlockOpen, setIsUnlockOpen] = useState(false);
+  const [isInitOpen, setIsInitOpen] = useState(false);
   const [isRenameOpen, setIsRenameOpen] = useState(false);
 
-  const displayName = useSessionDisplayName(sessionId);
+  const displayName = useSessionDisplayName(session.Name);
 
   return (
     <>
@@ -25,21 +28,37 @@ const SessionListItem: React.FC<Props> = ({ sessionId }) => {
         >
           Rename
         </IonButton>
-        <IonButton
-          fill="clear"
-          slot="end"
-          onClick={() => setIsUnlockOpen(true)}
-        >
-          Unlock
-        </IonButton>
+        {session.Initialized ? (
+          <IonButton
+            fill="clear"
+            slot="end"
+            onClick={() => setIsUnlockOpen(true)}
+          >
+            Unlock
+          </IonButton>
+        ) : (
+          <IonButton
+            fill="clear"
+            slot="end"
+            onClick={() => setIsInitOpen(true)}
+          >
+            Initialize
+          </IonButton>
+        )}
       </IonItem>
+
       <UnlockSessionModal
-        sessionId={sessionId}
+        sessionId={session.Name}
         isOpen={isUnlockOpen}
         setIsOpen={setIsUnlockOpen}
       />
+      <InitSessionModal
+        sessionId={session.Name}
+        isOpen={isInitOpen}
+        setIsOpen={setIsInitOpen}
+      />
       <SetSessionNameModal
-        sessionId={sessionId}
+        sessionId={session.Name}
         isOpen={isRenameOpen}
         setIsOpen={setIsRenameOpen}
       />
