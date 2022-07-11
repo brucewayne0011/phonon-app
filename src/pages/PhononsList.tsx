@@ -3,6 +3,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
+  useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -18,10 +19,19 @@ import { PhononDTO } from "../types";
 
 const PhononsList: React.FC = () => {
   const { sessionId } = useSession();
+  const router = useIonRouter();
+
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
-  const { data, refetch, isLoading, isFetching } = useFetchPhononsQuery({
-    sessionId,
-  });
+  const { data, refetch, isLoading, isFetching, isError } =
+    useFetchPhononsQuery({
+      sessionId,
+    });
+
+  if (isError) {
+    //TODO: Improve how this works. It's a bit hacky.
+    router.push("/");
+    window.location.reload();
+  }
 
   function refresh(event: CustomEvent<any>) {
     refetch();

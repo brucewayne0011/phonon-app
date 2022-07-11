@@ -20,13 +20,21 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Session", "Phonon"],
   endpoints: (builder) => ({
-    fetchSessions: builder.query<{ Sessions: Session[] }, void>({
+    fetchSessions: builder.query<Session[], void>({
       query: () => "listSessions",
       providesTags: ["Session"],
     }),
     unlockSession: builder.mutation<void, { sessionId: string; pin: string }>({
       query: ({ sessionId, pin }) => ({
         url: `cards/${sessionId}/unlock`,
+        method: "POST",
+        body: { pin },
+      }),
+      invalidatesTags: ["Session"],
+    }),
+    initSession: builder.mutation<void, { sessionId: string; pin: string }>({
+      query: ({ sessionId, pin }) => ({
+        url: `cards/${sessionId}/init`,
         method: "POST",
         body: { pin },
       }),
@@ -121,6 +129,7 @@ export const api = createApi({
 export const {
   useFetchSessionsQuery,
   useUnlockSessionMutation,
+  useInitSessionMutation,
   usePairMutation,
   useConnectMutation,
   useConnectionStatusQuery,

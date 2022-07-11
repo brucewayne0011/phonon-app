@@ -5,53 +5,47 @@ import {
   IonItem,
   IonModal,
   IonText,
-  useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
 import useSessionDisplayName from "../hooks/useSessionDisplayName";
-import { useUnlockSessionMutation } from "../store/api";
+import { useInitSessionMutation } from "../store/api";
 import { logger } from "../utils/logger";
 
-interface UnlockSessionModalProps {
+interface InitSessionModalProps {
   sessionId: string;
   isOpen: boolean;
   setIsOpen: (arg: boolean) => void;
 }
 
-const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
+const InitSessionModal: React.FC<InitSessionModalProps> = ({
   sessionId,
   isOpen,
   setIsOpen,
 }) => {
   const [pin, setPin] = useState<string>("");
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [unlockSession, { isError, isLoading }] = useUnlockSessionMutation();
-  const router = useIonRouter();
+  const [initSession, { isError, isLoading }] = useInitSessionMutation();
 
   const handleCancel = () => {
     setIsOpen(false);
-    setIsUnlocked(false);
   };
 
   const handleOnKeyDown = (event: any): void => {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-      handleLogin();
+      handleInit();
     }
   };
 
-  const handleLogin = () => {
-    unlockSession({ sessionId, pin })
+  const handleInit = () => {
+    initSession({ sessionId, pin })
       .unwrap()
       .then(() => {
         setIsOpen(false);
-        setIsUnlocked(true);
       })
       // TODO: Handle error and display something to the user
       .catch((err) => {
         logger.error(err);
-        setIsUnlocked(false);
       });
   };
 
@@ -59,16 +53,11 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
 
   return (
     <IonContent>
-      <IonModal
-        isOpen={isOpen}
-        onDidDismiss={() => {
-          if (isUnlocked) router.push(`/${sessionId}/`);
-        }}
-      >
+      <IonModal isOpen={isOpen}>
         <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
             <h1 className="mx-auto text-lg text-center">
-              Unlock {displayName}
+              Initialize {displayName}
             </h1>
           </IonText>
           {isError && (
@@ -83,10 +72,10 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
               value={pin}
               placeholder="Password"
               type="password"
+              disabled={isLoading}
               className="text-white"
               onIonChange={(e) => setPin(e?.detail?.value ?? "")}
               onKeyDown={handleOnKeyDown}
-              disabled={isLoading}
             ></IonInput>
           </IonItem>
           <div className="flex flex-row justify-evenly">
@@ -98,8 +87,8 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
             >
               Cancel
             </IonButton>
-            <IonButton onClick={handleLogin} disabled={isLoading}>
-              Unlock
+            <IonButton onClick={handleInit} disabled={isLoading}>
+              Initialize
             </IonButton>
           </div>
         </div>
@@ -108,4 +97,4 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   );
 };
 
-export default UnlockSessionModal;
+export default InitSessionModal;
