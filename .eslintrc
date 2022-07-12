@@ -44,7 +44,11 @@
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "prettier/prettier":[
+	"error",
+	{"endOfLine": "auto"}
+    ]
     // "eqeqeq": ["error", "smart"],
     // "react/jsx-wrap-multilines": "warn",
     // "react/jsx-uses-react": "off",
