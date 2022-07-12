@@ -45,7 +45,6 @@
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": "off"
-
     // "eqeqeq": ["error", "smart"],
     // "react/jsx-wrap-multilines": "warn",
     // "react/jsx-uses-react": "off",
