@@ -1,33 +1,23 @@
 import { IonButton, IonModal } from "@ionic/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import useChainByCurrencyType from "../hooks/useChainByCurrencyType";
-import { useIsConnected } from "../hooks/useIsConnected";
 import { useSession } from "../hooks/useSession";
-import { usePairMutation, useSendPhononMutation } from "../store/api";
-import { weiToEth } from "../utils/denomination";
+import { useNameSessionMutation } from "../store/api";
 
-export type SendPhononFormData = {
-  cardId: string;
+export type NameSessionFormData = {
+  name: string;
 };
 
-export default function SendPhononModal({
+export default function NameSessionModal({
   isModalVisible,
   hideModal,
-  phonon,
 }: {
   isModalVisible: boolean;
   hideModal: () => void;
-  phonon: PhononDTO;
 }) {
-  const { sessionId } = useSession();
   const [errorMessage, setErrorMessage] = useState("");
-  const [sendPhonon, { isLoading: isSending }] = useSendPhononMutation();
-  const [pair, { isLoading: isPairing }] = usePairMutation();
-  const { chain } = useChainByCurrencyType(phonon.CurrencyType);
-  const { isConnected } = useIsConnected();
-
-  const isLoading = isSending || isPairing;
+  const [nameSession, { isLoading }] = useNameSessionMutation();
+  const { sessionId, sessionName } = useSession();
 
   const destroyModal = () => {
     setErrorMessage("");
@@ -35,23 +25,12 @@ export default function SendPhononModal({
     reset();
   };
 
-  const { register, handleSubmit, reset } = useForm<SendPhononFormData>();
+  const { register, handleSubmit, reset } = useForm<NameSessionFormData>();
 
-  const onSubmit = async (data: SendPhononFormData, event) => {
+  const onSubmit = async (data: NameSessionFormData, event) => {
     event.preventDefault();
-    if (!isConnected) {
-      throw new Error("Must be connected.");
-    }
-    const payload: SendPhononDTO = [phonon];
-    await pair({ cardId: data.cardId, sessionId })
-      .then(() => {
-        sendPhonon({ payload, sessionId })
-          .then(destroyModal)
-          .catch((err) => {
-            setErrorMessage(err.message);
-            console.error(err);
-          });
-      })
+    await nameSession({ name: data.name, sessionId })
+      .then(destroyModal)
       .catch((err) => {
         setErrorMessage(err.message);
         console.error(err);
@@ -62,13 +41,10 @@ export default function SendPhononModal({
     <IonModal isOpen={isModalVisible} onDidDismiss={destroyModal}>
       <div className="flex flex-col content-center justify-center h-full mx-10">
         <p className="text-xl font-bold text-center text-gray-300 uppercase">
-          Send {chain?.name} Phonon
+          Rename {sessionName}
         </p>
         <p className="font-bold text-center text-red-400 uppercase mt-2">
           {errorMessage}
-        </p>
-        <p className="text-l font-bold text-center text-gray-400 uppercase">
-          {`${weiToEth(phonon.Denomination)} ${chain ? chain.ticker : "ERR"}`}
         </p>
 
         <form
@@ -77,9 +53,9 @@ export default function SendPhononModal({
         >
           <input
             className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
-            placeholder="Recipient Card ID"
+            placeholder={sessionName}
             disabled={isLoading}
-            {...register("cardId", {
+            {...register("name", {
               required: true,
             })}
           />
@@ -92,7 +68,7 @@ export default function SendPhononModal({
             color="primary"
             disabled={isLoading}
           >
-            SEND
+            RENAME
           </IonButton>
           <IonButton
             size="large"

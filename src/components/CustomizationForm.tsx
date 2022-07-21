@@ -4,7 +4,6 @@ import React from "react";
 import { CHAINS } from "../constants/chains";
 import { useSession } from "../hooks/useSession";
 import "../index.css";
-import { ChainValue } from "../types";
 
 const CustomizationForm: React.FC<ChainValue> = ({ chainId, value }) => {
   const { sessionId } = useSession();

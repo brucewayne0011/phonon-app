@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import bigDecimal from "js-big-decimal";
-import { Eth, Wei } from "../types";
 
 export type Denomination = {
   getStr: () => string;

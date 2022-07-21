@@ -1,4 +1,3 @@
-import { PhononDTO } from "../../types";
 import {
   DenominationAmount,
   makeChange,
@@ -61,6 +60,7 @@ describe("change making", () => {
         ExtendedSchemaVersion: 0,
         Denomination: "10",
         CurrencyType: 0,
+        ChainID: 4,
       },
       {
         KeyIndex: 41,
@@ -71,6 +71,7 @@ describe("change making", () => {
         ExtendedSchemaVersion: 0,
         Denomination: "0.1",
         CurrencyType: 0,
+        ChainID: 4,
       },
       {
         KeyIndex: 39,
@@ -81,6 +82,7 @@ describe("change making", () => {
         ExtendedSchemaVersion: 0,
         Denomination: "1",
         CurrencyType: 2,
+        ChainID: 4,
       },
       {
         KeyIndex: 42,
@@ -91,6 +93,7 @@ describe("change making", () => {
         ExtendedSchemaVersion: 0,
         Denomination: "1",
         CurrencyType: 2,
+        ChainID: 4,
       },
       {
         KeyIndex: 43,
@@ -101,6 +104,7 @@ describe("change making", () => {
         ExtendedSchemaVersion: 0,
         Denomination: "0.01",
         CurrencyType: 2,
+        ChainID: 4,
       },
       {
         KeyIndex: 44,
@@ -111,6 +115,7 @@ describe("change making", () => {
         ExtendedSchemaVersion: 0,
         Denomination: "0.001",
         CurrencyType: 2,
+        ChainID: 4,
       },
     ];
 
@@ -119,6 +124,7 @@ describe("change making", () => {
         Object {
           "Address": "",
           "AddressType": 0,
+          "ChainID": 4,
           "CurrencyType": 0,
           "Denomination": "10",
           "ExtendedSchemaVersion": 0,
@@ -129,6 +135,7 @@ describe("change making", () => {
         Object {
           "Address": "",
           "AddressType": 0,
+          "ChainID": 4,
           "CurrencyType": 2,
           "Denomination": "1",
           "ExtendedSchemaVersion": 0,
@@ -139,6 +146,7 @@ describe("change making", () => {
         Object {
           "Address": "",
           "AddressType": 0,
+          "ChainID": 4,
           "CurrencyType": 2,
           "Denomination": "1",
           "ExtendedSchemaVersion": 0,
@@ -149,6 +157,7 @@ describe("change making", () => {
         Object {
           "Address": "",
           "AddressType": 0,
+          "ChainID": 4,
           "CurrencyType": 0,
           "Denomination": "0.1",
           "ExtendedSchemaVersion": 0,
@@ -159,6 +168,7 @@ describe("change making", () => {
         Object {
           "Address": "",
           "AddressType": 0,
+          "ChainID": 4,
           "CurrencyType": 2,
           "Denomination": "0.01",
           "ExtendedSchemaVersion": 0,
@@ -169,6 +179,7 @@ describe("change making", () => {
         Object {
           "Address": "",
           "AddressType": 0,
+          "ChainID": 4,
           "CurrencyType": 2,
           "Denomination": "0.001",
           "ExtendedSchemaVersion": 0,

@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
-import sessionsReducer from "./sessionsSlice";
 
 import { api } from "./api";
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    sessions: sessionsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

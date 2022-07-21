@@ -2,7 +2,6 @@ import { IonItem, IonLabel, IonSpinner } from "@ionic/react";
 import React from "react";
 import { CHAINS } from "../constants/chains";
 import "../index.css";
-import { PhononDTO } from "../types";
 import { abbreviateHash } from "../utils/addresses";
 import { weiToEth } from "../utils/denomination";
 import { isGreaterThan } from "../utils/math";

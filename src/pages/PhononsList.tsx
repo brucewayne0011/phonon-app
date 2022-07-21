@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import CreatePhononButton from "../components/CreatePhononButton";
+import SessionNameHeader from "../components/SessionNameHeader";
 import PhononListItem from "../components/PhononListItem";
 import ReceivePhononButton from "../components/ReceivePhononButton";
 import RedeemPhononButton from "../components/RedeemPhononButton";
@@ -15,10 +16,9 @@ import SendPhononButton from "../components/SendPhononButton";
 import { useSession } from "../hooks/useSession";
 import Layout from "../layout/Layout";
 import { useFetchPhononsQuery } from "../store/api";
-import { PhononDTO } from "../types";
 
 const PhononsList: React.FC = () => {
-  const { sessionId } = useSession();
+  const { sessionId, activeSession } = useSession();
   const router = useIonRouter();
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
@@ -27,7 +27,7 @@ const PhononsList: React.FC = () => {
       sessionId,
     });
 
-  if (isError) {
+  if (isError || !activeSession) {
     //TODO: Improve how this works. It's a bit hacky.
     router.push("/");
     window.location.reload();
@@ -40,6 +40,7 @@ const PhononsList: React.FC = () => {
 
   return (
     <Layout>
+      <SessionNameHeader />
       <div className="flex my-3 justify-evenly items-center">
         <CreatePhononButton />
         <SendPhononButton phonon={selectedPhonon} />

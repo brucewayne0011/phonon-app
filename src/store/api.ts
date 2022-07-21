@@ -1,13 +1,3 @@
-import {
-  RedeemPhononDTO,
-  CreatePhononResponse,
-  DepositConfirmation,
-  DepositRequest,
-  DescriptorDTO,
-  PhononDTO,
-  Session,
-  SendPhononDTO,
-} from "./../types/index";
 import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -37,6 +27,14 @@ export const api = createApi({
         url: `cards/${sessionId}/init`,
         method: "POST",
         body: { pin },
+      }),
+      invalidatesTags: ["Session"],
+    }),
+    nameSession: builder.mutation<void, { sessionId: string; name: string }>({
+      query: ({ sessionId, name }) => ({
+        url: `cards/${sessionId}/name`,
+        method: "POST",
+        body: { name },
       }),
       invalidatesTags: ["Session"],
     }),
@@ -130,6 +128,7 @@ export const {
   useFetchSessionsQuery,
   useUnlockSessionMutation,
   useInitSessionMutation,
+  useNameSessionMutation,
   usePairMutation,
   useConnectMutation,
   useConnectionStatusQuery,
