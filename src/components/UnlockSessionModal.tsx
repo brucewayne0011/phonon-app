@@ -29,6 +29,12 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   const router = useIonRouter();
   const { getSessionNameForId } = useSession();
 
+  const handleDismiss = () => {
+    setIsOpen(false);
+    setIsUnlocked(false);
+    if (isUnlocked) router.push(`/${sessionId}/`);
+  };
+
   const handleCancel = () => {
     setIsOpen(false);
     setIsUnlocked(false);
@@ -59,12 +65,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
 
   return (
     <IonContent>
-      <IonModal
-        isOpen={isOpen}
-        onDidDismiss={() => {
-          if (isUnlocked) router.push(`/${sessionId}/`);
-        }}
-      >
+      <IonModal isOpen={isOpen} onDidDismiss={handleDismiss}>
         <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
             <h1 className="mx-auto text-lg text-center">
