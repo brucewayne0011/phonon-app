@@ -8,7 +8,7 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
-import useSessionDisplayName from "../hooks/useSessionDisplayName";
+import { useSession } from "../hooks/useSession";
 import { useUnlockSessionMutation } from "../store/api";
 import { logger } from "../utils/logger";
 
@@ -27,6 +27,13 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [unlockSession, { isError, isLoading }] = useUnlockSessionMutation();
   const router = useIonRouter();
+  const { getSessionNameForId } = useSession();
+
+  const handleDismiss = () => {
+    setIsOpen(false);
+    setIsUnlocked(false);
+    if (isUnlocked) router.push(`/${sessionId}/`);
+  };
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -54,17 +61,11 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
         setIsUnlocked(false);
       });
   };
-
-  const displayName = useSessionDisplayName(sessionId);
+  const displayName = getSessionNameForId(sessionId);
 
   return (
     <IonContent>
-      <IonModal
-        isOpen={isOpen}
-        onDidDismiss={() => {
-          if (isUnlocked) router.push(`/${sessionId}/`);
-        }}
-      >
+      <IonModal isOpen={isOpen} onDidDismiss={handleDismiss}>
         <div className="flex flex-col content-center justify-center h-full p-10">
           <IonText color="light">
             <h1 className="mx-auto text-lg text-center">

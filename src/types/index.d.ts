@@ -1,59 +1,60 @@
-export type Session = {
-  Name: string;
+type Session = {
+  Id: string;
+  Name?: string;
   Initialized: boolean;
   TerminalPaired: boolean;
   PinVerified: boolean;
 };
 
-export type Eth = string | number;
-export type Wei = string | number;
+type Eth = string | number;
+type Wei = string | number;
 
-export type CreatePhononResponse = {
+type CreatePhononResponse = {
   index: number;
   pubKey: string;
 };
 
-export type Phonon = {
+type Phonon = {
   index: number;
   pubKey: string;
   type: number;
   value: number;
 };
 
-export type ChainValue = {
+type ChainValue = {
   chainId: number;
   value: number | undefined;
 };
 
-export type PhononPair = {
+type PhononPair = {
   url: string;
 };
 
-export enum CurrencyType {
+enum CurrencyType {
   BTC,
   ETH,
   OTHER,
 }
 
-export type DescriptorDTO = {
+type DescriptorDTO = {
   index: number;
   currencyType: number;
   value: number;
   sessionId: string;
 };
 
-export type DepositRequest = {
+type DepositRequest = {
   CurrencyType: number;
   Denominations: Wei[];
 };
 
-export type DepositConfirmation = {
+type DepositConfirmation = {
   Phonon: PhononDTO;
   ConfirmedOnChain: boolean;
   ConfirmedOnCard: boolean;
 }[];
 
-export type PhononDTO = {
+type PhononDTO = {
   KeyIndex: number;
   PubKey: string;
   Address: string;
@@ -65,13 +66,13 @@ export type PhononDTO = {
   ChainID: number;
 };
 
-export type RedeemPhononDTO = {
+type RedeemPhononDTO = {
   P: PhononDTO;
   RedeemAddress: string;
 };
 
-export type SendPhononDTO = PhononDTO[];
+type SendPhononDTO = PhononDTO[];
 
-export type SessionNames = {
+type SessionNames = {
   [key: string]: string | undefined;
 };

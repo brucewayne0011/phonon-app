@@ -2,7 +2,6 @@ import { IonButton, IonIcon, useIonToast } from "@ionic/react";
 import { lockClosedOutline, logOutOutline } from "ionicons/icons";
 import React from "react";
 import { useModal } from "../hooks/useModal";
-import { PhononDTO } from "../types";
 import RedeemPhononModal from "./RedeemPhononModal";
 
 export default function RedeemPhononButton({ phonon }: { phonon?: PhononDTO }) {

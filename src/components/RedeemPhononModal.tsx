@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { CHAINS } from "../constants/chains";
 import { useSession } from "../hooks/useSession";
 import { useRedeemPhononMutation } from "../store/api";
-import { PhononDTO } from "../types";
 import { weiToEth } from "../utils/denomination";
 
 export type RedeemPhononFormData = {

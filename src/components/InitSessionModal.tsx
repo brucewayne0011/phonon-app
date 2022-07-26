@@ -7,7 +7,7 @@ import {
   IonText,
 } from "@ionic/react";
 import React, { useState } from "react";
-import useSessionDisplayName from "../hooks/useSessionDisplayName";
+import { useSession } from "../hooks/useSession";
 import { useInitSessionMutation } from "../store/api";
 import { logger } from "../utils/logger";
 
@@ -24,6 +24,7 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
 }) => {
   const [pin, setPin] = useState<string>("");
   const [initSession, { isError, isLoading }] = useInitSessionMutation();
+  const { getSessionNameForId } = useSession();
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -49,7 +50,7 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
       });
   };
 
-  const displayName = useSessionDisplayName(sessionId);
+  const displayName = getSessionNameForId(sessionId);
 
   return (
     <IonContent>
