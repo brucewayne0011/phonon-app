@@ -62,6 +62,13 @@ export const api = createApi({
       query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
       providesTags: ["Phonon"],
     }),
+    checkDenomination: builder.mutation<void, { denomination: string }>({
+      query: ({ denomination }) => ({
+        url: `/checkDenomination`,
+        method: "POST",
+        body: denomination,
+      }),
+    }),
     createPhonon: builder.mutation<CreatePhononResponse, { sessionId: string }>(
       {
         query: ({ sessionId }) => ({
@@ -133,6 +140,7 @@ export const {
   useConnectMutation,
   useConnectionStatusQuery,
   useFetchPhononsQuery,
+  useCheckDenominationMutation,
   useCreatePhononMutation,
   useInitDepositMutation,
   useFinalizeDepositMutation,
