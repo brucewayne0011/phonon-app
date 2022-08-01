@@ -28,8 +28,7 @@ export default function CreatePhononModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [finalizeDeposit] = useFinalizeDepositMutation();
   const { chain, chainId, isAuthenticated } = useChain();
-  const [checkDenomination, { isError, isLoading }] =
-    useCheckDenominationMutation();
+  const [checkDenomination] = useCheckDenominationMutation();
 
   const destroyModal = () => {
     setErrorMessage("");
