@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import useChain from "../hooks/useChain";
 import { useSession } from "../hooks/useSession";
 import {
+  useCheckDenominationMutation,
   useFinalizeDepositMutation,
   useInitDepositMutation,
 } from "../store/api";
 import { ethToBn, ethToWei, weiToEth } from "../utils/denomination";
-import { isValidPhononDenomination } from "../utils/validation";
 import FormErrorText from "./FormErrorText";
 
 export type CreatePhononFormData = {
@@ -29,6 +29,7 @@ export default function CreatePhononModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [finalizeDeposit] = useFinalizeDepositMutation();
   const { chain, chainId, isAuthenticated } = useChain();
+  const [checkDenomination] = useCheckDenominationMutation();
 
   const destroyModal = () => {
     setErrorMessage("");
@@ -40,6 +41,7 @@ export default function CreatePhononModal({
     register,
     handleSubmit,
     reset,
+    trigger,
     formState: { errors },
   } = useForm<CreatePhononFormData>();
 
@@ -149,23 +151,28 @@ export default function CreatePhononModal({
           className="flex flex-col mt-10 gap-10"
           onSubmit={handleSubmit(onSubmitSingle)}
         >
+          {errors?.amount?.type === "required" && (
+            <FormErrorText>Amount is required.</FormErrorText>
+          )}
+          {errors?.amount?.type === "validate" && (
+            <FormErrorText>Invalid denomination.</FormErrorText>
+          )}
           <input
             className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
             placeholder="Amount"
             disabled={isPending}
             {...register("amount", {
               required: true,
-              validate: isValidPhononDenomination,
+              onChange: () => trigger(),
+              validate: async (value) => {
+                const wei = ethToWei(value);
+                const resp = await checkDenomination({ denomination: wei });
+                //@ts-expect-error - type is wrong
+                if (resp.error) return false;
+                return true;
+              },
             })}
           />
-          {errors?.amount?.type === "required" && (
-            <FormErrorText>Amount is required.</FormErrorText>
-          )}
-          {errors?.amount?.type === "validate" && (
-            <FormErrorText>
-              First three digits must be less than 255.
-            </FormErrorText>
-          )}
 
           <IonButton
             key="submit"
@@ -174,7 +181,7 @@ export default function CreatePhononModal({
             fill="solid"
             expand="full"
             color="primary"
-            disabled={isPending}
+            disabled={isPending || !!errors.amount}
           >
             CREATE
           </IonButton>
