@@ -15,18 +15,18 @@ export type Chain = {
 };
 
 export const CHAINS: { [key: string]: Chain } = {
-  "1": {
-    apiRoute: "api?module=contract&action=getabi",
-    baseUrl: "https://api.etherscan.io",
-    icon: faEthereum,
-    ticker: "ETH",
-    name: "Mainnet",
-    textColor: "text-indigo-300",
-    bgColor: "bg-indigo-300",
-    symbol: "Ξ",
-    CurrencyType: 2,
-    isTestnet: false,
-  },
+  // "1": {
+  //   apiRoute: "api?module=contract&action=getabi",
+  //   baseUrl: "https://api.etherscan.io",
+  //   icon: faEthereum,
+  //   ticker: "ETH",
+  //   name: "Mainnet",
+  //   textColor: "text-indigo-300",
+  //   bgColor: "bg-indigo-300",
+  //   symbol: "Ξ",
+  //   CurrencyType: 2,
+  //   isTestnet: false,
+  // },
   "3": {
     apiRoute: "api?module=contract&action=getabi",
     baseUrl: "https://api.etherscan.io",
@@ -75,6 +75,18 @@ export const CHAINS: { [key: string]: Chain } = {
     CurrencyType: 2, // TODO: Update Value
     isTestnet: true,
   },
+  "5": {
+    apiRoute: "api?module=contract&action=getabi",
+    baseUrl: "https://goerli.etherscan.io",
+    icon: faQuestionCircle,
+    textColor: "text-blue-400",
+    bgColor: "bg-blue-400",
+    ticker: "GOERLI-ETH",
+    symbol: "GOERLI",
+    name: "Goerli",
+    CurrencyType: 2, // TODO: Update Value
+    isTestnet: true,
+  },
   "56": {
     apiRoute: "api?module=contract&action=getabi",
     baseUrl: "https://api.bscscan.com",
@@ -111,6 +123,7 @@ export const CHAINS: { [key: string]: Chain } = {
     CurrencyType: 2, // TODO: Update Value
     isTestnet: false,
   },
+
   "43113": {
     apiRoute: "api?module=contract&action=getabi",
     baseUrl: "https://testnet.snowtrace.io",
