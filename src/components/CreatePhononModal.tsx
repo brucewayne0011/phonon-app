@@ -10,6 +10,7 @@ import {
 } from "../store/api";
 import { ethToBn, ethToWei, weiToEth } from "../utils/denomination";
 import { isValidPhononDenomination } from "../utils/validation";
+import FormErrorText from "./FormErrorText";
 
 export type CreatePhononFormData = {
   amount: string;
@@ -158,14 +159,12 @@ export default function CreatePhononModal({
             })}
           />
           {errors?.amount?.type === "required" && (
-            <p className="text-bold p-2 text-xl text-zinc-200 shadow-inner">
-              Amount is required.
-            </p>
+            <FormErrorText>Amount is required.</FormErrorText>
           )}
           {errors?.amount?.type === "validate" && (
-            <p className="text-bold p-2 text-xl text-zinc-200 shadow-inner">
+            <FormErrorText>
               First three digits must be less than 255.
-            </p>
+            </FormErrorText>
           )}
 
           <IonButton

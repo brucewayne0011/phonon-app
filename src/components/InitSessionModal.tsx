@@ -1,61 +1,48 @@
-import {
-  IonButton,
-  IonContent,
-  IonInput,
-  IonItem,
-  IonModal,
-  IonText,
-} from "@ionic/react";
-import React, { useState } from "react";
+import { IonButton, IonContent, IonModal, IonText } from "@ionic/react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { useSession } from "../hooks/useSession";
 import { useInitSessionMutation } from "../store/api";
 import { logger } from "../utils/logger";
+import { isValidCardPin } from "../utils/validation";
+import FormErrorText from "./FormErrorText";
 
-interface InitSessionModalProps {
+type InitSessionModalProps = {
   sessionId: string;
   isOpen: boolean;
   setIsOpen: (arg: boolean) => void;
-}
+};
+
+type InitFormData = {
+  pin: string;
+  confirmPin: string;
+};
 
 const InitSessionModal: React.FC<InitSessionModalProps> = ({
   sessionId,
   isOpen,
   setIsOpen,
 }) => {
-  const [pin, setPin] = useState<string>("");
-  const [confirmPin, setConfirmPin] = useState<string>("");
   const [initSession, { isError, isLoading }] = useInitSessionMutation();
   const { getSessionNameForId } = useSession();
 
-  const handleCancel = () => {
-    setIsOpen(false);
-  };
+  const { register, handleSubmit, watch, formState } = useForm<InitFormData>();
 
-  const handleOnKeyDown = (event: any): void => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      event.stopPropagation();
-      handleInit();
-    }
-  };
-
-  const handleInit = () => {
+  const handleInit = ({ pin }: InitFormData) =>
     initSession({ sessionId, pin })
       .unwrap()
       .then(() => {
         setIsOpen(false);
       })
-      // TODO: Handle error and display something to the user
       .catch((err) => {
         logger.error(err);
       });
+
+  const handleCancel = () => {
+    setIsOpen(false);
   };
 
   const displayName = getSessionNameForId(sessionId);
-
-  const pinContainsNonDigitChars = pin.length > 0 && !!pin.match(/^([^0-9]*)$/);
-
-  const validPin = !!pin.match(/^[0-9]{6}$/) && pin === confirmPin;
 
   return (
     <IonContent>
@@ -66,71 +53,72 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
               Initialize {displayName}
             </h1>
           </IonText>
-          {isError && (
-            <IonText color="danger">
-              <h1 className="mx-auto text-center">
-                Something went wrong. Please try again.
-              </h1>
-            </IonText>
-          )}
-          <p className="mt-10 text-sm text-center">
+          <p className="mt-10 text-lg text-bold text-center">
             Choose a 6 digit pin for your card
           </p>
-          <IonItem className="my-7">
-            <IonInput
-              value={pin}
+          <form
+            className="flex flex-col mt-10 gap-10"
+            onSubmit={handleSubmit(handleInit)}
+          >
+            <input
+              className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
               placeholder="Pin"
               type="password"
               disabled={isLoading}
-              className="text-white"
-              onIonChange={(e) => setPin(e?.detail?.value ?? "")}
-              onKeyDown={handleOnKeyDown}
-            ></IonInput>
-          </IonItem>
-          {pinContainsNonDigitChars && (
-            <IonText color="danger">
-              <h1 className="mx-auto text-center">
-                Your pin can only contain digits
-              </h1>
-            </IonText>
-          )}
-          {pin.length > 6 && (
-            <IonText color="danger">
-              <h1 className="mx-auto text-center">
-                Your pin must be 6 characters
-              </h1>
-            </IonText>
-          )}
-          <IonItem className="my-7">
-            <IonInput
-              value={confirmPin}
-              placeholder="Confirm Pin"
+              {...register("pin", {
+                required: true,
+                validate: isValidCardPin,
+              })}
+            />
+            {formState.errors?.pin?.type === "required" && (
+              <FormErrorText>Pin is required.</FormErrorText>
+            )}
+            {formState.errors?.pin?.type === "validate" && (
+              <FormErrorText>Your pin must be six digits (0-9).</FormErrorText>
+            )}
+            <input
+              className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
+              placeholder="Confirm pin"
               type="password"
               disabled={isLoading}
-              className="text-white"
-              onIonChange={(e) => setConfirmPin(e?.detail?.value ?? "")}
-              onKeyDown={handleOnKeyDown}
-            ></IonInput>
-          </IonItem>
-
-          {!!confirmPin.length && confirmPin !== pin && (
-            <IonText color="danger">
-              <h1 className="mx-auto text-center mb-10">Pins do not match</h1>
-            </IonText>
-          )}
-          <div className="flex flex-row justify-evenly mt-10">
-            <IonButton
-              color="medium"
-              fill="clear"
-              onClick={handleCancel}
-              disabled={isLoading}
-            >
-              Cancel
-            </IonButton>
-            <IonButton onClick={handleInit} disabled={isLoading || !validPin}>
-              Initialize
-            </IonButton>
-          </div>
+              {...register("confirmPin", {
+                required: true,
+                validate: (val: string) => {
+                  if (watch("pin") != val) {
+                    return "Pins do not match";
+                  }
+                },
+              })}
+            />
+            {formState.errors?.confirmPin?.type === "required" && (
+              <FormErrorText>Confirm pin is required.</FormErrorText>
+            )}
+            {formState.errors?.confirmPin?.type === "validate" && (
+              <FormErrorText>
+                {formState.errors?.confirmPin?.message}
+              </FormErrorText>
+            )}
+            {isError && (
+              <IonText color="danger">
+                <p className="mx-auto text-center">
+                  Something went wrong. Please try again.
+                </p>
+              </IonText>
+            )}
+            <div className="flex flex-row justify-evenly mt-10">
+              <IonButton
+                color="medium"
+                fill="clear"
+                onClick={handleCancel}
+                disabled={isLoading}
+              >
+                Cancel
+              </IonButton>
+              <IonButton key="submit" type="submit" disabled={isLoading}>
+                Initialize
+              </IonButton>
+            </div>
+          </form>
         </div>
       </IonModal>
     </IonContent>
