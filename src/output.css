@@ -555,12 +555,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.25rem !important;
 }
 
-.mt-4 {
-  margin-top: 1rem !important;
-}
-
-.mt-10 {
-  margin-top: 2.5rem !important;
+.mt-5 {
+  margin-top: 1.25rem !important;
 }
 
 .mt-4 {
@@ -573,6 +569,22 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mt-5 {
   margin-top: 1.25rem !important;
+}
+
+.mt-4 {
+  margin-top: 1rem !important;
+}
+
+.mt-10 {
+  margin-top: 2.5rem !important;
+}
+
+.mt-5 {
+  margin-top: 1.25rem !important;
+}
+
+.mt-2 {
+  margin-top: 0.5rem !important;
 }
 
 .mt-4 {
@@ -597,6 +609,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .cursor-pointer {
   cursor: pointer !important;
+}
+
+.list-inside {
+  list-style-position: inside !important;
+}
+
+.list-decimal {
+  list-style-type: decimal !important;
+}
+
+.list-disc {
+  list-style-type: disc !important;
 }
 
 .flex-row {
@@ -705,6 +729,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-xs {
   font-size: 0.75rem !important;
   line-height: 1rem !important;
+}
+
+.text-sm {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
 }
 
 .text-lg {
