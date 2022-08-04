@@ -1,5 +1,4 @@
-import { IonButton, IonIcon } from "@ionic/react";
-import { ellipse } from "ionicons/icons";
+import { IonBadge, IonButton } from "@ionic/react";
 import React from "react";
 import { useSession } from "../hooks/useSession";
 import { useConnectionStatusQuery, useConnectMutation } from "../store/api";
@@ -7,48 +6,38 @@ import { useConnectionStatusQuery, useConnectMutation } from "../store/api";
 export const ConnectButton: React.FC = () => {
   const { sessionId } = useSession();
   const [connect, { isLoading }] = useConnectMutation();
+  const [isHovering, setIsHovering] = React.useState(false);
+
   const { data, refetch } = useConnectionStatusQuery(
     { sessionId },
     { pollingInterval: 1000 }
   );
   const isConnected = !!data?.ConnectionStatus;
 
-  const getLabel = () => {
-    if (isLoading) {
-      return "Connecting";
-    }
-    if (isConnected) {
-      return "Connected";
-    }
-    return "Connect";
-  };
-
-  const getColor = () => {
-    if (isLoading) {
-      return "yellow";
-    }
-    if (isConnected) {
-      return "green";
-    }
-    return "#990000";
-  };
+  if (isConnected) {
+    return (
+      <IonBadge color="success" className="mr-2">
+        Connected to Server
+      </IonBadge>
+    );
+  }
 
   return (
     <IonButton
-      shape="round"
+      fill={"outline"}
       onClick={() => {
         connect({ sessionId })
           .then(() => refetch())
           .catch(console.error);
       }}
+      color={isHovering ? "tertiary" : "secondary"}
+      onMouseEnter={() => {
+        setIsHovering(true);
+      }}
+      onMouseLeave={() => setIsHovering(false)}
+      disabled={isConnected || isLoading}
     >
-      {getLabel()}
-      <IonIcon
-        slot="end"
-        icon={ellipse}
-        style={{ fontSize: "12px", color: getColor() }}
-        class={isConnected ? "connected" : ""}
-      />
+      {isLoading ? "connecting..." : "connect to server"}
     </IonButton>
   );
 };
