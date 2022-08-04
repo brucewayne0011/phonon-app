@@ -18,7 +18,7 @@ import Layout from "../layout/Layout";
 import { useFetchPhononsQuery } from "../store/api";
 
 const PhononsList: React.FC = () => {
-  const { sessionId, activeSession } = useSession();
+  const { sessionId, activeSession, isSessionLoading } = useSession();
   const router = useIonRouter();
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
@@ -27,7 +27,7 @@ const PhononsList: React.FC = () => {
       sessionId,
     });
 
-  if (isError || !activeSession) {
+  if (isError || (!isSessionLoading && !activeSession)) {
     //TODO: Improve how this works. It's a bit hacky.
     router.push("/");
     window.location.reload();
