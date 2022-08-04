@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { useFetchSessionsQuery } from "../store/api";
 
 export const useSession = () => {
-  const { data } = useFetchSessionsQuery();
+  const { data, isLoading } = useFetchSessionsQuery();
 
   const getSessionName = (session?: Session) => {
     return session?.Name ? session?.Name : session?.Id;
@@ -26,6 +26,7 @@ export const useSession = () => {
     sessionId,
     sessionName,
     activeSession,
+    isSessionLoading: isLoading,
     getSessionFromSessionList,
     getSessionName,
     getSessionNameForId,
