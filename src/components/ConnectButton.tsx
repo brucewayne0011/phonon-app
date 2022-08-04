@@ -35,7 +35,7 @@ export const ConnectButton: React.FC = () => {
         setIsHovering(true);
       }}
       onMouseLeave={() => setIsHovering(false)}
-      disabled={isConnected}
+      disabled={isConnected || isLoading}
     >
       {isLoading ? "connecting..." : "connect to server"}
     </IonButton>
