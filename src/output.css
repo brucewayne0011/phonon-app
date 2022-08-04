@@ -529,9 +529,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 1.25rem !important;
 }
 
-.my-3 {
-  margin-top: 0.75rem !important;
-  margin-bottom: 0.75rem !important;
+.mt-10 {
+  margin-top: 2.5rem !important;
 }
 
 .my-2 {
@@ -539,56 +538,32 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.5rem !important;
 }
 
-.mr-2 {
-  margin-right: 0.5rem !important;
-}
-
-.mt-2 {
-  margin-top: 0.5rem !important;
+.mt-4 {
+  margin-top: 1rem !important;
 }
 
 .mt-10 {
   margin-top: 2.5rem !important;
+}
+
+.mt-5 {
+  margin-top: 1.25rem !important;
+}
+
+.mt-4 {
+  margin-top: 1rem !important;
+}
+
+.mt-10 {
+  margin-top: 2.5rem !important;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem !important;
 }
 
 .mr-1 {
   margin-right: 0.25rem !important;
-}
-
-.mt-5 {
-  margin-top: 1.25rem !important;
-}
-
-.mt-4 {
-  margin-top: 1rem !important;
-}
-
-.mt-10 {
-  margin-top: 2.5rem !important;
-}
-
-.mt-5 {
-  margin-top: 1.25rem !important;
-}
-
-.mt-4 {
-  margin-top: 1rem !important;
-}
-
-.mt-10 {
-  margin-top: 2.5rem !important;
-}
-
-.mt-5 {
-  margin-top: 1.25rem !important;
-}
-
-.mt-2 {
-  margin-top: 0.5rem !important;
-}
-
-.mt-4 {
-  margin-top: 1rem !important;
 }
 
 .flex {
@@ -716,9 +691,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   line-height: 1.75rem !important;
 }
 
-.text-lg {
-  font-size: 1.125rem !important;
-  line-height: 1.75rem !important;
+.text-sm {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
 }
 
 .text-2xl {
@@ -726,34 +701,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   line-height: 2rem !important;
 }
 
+.text-lg {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+}
+
 .text-xs {
   font-size: 0.75rem !important;
   line-height: 1rem !important;
-}
-
-.text-sm {
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
-}
-
-.text-lg {
-  font-size: 1.125rem !important;
-  line-height: 1.75rem !important;
-}
-
-.text-sm {
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
-}
-
-.text-lg {
-  font-size: 1.125rem !important;
-  line-height: 1.75rem !important;
-}
-
-.text-sm {
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
 }
 
 .font-black {
@@ -781,6 +736,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-white {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+.text-zinc-200 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(228 228 231 / var(--tw-text-opacity)) !important;
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
 }
 
 .text-slate-400 {
