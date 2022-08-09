@@ -123,7 +123,18 @@ export const CHAINS: { [key: string]: Chain } = {
     CurrencyType: 2, // TODO: Update Value
     isTestnet: false,
   },
-
+  "4002": {
+    apiRoute: "api?module=contract&action=getabi",
+    baseUrl: "https://testnet.ftmscan.com",
+    icon: faQuestionCircle,
+    textColor: "text-blue-500",
+    bgColor: "bg-blue-500",
+    ticker: "FTM-TEST",
+    symbol: "FTM",
+    name: "fantom-testnet",
+    CurrencyType: 2, // TODO: Update Value
+    isTestnet: true,
+  },
   "43113": {
     apiRoute: "api?module=contract&action=getabi",
     baseUrl: "https://testnet.snowtrace.io",
