@@ -2,9 +2,9 @@ import { isPlatform } from "@ionic/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = isPlatform("capacitor")
-  ? "https://phonon.npmaile.com:8080/"
+  ? "https://jumpbox.gridpl.us/"
   : "/";
-const bridgeUrl = "https://phonon.npmaile.com:443/phonon/";
+const bridgeUrl = "https://jumpbox.gridpl.us:443/phonon/";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
