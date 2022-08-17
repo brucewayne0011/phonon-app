@@ -78,10 +78,7 @@ const RedeemPhononModal: React.FC<{
           {`${weiToEth(phonon.Denomination)} ${chain ? chain.ticker : "ERR"}`}
         </p>
 
-        <form
-          className="flex flex-col mt-10 gap-10"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col mt-12" onSubmit={handleSubmit(onSubmit)}>
           <input
             className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
             placeholder="Redeem Address"
@@ -93,27 +90,29 @@ const RedeemPhononModal: React.FC<{
           {errors?.redeemAddress?.type === "required" && (
             <FormErrorText>Redeem address is required</FormErrorText>
           )}
-          <IonButton
-            key="submit"
-            size="large"
-            type="submit"
-            fill="solid"
-            expand="full"
-            color="tertiary"
-            disabled={isLoading}
-          >
-            REDEEM
-          </IonButton>
-          <IonButton
-            size="large"
-            expand="full"
-            fill="clear"
-            color="medium"
-            onClick={destroyModal}
-            disabled={isLoading}
-          >
-            CANCEL
-          </IonButton>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 mt-4">
+            <IonButton
+              key="submit"
+              size="large"
+              type="submit"
+              fill="solid"
+              expand="full"
+              color="tertiary"
+              disabled={isLoading}
+            >
+              REDEEM
+            </IonButton>
+            <IonButton
+              size="large"
+              expand="full"
+              fill="clear"
+              color="medium"
+              onClick={destroyModal}
+              disabled={isLoading}
+            >
+              CANCEL
+            </IonButton>
+          </div>
         </form>
       </div>
     </IonModal>

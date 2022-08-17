@@ -93,17 +93,26 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
                 disabled={isLoading}
               ></IonInput>
             </IonItem>
-            <div className="flex flex-row justify-evenly">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3">
               <IonButton
-                color="medium"
+                type="submit"
+                size="large"
+                fill="solid"
+                expand="full"
+                color="primary"
+                disabled={isLoading}
+              >
+                Unlock
+              </IonButton>
+              <IonButton
+                size="large"
+                expand="full"
                 fill="clear"
+                color="medium"
                 onClick={handleCancel}
                 disabled={isLoading}
               >
                 Cancel
-              </IonButton>
-              <IonButton type="submit" disabled={isLoading}>
-                Unlock
               </IonButton>
             </div>
           </form>

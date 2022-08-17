@@ -3,9 +3,9 @@ import { addSharp, lockClosedOutline, hammerSharp } from "ionicons/icons";
 import React from "react";
 import useChain from "../hooks/useChain";
 import { useModal } from "../hooks/useModal";
-import CreatePhononModal from "./CreatePhononModal";
+import MinePhononModal from "./MinePhononModal";
 
-export default function MinePhononButton() {
+const MinePhononButton: React.FC = () => {
   const { showModal, hideModal, isModalVisible } = useModal();
   const { isAuthenticated } = useChain();
   const [present] = useIonToast();
@@ -29,14 +29,16 @@ export default function MinePhononButton() {
               position: "top",
             });
           } else {
-            alert("TODO!");
+            showModal();
           }
         }}
       >
         <IonIcon slot="end" icon={hammerSharp} />
         Mine
       </IonButton>
-      <CreatePhononModal {...{ isModalVisible, hideModal }} />
+      <MinePhononModal {...{ isModalVisible, hideModal }} />
     </>
   );
-}
+};
+
+export default MinePhononButton;

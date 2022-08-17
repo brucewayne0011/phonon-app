@@ -75,6 +75,12 @@ export const api = createApi({
         }),
       }
     ),
+    minePhonon: builder.mutation<void, { sessionId: string }>({
+      query: ({ sessionId }) => ({
+        url: `cards/${sessionId}/phonon/mineNative`,
+        method: "POST",
+      }),
+    }),
     setDescriptor: builder.mutation<void, DescriptorDTO>({
       query: ({ index, currencyType, sessionId, value }) => ({
         url: `cards/${sessionId}/phonon/${index}/setDescriptor`,
@@ -147,6 +153,7 @@ export const {
   useFetchPhononsQuery,
   useCheckDenominationMutation,
   useCreatePhononMutation,
+  useMinePhononMutation,
   useInitDepositMutation,
   useFinalizeDepositMutation,
   useSetDescriptorMutation,
