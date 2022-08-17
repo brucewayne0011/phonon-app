@@ -563,6 +563,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: flex !important;
 }
 
+.grid {
+  display: grid !important;
+}
+
 .h-full {
   height: 100% !important;
 }
@@ -603,6 +607,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   align-items: center !important;
 }
 
+.justify-end {
+  justify-content: flex-end !important;
+}
+
 .justify-center {
   justify-content: center !important;
 }
@@ -613,6 +621,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .gap-10 {
   gap: 2.5rem !important;
+}
+
+.gap-x-5 {
+  -webkit-column-gap: 1.25rem !important;
+          column-gap: 1.25rem !important;
 }
 
 .bg-zinc-800 {
@@ -653,6 +666,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-purple-300 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(216 180 254 / var(--tw-bg-opacity)) !important;
+}
+
+.bg-blue-500 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-red-300 {
@@ -775,6 +793,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-purple-300 {
   --tw-text-opacity: 1 !important;
   color: rgb(216 180 254 / var(--tw-text-opacity)) !important;
+}
+
+.text-blue-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(59 130 246 / var(--tw-text-opacity)) !important;
 }
 
 .text-red-300 {

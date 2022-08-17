@@ -41,10 +41,8 @@ const PhononsList: React.FC = () => {
   return (
     <Layout>
       <SessionNameHeader />
-      <div className="flex my-3 justify-evenly items-center">
+      <div className="flex gap-x-5 my-3">
         <CreatePhononButton />
-        <SendPhononButton phonon={selectedPhonon} />
-        <RedeemPhononButton phonon={selectedPhonon} />
         <ReceivePhononButton />
       </div>
 
@@ -80,6 +78,13 @@ const PhononsList: React.FC = () => {
             ))}
           </IonList>
         </>
+      )}
+
+      {selectedPhonon && (
+        <div className="flex gap-x-5 my-3 justify-end">
+          <SendPhononButton phonon={selectedPhonon} />
+          <RedeemPhononButton phonon={selectedPhonon} />
+        </div>
       )}
     </Layout>
   );

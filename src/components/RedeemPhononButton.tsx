@@ -34,7 +34,7 @@ export default function RedeemPhononButton({ phonon }: { phonon?: PhononDTO }) {
         slot="end"
       >
         <IonIcon slot="end" icon={logOutOutline} />
-        Redeem
+        Redeem Selected Phonon
       </IonButton>
       {phonon ? (
         <RedeemPhononModal {...{ isModalVisible, hideModal, phonon }} />

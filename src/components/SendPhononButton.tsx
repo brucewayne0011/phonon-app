@@ -38,7 +38,7 @@ export default function SendPhononButton({ phonon }: { phonon?: PhononDTO }) {
       showModal();
     }
   };
-  return phonon ? (
+  return (
     <>
       <IonButton
         fill="outline"
@@ -53,7 +53,5 @@ export default function SendPhononButton({ phonon }: { phonon?: PhononDTO }) {
         <SendPhononModal {...{ isModalVisible, hideModal, phonon }} />
       ) : null}
     </>
-  ) : (
-    <></>
   );
 }
