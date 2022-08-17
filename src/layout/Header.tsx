@@ -16,7 +16,7 @@ const Header: React.FC = () => {
         <IonTitle>
           <div className="flex flex-row content-center justify-center">
             <img src={icon} className="mr-1 w-7" alt="logo" />
-            <h2 className="logoHeader">PHONON</h2>
+            <h2 className="logoHeader hidden md:inline">PHONON</h2>
           </div>
         </IonTitle>
         <IonButtons slot="end">

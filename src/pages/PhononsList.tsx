@@ -45,74 +45,76 @@ const PhononsList: React.FC = () => {
 
   return (
     <Layout>
-      <SessionNameHeader />
-      {!isAuthenticated && (
-        <NoticeBadge icon={bulb}>
-          Connect your wallet to create and mine phonons.
-        </NoticeBadge>
-      )}
-      <div className="flex gap-x-5 my-3">
-        {isAuthenticated && (
+      <div className="mx-4">
+        <SessionNameHeader />
+        {!isAuthenticated && (
+          <NoticeBadge icon={bulb}>
+            Connect your wallet to create and mine phonons.
+          </NoticeBadge>
+        )}
+        <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
+          {isAuthenticated && (
+            <>
+              <MinePhononButton />
+              <CreatePhononButton />
+            </>
+          )}
+          <ReceivePhononButton />
+        </div>
+
+        {isLoading || isFetching ? (
+          <div className="w-full flex justify-center align-middle">
+            <IonSpinner />
+          </div>
+        ) : (
           <>
-            <MinePhononButton />
-            <CreatePhononButton />
+            <IonRefresher
+              slot="fixed"
+              onIonRefresh={refresh}
+              closeDuration={"50ms"}
+            >
+              <IonRefresherContent></IonRefresherContent>
+            </IonRefresher>
+            <IonList className="rounded">
+              {data !== undefined && data.length > 0 ? (
+                data?.map((p) => (
+                  <ErrorBoundary
+                    FallbackComponent={({ error }) => (
+                      <div className="p-3 uppercase font-black">
+                        <p className="text-xs">Failed to load phonon</p>
+                        <p className="text-xs text-red-400">{error.message}</p>
+                      </div>
+                    )}
+                    key={p.PubKey}
+                  >
+                    <PhononListItem
+                      phonon={p}
+                      {...{ selectedPhonon, setSelectedPhonon }}
+                    />
+                  </ErrorBoundary>
+                ))
+              ) : (
+                <span className="px-4 py-2">
+                  You currently have no phonons on this card.
+                </span>
+              )}
+            </IonList>
           </>
         )}
-        <ReceivePhononButton />
+
+        {selectedPhonon && (
+          <div className="grid md:flex gap-x-5 my-3 md:justify-end">
+            <SendPhononButton
+              phonon={selectedPhonon}
+              {...{ selectedPhonon, setSelectedPhonon }}
+            />
+            <RedeemPhononButton
+              phonon={selectedPhonon}
+              {...{ selectedPhonon, setSelectedPhonon }}
+            />
+          </div>
+        )}
       </div>
-
-      {isLoading || isFetching ? (
-        <div className="w-full flex justify-center align-middle">
-          <IonSpinner />
-        </div>
-      ) : (
-        <>
-          <IonRefresher
-            slot="fixed"
-            onIonRefresh={refresh}
-            closeDuration={"50ms"}
-          >
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
-          <IonList className="rounded">
-            {data !== undefined && data.length > 0 ? (
-              data?.map((p) => (
-                <ErrorBoundary
-                  FallbackComponent={({ error }) => (
-                    <div className="p-3 uppercase font-black">
-                      <p className="text-xs">Failed to load phonon</p>
-                      <p className="text-xs text-red-400">{error.message}</p>
-                    </div>
-                  )}
-                  key={p.PubKey}
-                >
-                  <PhononListItem
-                    phonon={p}
-                    {...{ selectedPhonon, setSelectedPhonon }}
-                  />
-                </ErrorBoundary>
-              ))
-            ) : (
-              <span className="px-4 py-2">
-                You currently have no phonons on this card.
-              </span>
-            )}
-          </IonList>
-        </>
-      )}
-
-      {selectedPhonon && (
-        <div className="flex gap-x-5 my-3 justify-end">
-          <SendPhononButton
-            phonon={selectedPhonon}
-            {...{ selectedPhonon, setSelectedPhonon }}
-          />
-          <RedeemPhononButton
-            phonon={selectedPhonon}
-            {...{ selectedPhonon, setSelectedPhonon }}
-          />
-        </div>
-      )}
     </Layout>
   );
 };

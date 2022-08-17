@@ -13,9 +13,7 @@ const NoticeBadge: React.FC<{
             <span className="flex p-2 rounded-lg bg-gray-500">
               <IonIcon color="white" icon={icon} />
             </span>
-            <p className="ml-3 font-medium text-gray-800 truncate">
-              {children}
-            </p>
+            <p className="ml-3 font-medium text-gray-800">{children}</p>
           </div>
         </div>
       </div>
