@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import CreatePhononButton from "../components/CreatePhononButton";
 import SessionNameHeader from "../components/SessionNameHeader";
+import NoticeBadge from "../components/NoticeBadge";
 import PhononListItem from "../components/PhononListItem";
 import MinePhononButton from "../components/MinePhononButton";
 import ReceivePhononButton from "../components/ReceivePhononButton";
@@ -17,6 +18,7 @@ import SendPhononButton from "../components/SendPhononButton";
 import { useSession } from "../hooks/useSession";
 import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
+import { bulb } from "ionicons/icons";
 import { useFetchPhononsQuery } from "../store/api";
 
 const PhononsList: React.FC = () => {
@@ -44,6 +46,11 @@ const PhononsList: React.FC = () => {
   return (
     <Layout>
       <SessionNameHeader />
+      {!isAuthenticated && (
+        <NoticeBadge icon={bulb}>
+          Connect your wallet to create and mine phonons.
+        </NoticeBadge>
+      )}
       <div className="flex gap-x-5 my-3">
         {isAuthenticated && (
           <>
@@ -67,7 +74,7 @@ const PhononsList: React.FC = () => {
           >
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonList>
+          <IonList className="rounded">
             {data !== undefined && data.length > 0 ? (
               data?.map((p) => (
                 <ErrorBoundary
