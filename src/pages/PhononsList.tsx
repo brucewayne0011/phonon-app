@@ -10,15 +10,18 @@ import { ErrorBoundary } from "react-error-boundary";
 import CreatePhononButton from "../components/CreatePhononButton";
 import SessionNameHeader from "../components/SessionNameHeader";
 import PhononListItem from "../components/PhononListItem";
+import MinePhononButton from "../components/MinePhononButton";
 import ReceivePhononButton from "../components/ReceivePhononButton";
 import RedeemPhononButton from "../components/RedeemPhononButton";
 import SendPhononButton from "../components/SendPhononButton";
 import { useSession } from "../hooks/useSession";
+import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
 import { useFetchPhononsQuery } from "../store/api";
 
 const PhononsList: React.FC = () => {
   const { sessionId, activeSession, isSessionLoading } = useSession();
+  const { isAuthenticated } = useChain();
   const router = useIonRouter();
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
@@ -42,7 +45,12 @@ const PhononsList: React.FC = () => {
     <Layout>
       <SessionNameHeader />
       <div className="flex gap-x-5 my-3">
-        <CreatePhononButton />
+        {isAuthenticated && (
+          <>
+            <MinePhononButton />
+            <CreatePhononButton />
+          </>
+        )}
         <ReceivePhononButton />
       </div>
 
