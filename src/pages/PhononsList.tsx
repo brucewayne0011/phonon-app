@@ -87,7 +87,7 @@ const PhononsList: React.FC = () => {
               ))
             ) : (
               <span className="px-4 py-2">
-                You currently have no phonons in this wallet.
+                You currently have no phonons on this card.
               </span>
             )}
           </IonList>
