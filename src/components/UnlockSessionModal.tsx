@@ -44,11 +44,13 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-      handleLogin();
+      handleLogin(event);
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = (evt) => {
+    evt.preventDefault();
+
     unlockSession({ sessionId, pin })
       .unwrap()
       .then(() => {
@@ -79,30 +81,32 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
               </h1>
             </IonText>
           )}
-          <IonItem className="my-7">
-            <IonInput
-              value={pin}
-              placeholder="Password"
-              type="password"
-              className="text-white"
-              onIonChange={(e) => setPin(e?.detail?.value ?? "")}
-              onKeyDown={handleOnKeyDown}
-              disabled={isLoading}
-            ></IonInput>
-          </IonItem>
-          <div className="flex flex-row justify-evenly">
-            <IonButton
-              color="medium"
-              fill="clear"
-              onClick={handleCancel}
-              disabled={isLoading}
-            >
-              Cancel
-            </IonButton>
-            <IonButton onClick={handleLogin} disabled={isLoading}>
-              Unlock
-            </IonButton>
-          </div>
+          <form onSubmit={handleLogin}>
+            <IonItem className="my-7">
+              <IonInput
+                value={pin}
+                placeholder="Password"
+                type="password"
+                className="text-white"
+                onIonChange={(e) => setPin(e?.detail?.value ?? "")}
+                onKeyDown={handleOnKeyDown}
+                disabled={isLoading}
+              ></IonInput>
+            </IonItem>
+            <div className="flex flex-row justify-evenly">
+              <IonButton
+                color="medium"
+                fill="clear"
+                onClick={handleCancel}
+                disabled={isLoading}
+              >
+                Cancel
+              </IonButton>
+              <IonButton type="submit" disabled={isLoading}>
+                Unlock
+              </IonButton>
+            </div>
+          </form>
         </div>
       </IonModal>
     </IonContent>
