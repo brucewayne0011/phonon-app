@@ -2,6 +2,7 @@ import { IonButton, IonModal } from "@ionic/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useChainByCurrencyType from "../hooks/useChainByCurrencyType";
+import { CHAINS } from "../constants/chains";
 import { useIsConnected } from "../hooks/useIsConnected";
 import { useSession } from "../hooks/useSession";
 import { usePairMutation, useSendPhononMutation } from "../store/api";
@@ -24,7 +25,8 @@ export default function SendPhononModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [sendPhonon, { isLoading: isSending }] = useSendPhononMutation();
   const [pair, { isLoading: isPairing }] = usePairMutation();
-  const { chain } = useChainByCurrencyType(phonon.CurrencyType);
+  //   const { chain } = useChainByCurrencyType(phonon.CurrencyType);
+  const chain = CHAINS[phonon.ChainID] ?? null;
   const { isConnected } = useIsConnected();
 
   const isLoading = isSending || isPairing;
@@ -39,6 +41,7 @@ export default function SendPhononModal({
 
   const onSubmit = async (data: SendPhononFormData, event) => {
     event.preventDefault();
+
     if (!isConnected) {
       throw new Error("Must be connected.");
     }
@@ -86,10 +89,10 @@ export default function SendPhononModal({
           <IonButton
             key="submit"
             size="large"
-            type="submit"
             fill="solid"
             expand="full"
             color="primary"
+            onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
           >
             SEND
