@@ -68,30 +68,42 @@ const PhononsList: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonList>
-            {data?.map((p) => (
-              <ErrorBoundary
-                FallbackComponent={({ error }) => (
-                  <div className="p-3 uppercase font-black">
-                    <p className="text-xs">Failed to load phonon</p>
-                    <p className="text-xs text-red-400">{error.message}</p>
-                  </div>
-                )}
-                key={p.PubKey}
-              >
-                <PhononListItem
-                  phonon={p}
-                  {...{ selectedPhonon, setSelectedPhonon }}
-                />
-              </ErrorBoundary>
-            ))}
+            {data !== undefined && data.length > 0 ? (
+              data?.map((p) => (
+                <ErrorBoundary
+                  FallbackComponent={({ error }) => (
+                    <div className="p-3 uppercase font-black">
+                      <p className="text-xs">Failed to load phonon</p>
+                      <p className="text-xs text-red-400">{error.message}</p>
+                    </div>
+                  )}
+                  key={p.PubKey}
+                >
+                  <PhononListItem
+                    phonon={p}
+                    {...{ selectedPhonon, setSelectedPhonon }}
+                  />
+                </ErrorBoundary>
+              ))
+            ) : (
+              <span className="px-4 py-2">
+                You currently have no phonons in this wallet.
+              </span>
+            )}
           </IonList>
         </>
       )}
 
       {selectedPhonon && (
         <div className="flex gap-x-5 my-3 justify-end">
-          <SendPhononButton phonon={selectedPhonon} />
-          <RedeemPhononButton phonon={selectedPhonon} />
+          <SendPhononButton
+            phonon={selectedPhonon}
+            {...{ selectedPhonon, setSelectedPhonon }}
+          />
+          <RedeemPhononButton
+            phonon={selectedPhonon}
+            {...{ selectedPhonon, setSelectedPhonon }}
+          />
         </div>
       )}
     </Layout>

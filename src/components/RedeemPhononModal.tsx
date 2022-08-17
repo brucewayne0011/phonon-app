@@ -11,15 +11,21 @@ export type RedeemPhononFormData = {
   redeemAddress: string;
 };
 
-export default function RedeemPhononModal({
+const RedeemPhononModal: React.FC<{
+  isModalVisible;
+  hideModal;
+  phonon: PhononDTO;
+  selectedPhonon: PhononDTO | undefined;
+  setSelectedPhonon: React.Dispatch<
+    React.SetStateAction<PhononDTO | undefined>
+  >;
+}> = ({
   isModalVisible,
   hideModal,
   phonon,
-}: {
-  isModalVisible: boolean;
-  hideModal: () => void;
-  phonon: PhononDTO;
-}) {
+  selectedPhonon,
+  setSelectedPhonon,
+}) => {
   const { sessionId } = useSession();
   const [redeemPhonon, { isLoading }] = useRedeemPhononMutation();
   const [errorMessage, setErrorMessage] = useState("");
@@ -40,6 +46,7 @@ export default function RedeemPhononModal({
 
   const onSubmit = async (data: RedeemPhononFormData, event) => {
     event.preventDefault();
+
     const payload = [
       {
         P: phonon,
@@ -47,7 +54,11 @@ export default function RedeemPhononModal({
       },
     ];
     await redeemPhonon({ payload, sessionId })
-      .then(destroyModal)
+      .then(() => {
+        destroyModal();
+        // if successful, we remove selected phonon
+        setSelectedPhonon(undefined);
+      })
       .catch((err) => {
         setErrorMessage(err.message);
         console.error(err);
@@ -107,4 +118,6 @@ export default function RedeemPhononModal({
       </div>
     </IonModal>
   );
-}
+};
+
+export default RedeemPhononModal;

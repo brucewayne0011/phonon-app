@@ -4,7 +4,13 @@ import React from "react";
 import { useModal } from "../hooks/useModal";
 import RedeemPhononModal from "./RedeemPhononModal";
 
-export default function RedeemPhononButton({ phonon }: { phonon?: PhononDTO }) {
+const RedeemPhononButton: React.FC<{
+  phonon: PhononDTO;
+  selectedPhonon: PhononDTO | undefined;
+  setSelectedPhonon: React.Dispatch<
+    React.SetStateAction<PhononDTO | undefined>
+  >;
+}> = ({ phonon, selectedPhonon, setSelectedPhonon }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
   const [present] = useIonToast();
 
@@ -37,8 +43,18 @@ export default function RedeemPhononButton({ phonon }: { phonon?: PhononDTO }) {
         Redeem Selected Phonon
       </IonButton>
       {phonon ? (
-        <RedeemPhononModal {...{ isModalVisible, hideModal, phonon }} />
+        <RedeemPhononModal
+          {...{
+            isModalVisible,
+            hideModal,
+            phonon,
+            selectedPhonon,
+            setSelectedPhonon,
+          }}
+        />
       ) : null}
     </>
   );
-}
+};
+
+export default RedeemPhononButton;

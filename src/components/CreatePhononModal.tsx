@@ -96,7 +96,7 @@ export default function CreatePhononModal({
                 .then(async (response) => {
                   if (response) {
                     const Phonon = { ...phonon, ChainID };
-                    console.log({ Phonon });
+
                     const payload = [
                       {
                         Phonon,

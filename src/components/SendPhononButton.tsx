@@ -5,7 +5,13 @@ import { useIsConnected } from "../hooks/useIsConnected";
 import { useModal } from "../hooks/useModal";
 import SendPhononModal from "./SendPhononModal";
 
-export default function SendPhononButton({ phonon }: { phonon?: PhononDTO }) {
+const SendPhononButton: React.FC<{
+  phonon: PhononDTO;
+  selectedPhonon: PhononDTO | undefined;
+  setSelectedPhonon: React.Dispatch<
+    React.SetStateAction<PhononDTO | undefined>
+  >;
+}> = ({ phonon, selectedPhonon, setSelectedPhonon }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
   const { isConnected } = useIsConnected();
   const [present] = useIonToast();
@@ -50,8 +56,18 @@ export default function SendPhononButton({ phonon }: { phonon?: PhononDTO }) {
         Send Selected Photon
       </IonButton>
       {phonon ? (
-        <SendPhononModal {...{ isModalVisible, hideModal, phonon }} />
+        <SendPhononModal
+          {...{
+            isModalVisible,
+            hideModal,
+            phonon,
+            selectedPhonon,
+            setSelectedPhonon,
+          }}
+        />
       ) : null}
     </>
   );
-}
+};
+
+export default SendPhononButton;

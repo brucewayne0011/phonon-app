@@ -12,15 +12,21 @@ export type SendPhononFormData = {
   cardId: string;
 };
 
-export default function SendPhononModal({
+const SendPhononModal: React.FC<{
+  isModalVisible;
+  hideModal;
+  phonon: PhononDTO;
+  selectedPhonon: PhononDTO | undefined;
+  setSelectedPhonon: React.Dispatch<
+    React.SetStateAction<PhononDTO | undefined>
+  >;
+}> = ({
   isModalVisible,
   hideModal,
   phonon,
-}: {
-  isModalVisible: boolean;
-  hideModal: () => void;
-  phonon: PhononDTO;
-}) {
+  selectedPhonon,
+  setSelectedPhonon,
+}) => {
   const { sessionId } = useSession();
   const [errorMessage, setErrorMessage] = useState("");
   const [sendPhonon, { isLoading: isSending }] = useSendPhononMutation();
@@ -49,7 +55,11 @@ export default function SendPhononModal({
     await pair({ cardId: data.cardId, sessionId })
       .then(() => {
         sendPhonon({ payload, sessionId })
-          .then(destroyModal)
+          .then(() => {
+            destroyModal();
+            // if successful, we remove selected phonon
+            setSelectedPhonon(undefined);
+          })
           .catch((err) => {
             setErrorMessage(err.message);
             console.error(err);
@@ -111,4 +121,6 @@ export default function SendPhononModal({
       </div>
     </IonModal>
   );
-}
+};
+
+export default SendPhononModal;
