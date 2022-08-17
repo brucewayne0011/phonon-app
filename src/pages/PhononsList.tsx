@@ -49,7 +49,8 @@ const PhononsList: React.FC = () => {
         <SessionNameHeader />
         {!isAuthenticated && (
           <NoticeBadge icon={bulb}>
-            Connect your wallet to create and mine phonons.
+            Welcome to the testnet phonon app! Connect your browser wallet to
+            create and mine phonons.
           </NoticeBadge>
         )}
         <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
