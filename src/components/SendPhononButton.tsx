@@ -53,7 +53,7 @@ const SendPhononButton: React.FC<{
         slot="end"
       >
         <IonIcon slot="end" icon={sendSharp} />
-        Send Selected Photon
+        Send Selected Phonon
       </IonButton>
       {phonon ? (
         <SendPhononModal

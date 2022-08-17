@@ -43,6 +43,10 @@ const PhononsList: React.FC = () => {
     event.detail.complete();
   }
 
+  const scrollRef = () => {
+    console.log("at bottom");
+  };
+
   return (
     <Layout>
       <div className="mx-4">
@@ -76,7 +80,8 @@ const PhononsList: React.FC = () => {
             >
               <IonRefresherContent></IonRefresherContent>
             </IonRefresher>
-            <IonList className="rounded">
+
+            <IonList className="overflow-auto max-h-[calc(100vh_-_350px)] rounded mb-5">
               {data !== undefined && data.length > 0 ? (
                 data?.map((p) => (
                   <ErrorBoundary
