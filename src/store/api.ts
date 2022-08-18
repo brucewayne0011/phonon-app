@@ -75,10 +75,23 @@ export const api = createApi({
         }),
       }
     ),
-    minePhonon: builder.mutation<void, { sessionId: string }>({
-      query: ({ sessionId }) => ({
+    minePhonon: builder.mutation<
+      void,
+      { sessionId: string; difficulty: number }
+    >({
+      query: ({ sessionId, difficulty }) => ({
         url: `cards/${sessionId}/phonon/mineNative`,
         method: "POST",
+        body: { difficulty },
+      }),
+    }),
+    minePhononStatus: builder.query<PhononMiningStatus, { sessionId: string }>({
+      query: ({ sessionId }) => `/cards/${sessionId}/phonon/mineNative/status`,
+    }),
+    cancelMinePhonon: builder.mutation<void, { sessionId: string }>({
+      query: ({ sessionId }) => ({
+        url: `cards/${sessionId}/phonon/mineNative/cancel`,
+        method: "PUT",
       }),
     }),
     setDescriptor: builder.mutation<void, DescriptorDTO>({
@@ -154,6 +167,8 @@ export const {
   useCheckDenominationMutation,
   useCreatePhononMutation,
   useMinePhononMutation,
+  useMinePhononStatusQuery,
+  useCancelMinePhononMutation,
   useInitDepositMutation,
   useFinalizeDepositMutation,
   useSetDescriptorMutation,

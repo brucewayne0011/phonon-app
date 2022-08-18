@@ -5,7 +5,7 @@ import {
   IonSpinner,
   useIonRouter,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import CreatePhononButton from "../components/CreatePhononButton";
 import SessionNameHeader from "../components/SessionNameHeader";
@@ -19,12 +19,22 @@ import { useSession } from "../hooks/useSession";
 import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
 import { bulb } from "ionicons/icons";
-import { useFetchPhononsQuery } from "../store/api";
+import { useFetchPhononsQuery, useMinePhononStatusQuery } from "../store/api";
 
 const PhononsList: React.FC = () => {
   const { sessionId, activeSession, isSessionLoading } = useSession();
   const { isAuthenticated } = useChain();
   const router = useIonRouter();
+
+  const [minigStatus, setMiningStatus] = useState<
+    PhononMiningStatus | undefined
+  >();
+  const { data: miningStatusData, refetch: miningStatusRefetch } =
+    useMinePhononStatusQuery({ sessionId }, { pollingInterval: 1000 });
+
+  useEffect(() => {
+    setMiningStatus(miningStatusData);
+  }, [miningStatusData]);
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
   const { data, refetch, isLoading, isFetching, isError } =
@@ -43,10 +53,6 @@ const PhononsList: React.FC = () => {
     event.detail.complete();
   }
 
-  const scrollRef = () => {
-    console.log("at bottom");
-  };
-
   return (
     <Layout>
       <div className="mx-4">
@@ -54,16 +60,12 @@ const PhononsList: React.FC = () => {
         {!isAuthenticated && (
           <NoticeBadge icon={bulb}>
             Welcome to the testnet phonon app! Connect your browser wallet to
-            create and mine phonons.
+            create phonons from your wallet.
           </NoticeBadge>
         )}
         <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
-          {isAuthenticated && (
-            <>
-              <MinePhononButton />
-              <CreatePhononButton />
-            </>
-          )}
+          <MinePhononButton miningStatus={minigStatus} />
+          {isAuthenticated && <CreatePhononButton />}
           <ReceivePhononButton />
         </div>
 

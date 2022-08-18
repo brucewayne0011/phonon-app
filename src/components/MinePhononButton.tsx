@@ -1,14 +1,13 @@
 import { IonButton, IonIcon, useIonToast } from "@ionic/react";
-import { addSharp, lockClosedOutline, hammerSharp } from "ionicons/icons";
+import { hammerSharp } from "ionicons/icons";
 import React from "react";
-import useChain from "../hooks/useChain";
 import { useModal } from "../hooks/useModal";
 import MinePhononModal from "./MinePhononModal";
 
-const MinePhononButton: React.FC = () => {
+const MinePhononButton: React.FC<{
+  miningStatus: PhononMiningStatus | undefined;
+}> = ({ miningStatus }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
-  const { isAuthenticated } = useChain();
-  const [present] = useIonToast();
 
   return (
     <>
@@ -17,26 +16,21 @@ const MinePhononButton: React.FC = () => {
         color="light"
         slot="end"
         onClick={() => {
-          if (!isAuthenticated) {
-            return present({
-              header: "Error",
-              message: "Must be authenticated with MetaMask to mine Phonons",
-              icon: lockClosedOutline,
-              duration: 2000,
-              color: "danger",
-              cssClass: "text-md text-center font-black uppercase",
-              translucent: true,
-              position: "top",
-            });
-          } else {
-            showModal();
-          }
+          showModal();
         }}
       >
-        <IonIcon slot="end" icon={hammerSharp} />
-        Mine
+        <IonIcon
+          slot="end"
+          icon={hammerSharp}
+          className={
+            miningStatus?.Status === "Active"
+              ? "motion-safe:animate-bounce"
+              : ""
+          }
+        />
+        {miningStatus?.Status === "Active" ? "Mining..." : "Mine"}
       </IonButton>
-      <MinePhononModal {...{ isModalVisible, hideModal }} />
+      <MinePhononModal {...{ isModalVisible, hideModal, miningStatus }} />
     </>
   );
 };

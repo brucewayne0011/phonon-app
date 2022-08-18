@@ -71,6 +71,32 @@ type RedeemPhononDTO = {
   RedeemAddress: string;
 };
 
+enum MiningStatus {
+  "Success",
+  "Active",
+  "Canceled",
+  "Error",
+}
+
+type PhononMiningStatus = {
+  Attempts: number;
+  Status: string;
+  TimeElapsed: number;
+  StartTime: string;
+  StopTime: string;
+  AverageTime: number;
+  KeyIndex: number;
+  Hash: string;
+};
+
+type PhononMiningStat = {
+  Name: string;
+  Stat: any;
+  SubText: string;
+};
+
+type PhononMiningStats = PhononMiningStat[];
+
 type SendPhononDTO = PhononDTO[];
 
 type SessionNames = {
