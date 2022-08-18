@@ -67,11 +67,15 @@ const MinePhononModal: React.FC<{
   const onCancelMinePhonon = async (event) => {
     event.preventDefault();
 
-    await cancelMinePhonon({ sessionId }).catch((err) => {
-      logger.error(err);
-      // handle error
-      console.log(err);
-    });
+    await cancelMinePhonon({ sessionId })
+      .then(() => {
+        setShowMiningResults(false);
+      })
+      .catch((err) => {
+        logger.error(err);
+        // handle error
+        console.log(err);
+      });
   };
 
   useEffect(() => {
