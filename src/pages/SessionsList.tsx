@@ -19,7 +19,7 @@ const SessionsPage: React.FC = () => {
       )}
 
       {!data && (
-        <div className="text-center text-sm">
+        <div className="text-center text-sm text-white">
           <p className="mt-10 text-lg">No phonon cards detected.</p>
           <p className="mt-5 text-lg">
             Create a mock card below to preview the Phonon Protocol features.
