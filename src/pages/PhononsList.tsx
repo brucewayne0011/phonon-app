@@ -26,15 +26,8 @@ const PhononsList: React.FC = () => {
   const { isAuthenticated } = useChain();
   const router = useIonRouter();
 
-  const [minigStatus, setMiningStatus] = useState<
-    PhononMiningStatus | undefined
-  >();
-  const { data: miningStatusData, refetch: miningStatusRefetch } =
+  const { data: allMiningAttempts, refetch: miningStatusRefetch } =
     useMinePhononStatusQuery({ sessionId }, { pollingInterval: 1000 });
-
-  useEffect(() => {
-    setMiningStatus(miningStatusData);
-  }, [miningStatusData]);
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
   const { data, refetch, isLoading, isFetching, isError } =
@@ -64,7 +57,7 @@ const PhononsList: React.FC = () => {
           </NoticeBadge>
         )}
         <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
-          <MinePhononButton miningStatus={minigStatus} />
+          <MinePhononButton allMiningAttempts={allMiningAttempts} />
           {isAuthenticated && <CreatePhononButton />}
           <ReceivePhononButton />
         </div>

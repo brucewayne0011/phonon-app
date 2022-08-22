@@ -1,13 +1,27 @@
 import { IonButton, IonIcon, useIonToast } from "@ionic/react";
 import { hammerSharp } from "ionicons/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useModal } from "../hooks/useModal";
 import MinePhononModal from "./MinePhononModal";
 
 const MinePhononButton: React.FC<{
-  miningStatus: PhononMiningStatus | undefined;
-}> = ({ miningStatus }) => {
+  allMiningAttempts: PhononMiningAttempt | undefined;
+}> = ({ allMiningAttempts }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
+  const [activeMiningAttempt, setActiveMiningAttempt] = useState<
+    PhononMiningAttemptItem | undefined
+  >(undefined);
+
+  // if one status is "active", then set the status
+  useEffect(() => {
+    setActiveMiningAttempt(undefined);
+
+    for (const attemptId in allMiningAttempts) {
+      if (allMiningAttempts[attemptId].Status === "active") {
+        setActiveMiningAttempt(allMiningAttempts[attemptId]);
+      }
+    }
+  }, [allMiningAttempts]);
 
   return (
     <>
@@ -23,14 +37,21 @@ const MinePhononButton: React.FC<{
           slot="end"
           icon={hammerSharp}
           className={
-            miningStatus?.Status === "Active"
+            activeMiningAttempt !== undefined
               ? "motion-safe:animate-bounce"
               : ""
           }
         />
-        {miningStatus?.Status === "Active" ? "Mining..." : "Mine"}
+        {activeMiningAttempt !== undefined ? "Mining..." : "Mine"}
       </IonButton>
-      <MinePhononModal {...{ isModalVisible, hideModal, miningStatus }} />
+      <MinePhononModal
+        {...{
+          isModalVisible,
+          hideModal,
+          activeMiningAttempt,
+          allMiningAttempts,
+        }}
+      />
     </>
   );
 };

@@ -76,7 +76,7 @@ export const api = createApi({
       }
     ),
     minePhonon: builder.mutation<
-      void,
+      MinePhononResponse,
       { sessionId: string; difficulty: number }
     >({
       query: ({ sessionId, difficulty }) => ({
@@ -85,9 +85,12 @@ export const api = createApi({
         body: { difficulty },
       }),
     }),
-    minePhononStatus: builder.query<PhononMiningStatus, { sessionId: string }>({
-      query: ({ sessionId }) => `/cards/${sessionId}/phonon/mineNative/status`,
-    }),
+    minePhononStatus: builder.query<PhononMiningAttempt, { sessionId: string }>(
+      {
+        query: ({ sessionId }) =>
+          `/cards/${sessionId}/phonon/mineNative/status`,
+      }
+    ),
     cancelMinePhonon: builder.mutation<void, { sessionId: string }>({
       query: ({ sessionId }) => ({
         url: `cards/${sessionId}/phonon/mineNative/cancel`,

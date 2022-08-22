@@ -14,6 +14,10 @@ type CreatePhononResponse = {
   pubKey: string;
 };
 
+type MinePhononResponse = {
+  AttemptId: string;
+};
+
 type Phonon = {
   index: number;
   pubKey: string;
@@ -72,13 +76,14 @@ type RedeemPhononDTO = {
 };
 
 enum MiningStatus {
-  "Success",
-  "Active",
-  "Canceled",
-  "Error",
+  Inactive,
+  Success,
+  Active,
+  Canceled,
+  Error,
 }
 
-type PhononMiningStatus = {
+type PhononMiningAttemptItem = {
   Attempts: number;
   Status: string;
   TimeElapsed: number;
@@ -88,14 +93,15 @@ type PhononMiningStatus = {
   KeyIndex: number;
   Hash: string;
 };
+interface PhononMiningAttempt {
+  [currentAttemptId: string]: PhononMiningAttemptItem;
+}
 
-type PhononMiningStat = {
+type PhononStatusItem = {
   Name: string;
-  Stat: any;
+  Stat: string;
   SubText: string;
 };
-
-type PhononMiningStats = PhononMiningStat[];
 
 type SendPhononDTO = PhononDTO[];
 

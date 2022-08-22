@@ -6,12 +6,16 @@ import { CHAINS } from "../constants/chains";
 import useChain from "../hooks/useChain";
 import { abbreviateHash } from "../utils/addresses";
 import { useSession } from "../hooks/useSession";
+import MinePhononStats from "./MinePhononStats";
 import {
   useMinePhononMutation,
   useCancelMinePhononMutation,
 } from "../store/api";
 import FormErrorText from "./FormErrorText";
 import { logger } from "../utils/logger";
+
+const defaultDifficulty = 5;
+const maxDifficulty = 30;
 
 export type MindPhononFormData = {
   difficulty: number;
@@ -20,26 +24,35 @@ export type MindPhononFormData = {
 const MinePhononModal: React.FC<{
   isModalVisible;
   hideModal;
-  miningStatus: PhononMiningStatus | undefined;
-}> = ({ isModalVisible, hideModal, miningStatus }) => {
+  activeMiningAttempt: PhononMiningAttemptItem | undefined;
+  allMiningAttempts: PhononMiningAttempt | undefined;
+}> = ({
+  isModalVisible,
+  hideModal,
+  activeMiningAttempt,
+  allMiningAttempts,
+}) => {
   const { sessionId } = useSession();
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [showMiningResults, setShowMiningResults] = useState<boolean>(false);
-  const [showMining, setShowMining] = useState<boolean>(false);
-  const [miningStats, setMiningStats] = useState<PhononMiningStats>([]);
+  const [currentAttemptId, setCurrentAttemptId] = useState<string | undefined>(
+    undefined
+  );
+  const [currentAttempt, setCurrentAttempt] = useState<
+    PhononMiningAttemptItem | undefined
+  >(undefined);
+
   const [minePhonon, { isLoading: isMiningLoading }] = useMinePhononMutation();
   const [cancelMinePhonon, { isLoading: isCancelLoading }] =
     useCancelMinePhononMutation();
-  const [difficulty, setDifficulty] = useState<number>(5);
-  const { chain } = useChain();
-  const maxDifficulty = 30;
+  const [difficulty, setDifficulty] = useState<number>(defaultDifficulty);
   const difficultyErrorMessage =
     "The difficulty must be between 1 and " + String(maxDifficulty) + "!";
 
   const destroyModal = () => {
     setErrorMessage("");
     hideModal();
-    setShowMiningResults(false);
+    setCurrentAttemptId(undefined);
+    setCurrentAttempt(undefined);
   };
 
   const {
@@ -55,12 +68,14 @@ const MinePhononModal: React.FC<{
 
     await minePhonon({ sessionId, difficulty })
       .then((response) => {
-        setShowMiningResults(true);
+        if ("data" in response) {
+          setCurrentAttemptId(response.data.AttemptId);
+        }
       })
       .catch((err) => {
         logger.error(err);
         // handle error
-        console.log(err);
+        setErrorMessage(err.message);
       });
   };
 
@@ -69,7 +84,7 @@ const MinePhononModal: React.FC<{
 
     await cancelMinePhonon({ sessionId })
       .then(() => {
-        setShowMiningResults(false);
+        setCurrentAttemptId(undefined);
       })
       .catch((err) => {
         logger.error(err);
@@ -79,47 +94,25 @@ const MinePhononModal: React.FC<{
   };
 
   useEffect(() => {
-    setMiningStats([
-      {
-        Name: "Attempts",
-        Stat:
-          miningStatus?.Attempts !== undefined ? miningStatus?.Attempts : "",
-        SubText: "",
-      },
-      {
-        Name: "Time Elapsed",
-        Stat:
-          miningStatus?.TimeElapsed !== undefined
-            ? String(miningStatus.TimeElapsed) + " seconds"
-            : "",
-        SubText: miningStatus?.StartTime
-          ? "Since: " + String(miningStatus?.StartTime)
-          : "",
-      },
-      {
-        Name: "Avg. Time",
-        Stat: miningStatus?.AverageTime ? miningStatus?.AverageTime : "",
-        SubText: "",
-      },
-    ]);
-  }, [miningStatus]);
-
-  useEffect(() => {
-    setShowMining(miningStatus?.Status === "Active" || showMiningResults);
-  }, [miningStatus, showMiningResults]);
+    if (allMiningAttempts !== undefined && currentAttemptId !== undefined) {
+      setCurrentAttempt(allMiningAttempts[currentAttemptId]);
+    } else {
+      setCurrentAttempt(undefined);
+    }
+  }, [currentAttemptId, allMiningAttempts]);
 
   return (
     <IonModal isOpen={isModalVisible} onDidDismiss={destroyModal}>
       <div className="flex flex-col content-center justify-center h-full mx-10">
         <p className="text-xl font-bold text-center text-gray-300 uppercase">
-          {chain?.name} Phonon Mining
+          Phonon Mining
         </p>
         <p className="font-bold text-center text-red-400 uppercase mt-2">
           {errorMessage}
         </p>
-        {showMining ? (
+        {currentAttempt !== undefined ? (
           <div>
-            {miningStatus?.Status === "success" ? (
+            {currentAttempt.Status === "success" ? (
               <div>
                 <div className="w-24 h-24 mx-auto my-4 relative">
                   <img
@@ -136,7 +129,7 @@ const MinePhononModal: React.FC<{
                   New Phonon Mined!
                 </h3>
                 <h4 className="text-sm text-gray-300 mb-8 text-center">
-                  Hash: {abbreviateHash(miningStatus.Hash)}
+                  Hash: {abbreviateHash(currentAttempt.Hash)}
                 </h4>
               </div>
             ) : (
@@ -145,27 +138,11 @@ const MinePhononModal: React.FC<{
                 src="/assets/mining-phonon.gif"
               />
             )}
-            <div>
-              <h3 className="text-lg font-medium text-white">Mining stats</h3>
-              <dl className="mt-2 md:flex justify-between rounded-lg bg-gray-800 overflow-hidden divide-y divide-gray-200 md:divide-y-0 md:divide-x">
-                {miningStats.map((item) => (
-                  <div key={item.Name} className="px-4 py-3">
-                    <dt className="text-base font-normal text-gray-400">
-                      {item.Name}
-                    </dt>
-                    <dd className="mt-1 items-baseline">
-                      <div className="flex items-baseline text-2xl font-semibold text-white">
-                        {item.Stat}
-                      </div>
-                      <div className="text-xs">{item.SubText}</div>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
+
+            <MinePhononStats currentAttempt={currentAttempt} />
 
             <div className="grid grid-cols-1 gap-x-3 mt-4">
-              {miningStatus?.Status !== "success" ? (
+              {currentAttempt.Status !== "success" ? (
                 <IonButton
                   size="large"
                   fill="solid"
@@ -208,11 +185,11 @@ const MinePhononModal: React.FC<{
               min="1"
               max={maxDifficulty}
               value={difficulty}
-              disabled={showMining}
+              disabled={currentAttempt !== undefined}
               {...register("difficulty", {
                 required: true,
                 onChange: async (e) => {
-                  setDifficulty(e.currentTarget.value);
+                  setDifficulty(parseInt(e.currentTarget.value));
                   await trigger();
                 },
                 validate: (value) => {
@@ -231,19 +208,24 @@ const MinePhononModal: React.FC<{
                 fill="solid"
                 expand="full"
                 color="light"
-                disabled={isMiningLoading}
+                disabled={isMiningLoading || currentAttemptId !== undefined}
               >
-                {isMiningLoading ? "STARTING MINING..." : "START MINING"}
+                {isMiningLoading || currentAttemptId !== undefined
+                  ? "STARTING MINING..."
+                  : "START MINING"}
               </IonButton>
-              <IonButton
-                size="large"
-                expand="full"
-                fill="clear"
-                color="medium"
-                onClick={destroyModal}
-              >
-                CANCEL
-              </IonButton>
+
+              {!isMiningLoading && currentAttemptId === undefined && (
+                <IonButton
+                  size="large"
+                  expand="full"
+                  fill="clear"
+                  color="medium"
+                  onClick={destroyModal}
+                >
+                  CANCEL
+                </IonButton>
+              )}
             </div>
           </form>
         )}
