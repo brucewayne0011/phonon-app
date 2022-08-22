@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { IonIcon } from "@ionic/react";
+import { calendarOutline } from "ionicons/icons";
+import { DateTime } from "luxon";
 
 const MinePhononStats: React.FC<{
   currentAttempt: PhononMiningAttemptItem | undefined;
@@ -47,6 +50,45 @@ const MinePhononStats: React.FC<{
           </div>
         ))}
       </dl>
+
+      {currentAttempt !== undefined && (
+        <dl className="mt-2 md:grid md:grid-cols-2 rounded-lg bg-gray-800 overflow-hidden divide-y divide-gray-700 md:divide-y-0 md:divide-x">
+          <div className="px-4 py-3">
+            <dt className="text-base font-normal text-gray-400">
+              Started mining on:
+            </dt>
+            <dd className="mt-1 flex">
+              <IonIcon slot="end" icon={calendarOutline} />
+              <div className="text-xs inline ml-2">
+                {DateTime.fromISO(currentAttempt.StartTime).toLocaleString(
+                  DateTime.DATETIME_MED
+                )}
+              </div>
+            </dd>
+          </div>
+
+          <div className="px-4 py-3">
+            <dt className="text-base font-normal text-gray-400">
+              Completed mining on:
+            </dt>
+            <dd className="mt-1 flex">
+              {DateTime.fromISO(currentAttempt.StopTime) >
+              DateTime.fromISO(currentAttempt.StartTime) ? (
+                <>
+                  <IonIcon slot="end" icon={calendarOutline} />
+                  <div className="text-xs inline ml-2">
+                    {DateTime.fromISO(currentAttempt.StopTime).toLocaleString(
+                      DateTime.DATETIME_MED
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div className="text-xs animate-pulse">still mining...</div>
+              )}
+            </dd>
+          </div>
+        </dl>
+      )}
     </div>
   );
 };
