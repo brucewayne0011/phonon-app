@@ -81,7 +81,8 @@ const MinePhononModal: React.FC<{
       .catch((err) => {
         logger.error(err);
         // handle error
-        setErrorMessage(err.message);
+        if (err.message) setErrorMessage(err.message);
+        else if (err.data) setErrorMessage(err.data);
       });
   };
 
@@ -96,7 +97,8 @@ const MinePhononModal: React.FC<{
       .catch((err) => {
         logger.error(err);
         // handle error
-        setErrorMessage(err.message);
+        if (err.message) setErrorMessage(err.message);
+        else if (err.data) setErrorMessage(err.data);
       });
   };
 
