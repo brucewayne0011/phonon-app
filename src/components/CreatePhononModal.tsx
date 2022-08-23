@@ -132,7 +132,6 @@ export default function CreatePhononModal({
         }
       })
       .catch((err) => {
-        console.error(err);
         if (err.message) setErrorMessage(err.message);
         else if (err.data) setErrorMessage(err.data);
       });
