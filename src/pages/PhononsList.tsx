@@ -30,10 +30,17 @@ const PhononsList: React.FC = () => {
     useMinePhononStatusQuery({ sessionId }, { pollingInterval: 1000 });
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
-  const { data, refetch, isLoading, isFetching, isError } =
-    useFetchPhononsQuery({
-      sessionId,
-    });
+  let { data } = useFetchPhononsQuery({
+    sessionId,
+  });
+  const { refetch, isLoading, isFetching, isError } = useFetchPhononsQuery({
+    sessionId,
+  });
+
+  // if list of Phonons is null, then set to empty array
+  if (data === null) {
+    data = [];
+  }
 
   if (isError || (!isSessionLoading && !activeSession)) {
     //TODO: Improve how this works. It's a bit hacky.
@@ -57,7 +64,10 @@ const PhononsList: React.FC = () => {
           </NoticeBadge>
         )}
         <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
-          <MinePhononButton allMiningAttempts={allMiningAttempts} />
+          <MinePhononButton
+            refetch={refetch}
+            allMiningAttempts={allMiningAttempts}
+          />
           {isAuthenticated && <CreatePhononButton />}
           <ReceivePhononButton />
         </div>

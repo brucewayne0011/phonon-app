@@ -54,14 +54,19 @@ const RedeemPhononModal: React.FC<{
       },
     ];
     await redeemPhonon({ payload, sessionId })
-      .then(() => {
-        destroyModal();
-        // if successful, we remove selected phonon
-        setSelectedPhonon(undefined);
+      .then((response) => {
+        if ("error" in response) {
+          if ("data" in response.error) {
+            setErrorMessage(String(response.error.data));
+          }
+        } else {
+          destroyModal();
+          // if successful, we remove selected phonon
+          setSelectedPhonon(undefined);
+        }
       })
       .catch((err) => {
         setErrorMessage(err.message);
-        console.error(err);
       });
   };
 

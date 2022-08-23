@@ -5,8 +5,9 @@ import { useModal } from "../hooks/useModal";
 import MinePhononModal from "./MinePhononModal";
 
 const MinePhononButton: React.FC<{
+  refetch;
   allMiningAttempts: PhononMiningAttempt | undefined;
-}> = ({ allMiningAttempts }) => {
+}> = ({ refetch, allMiningAttempts }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
   const [activeMiningAttempt, setActiveMiningAttempt] = useState<
     PhononMiningAttemptItem | undefined
@@ -46,6 +47,7 @@ const MinePhononButton: React.FC<{
       </IonButton>
       <MinePhononModal
         {...{
+          refetch,
           isModalVisible,
           hideModal,
           activeMiningAttempt,

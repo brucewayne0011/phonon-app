@@ -82,6 +82,8 @@ const MinePhononStats: React.FC<{
                     )}
                   </div>
                 </>
+              ) : currentAttempt.Status === "error" ? (
+                <div className="text-xs text-red-600">ERROR!</div>
               ) : (
                 <div className="text-xs animate-pulse">still mining...</div>
               )}

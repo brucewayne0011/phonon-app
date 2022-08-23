@@ -22,11 +22,13 @@ export type MindPhononFormData = {
 };
 
 const MinePhononModal: React.FC<{
+  refetch;
   isModalVisible;
   hideModal;
   activeMiningAttempt: PhononMiningAttemptItem | undefined;
   allMiningAttempts: PhononMiningAttempt | undefined;
 }> = ({
+  refetch,
   isModalVisible,
   hideModal,
   activeMiningAttempt,
@@ -48,13 +50,7 @@ const MinePhononModal: React.FC<{
   const difficultyErrorMessage =
     "The difficulty must be between 1 and " + String(maxDifficulty) + "!";
 
-  const destroyModal = () => {
-    setErrorMessage("");
-    hideModal();
-    setCurrentAttemptId(undefined);
-    setCurrentAttempt(undefined);
-  };
-
+  // form set up
   const {
     register,
     handleSubmit,
@@ -63,6 +59,15 @@ const MinePhononModal: React.FC<{
     formState: { errors },
   } = useForm<MindPhononFormData>();
 
+  // event when you close the module
+  const destroyModal = () => {
+    setErrorMessage("");
+    hideModal();
+    setCurrentAttemptId(undefined);
+    setCurrentAttempt(undefined);
+  };
+
+  // event when you start mining a phonon
   const onSubmit = async (data: MindPhononFormData, event) => {
     event.preventDefault();
 
@@ -79,6 +84,7 @@ const MinePhononModal: React.FC<{
       });
   };
 
+  // event when you cancel mining a phonon
   const onCancelMinePhonon = async (event) => {
     event.preventDefault();
 
@@ -89,17 +95,28 @@ const MinePhononModal: React.FC<{
       .catch((err) => {
         logger.error(err);
         // handle error
-        console.log(err);
+        setErrorMessage(err.message);
       });
   };
 
+  // let's set the current attempt
   useEffect(() => {
     if (allMiningAttempts !== undefined && currentAttemptId !== undefined) {
       setCurrentAttempt(allMiningAttempts[currentAttemptId]);
     } else {
-      setCurrentAttempt(undefined);
+      setCurrentAttempt(activeMiningAttempt);
     }
   }, [currentAttemptId, allMiningAttempts]);
+
+  useEffect(() => {
+    if (currentAttempt !== undefined) {
+      if (currentAttempt.Status === "error") {
+        setErrorMessage("There was an error, please try again.");
+      } else if (currentAttempt.Status === "success") {
+        refetch();
+      }
+    }
+  }, [currentAttempt]);
 
   return (
     <IonModal isOpen={isModalVisible} onDidDismiss={destroyModal}>
@@ -132,11 +149,15 @@ const MinePhononModal: React.FC<{
                   Hash: {abbreviateHash(currentAttempt.Hash)}
                 </h4>
               </div>
-            ) : (
+            ) : currentAttempt.Status === "active" ? (
               <img
                 className="w-32 h-32 mx-auto mb-8"
                 src="/assets/mining-phonon.gif"
               />
+            ) : (
+              <div className="animate-pulse text-red-600 text-2xl">
+                WHELP THAT DID NOT WORK!
+              </div>
             )}
 
             <MinePhononStats currentAttempt={currentAttempt} />

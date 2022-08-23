@@ -85,7 +85,7 @@ const UnlockSessionModal: React.FC<UnlockSessionModalProps> = ({
             <IonItem className="my-7">
               <IonInput
                 value={pin}
-                placeholder="Password"
+                placeholder="PIN"
                 type="password"
                 className="text-white"
                 onIonChange={(e) => setPin(e?.detail?.value ?? "")}
