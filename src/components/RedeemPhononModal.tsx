@@ -15,17 +15,10 @@ const RedeemPhononModal: React.FC<{
   isModalVisible;
   hideModal;
   phonon: PhononDTO;
-  selectedPhonon: PhononDTO | undefined;
   setSelectedPhonon: React.Dispatch<
     React.SetStateAction<PhononDTO | undefined>
   >;
-}> = ({
-  isModalVisible,
-  hideModal,
-  phonon,
-  selectedPhonon,
-  setSelectedPhonon,
-}) => {
+}> = ({ isModalVisible, hideModal, phonon, setSelectedPhonon }) => {
   const { sessionId } = useSession();
   const [redeemPhonon, { isLoading }] = useRedeemPhononMutation();
   const [errorMessage, setErrorMessage] = useState("");
@@ -38,12 +31,14 @@ const RedeemPhononModal: React.FC<{
     formState: { errors },
   } = useForm<RedeemPhononFormData>();
 
+  // event to close the modal
   const destroyModal = () => {
     setErrorMessage("");
     hideModal();
     reset();
   };
 
+  // event to redeem a phonon
   const onSubmit = async (data: RedeemPhononFormData, event) => {
     event.preventDefault();
 

@@ -14,6 +14,7 @@ const RedeemPhononButton: React.FC<{
   const { showModal, hideModal, isModalVisible } = useModal();
   const [present] = useIonToast();
 
+  // event to show redeem modal
   const handleOnClick = () => {
     if (!phonon) {
       return present({

@@ -1,4 +1,4 @@
-import { IonButton, IonIcon, useIonToast } from "@ionic/react";
+import { IonButton, IonIcon } from "@ionic/react";
 import { hammerSharp } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { useModal } from "../hooks/useModal";
@@ -13,7 +13,7 @@ const MinePhononButton: React.FC<{
     PhononMiningAttemptItem | undefined
   >(undefined);
 
-  // if one status is "active", then set the status
+  // if one status is "active", then set the active mining attempt
   useEffect(() => {
     setActiveMiningAttempt(undefined);
 

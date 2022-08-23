@@ -1,7 +1,6 @@
 import { IonButton, IonModal } from "@ionic/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import useChainByCurrencyType from "../hooks/useChainByCurrencyType";
 import { CHAINS } from "../constants/chains";
 import { useIsConnected } from "../hooks/useIsConnected";
 import { useSession } from "../hooks/useSession";
@@ -16,17 +15,10 @@ const SendPhononModal: React.FC<{
   isModalVisible;
   hideModal;
   phonon: PhononDTO;
-  selectedPhonon: PhononDTO | undefined;
   setSelectedPhonon: React.Dispatch<
     React.SetStateAction<PhononDTO | undefined>
   >;
-}> = ({
-  isModalVisible,
-  hideModal,
-  phonon,
-  selectedPhonon,
-  setSelectedPhonon,
-}) => {
+}> = ({ isModalVisible, hideModal, phonon, setSelectedPhonon }) => {
   const { sessionId } = useSession();
   const [errorMessage, setErrorMessage] = useState("");
   const [sendPhonon, { isLoading: isSending }] = useSendPhononMutation();

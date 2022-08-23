@@ -16,6 +16,7 @@ const SendPhononButton: React.FC<{
   const { isConnected } = useIsConnected();
   const [present] = useIonToast();
 
+  // event to handle sending phonon
   const handleOnClick = () => {
     if (!isConnected) {
       return present({

@@ -1,9 +1,6 @@
 import { IonButton, IonModal } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useChainByCurrencyType from "../hooks/useChainByCurrencyType";
-import { CHAINS } from "../constants/chains";
-import useChain from "../hooks/useChain";
 import { abbreviateHash } from "../utils/addresses";
 import { useSession } from "../hooks/useSession";
 import MinePhononStats from "./MinePhononStats";
@@ -55,12 +52,11 @@ const MinePhononModal: React.FC<{
   const {
     register,
     handleSubmit,
-    reset,
     trigger,
     formState: { errors },
   } = useForm<MindPhononFormData>();
 
-  // event when you close the module
+  // event when you close the modal
   const destroyModal = () => {
     setCurrentAttemptId(undefined);
     setCurrentAttempt(undefined);
@@ -108,11 +104,12 @@ const MinePhononModal: React.FC<{
   useEffect(() => {
     if (allMiningAttempts !== undefined && currentAttemptId !== undefined) {
       setCurrentAttempt(allMiningAttempts[currentAttemptId]);
-    } else {
+    } else if (activeMiningAttempt !== undefined) {
       setCurrentAttempt(activeMiningAttempt);
     }
-  }, [currentAttemptId, allMiningAttempts]);
+  }, [currentAttemptId, activeMiningAttempt, allMiningAttempts]);
 
+  // additional actions base on current attempt status
   useEffect(() => {
     if (currentAttempt !== undefined) {
       if (currentAttempt.Status === "error") {

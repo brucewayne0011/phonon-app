@@ -165,6 +165,10 @@ export default function CreatePhononModal({
               required: true,
               onChange: () => trigger(),
               validate: async (value) => {
+                if (parseInt(value) === NaN) {
+                  return false;
+                }
+
                 const wei = ethToWei(value);
                 const resp = await checkDenomination({ denomination: wei });
                 //@ts-expect-error - type is wrong

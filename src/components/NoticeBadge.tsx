@@ -5,7 +5,8 @@ const NoticeBadge: React.FC<{
   icon: string;
   theme?: string;
   children?;
-}> = ({ icon, theme = "neutral", children, ...rest }) => {
+}> = ({ icon, theme = "neutral", children }) => {
+  // themes for the badge
   const themes = {
     neutral: {
       bgColor: "bg-gray-300",

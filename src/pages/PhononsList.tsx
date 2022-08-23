@@ -28,8 +28,10 @@ const PhononsList: React.FC = () => {
   const maxMinedPhonons = 30;
   const [minedPhononCount, setMinedPhononCount] = useState(0);
 
-  const { data: allMiningAttempts, refetch: miningStatusRefetch } =
-    useMinePhononStatusQuery({ sessionId }, { pollingInterval: 1000 });
+  const { data: allMiningAttempts } = useMinePhononStatusQuery(
+    { sessionId },
+    { pollingInterval: 1000 }
+  );
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
   let { data } = useFetchPhononsQuery({

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IonIcon } from "@ionic/react";
 import { calendarOutline } from "ionicons/icons";
 import { DateTime } from "luxon";
@@ -8,6 +8,7 @@ const MinePhononStats: React.FC<{
 }> = ({ currentAttempt }) => {
   const miningStats: PhononStatusItem[] = [];
 
+  // let's conditionally add stats to show
   if (currentAttempt !== undefined) {
     if ("Attempts" in currentAttempt) {
       miningStats.push({
