@@ -18,13 +18,15 @@ import SendPhononButton from "../components/SendPhononButton";
 import { useSession } from "../hooks/useSession";
 import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
-import { bulb } from "ionicons/icons";
+import { bulb, hammerSharp } from "ionicons/icons";
 import { useFetchPhononsQuery, useMinePhononStatusQuery } from "../store/api";
 
 const PhononsList: React.FC = () => {
   const { sessionId, activeSession, isSessionLoading } = useSession();
   const { isAuthenticated } = useChain();
   const router = useIonRouter();
+  const maxMinedPhonons = 30;
+  const [minedPhononCount, setMinedPhononCount] = useState(0);
 
   const { data: allMiningAttempts, refetch: miningStatusRefetch } =
     useMinePhononStatusQuery({ sessionId }, { pollingInterval: 1000 });
@@ -53,21 +55,45 @@ const PhononsList: React.FC = () => {
     event.detail.complete();
   }
 
+  // we need to know how many mined phonons are on this card and don't allow more than max
+  useEffect(() => {
+    if (data !== undefined) {
+      setMinedPhononCount(
+        data?.reduce((total, p) => {
+          if (p.CurrencyType === 3) {
+            total++;
+          }
+          return total;
+        }, 0)
+      );
+    }
+  }, [data]);
+
   return (
     <Layout>
       <div className="mx-4">
         <SessionNameHeader />
-        {!isAuthenticated && (
-          <NoticeBadge icon={bulb}>
-            Welcome to the testnet phonon app! Connect your browser wallet to
-            create phonons from your wallet.
-          </NoticeBadge>
-        )}
+        <div className="grid gap-y-2">
+          {!isAuthenticated && (
+            <NoticeBadge icon={bulb}>
+              Welcome to the testnet phonon app! Connect your browser wallet to
+              create phonons from your wallet.
+            </NoticeBadge>
+          )}
+          {minedPhononCount >= maxMinedPhonons && (
+            <NoticeBadge icon={hammerSharp} theme="error">
+              Currently, you cannot mine more than {maxMinedPhonons} PHONONs on
+              a card.
+            </NoticeBadge>
+          )}
+        </div>
         <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
-          <MinePhononButton
-            refetch={refetch}
-            allMiningAttempts={allMiningAttempts}
-          />
+          {minedPhononCount < maxMinedPhonons && (
+            <MinePhononButton
+              refetch={refetch}
+              allMiningAttempts={allMiningAttempts}
+            />
+          )}
           {isAuthenticated && <CreatePhononButton />}
           <ReceivePhononButton />
         </div>
@@ -119,10 +145,12 @@ const PhononsList: React.FC = () => {
               phonon={selectedPhonon}
               {...{ selectedPhonon, setSelectedPhonon }}
             />
-            <RedeemPhononButton
-              phonon={selectedPhonon}
-              {...{ selectedPhonon, setSelectedPhonon }}
-            />
+            {selectedPhonon.CurrencyType !== 3 && (
+              <RedeemPhononButton
+                phonon={selectedPhonon}
+                {...{ selectedPhonon, setSelectedPhonon }}
+              />
+            )}
           </div>
         )}
       </div>

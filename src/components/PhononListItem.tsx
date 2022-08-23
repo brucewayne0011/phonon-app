@@ -39,7 +39,11 @@ const PhononListItem: React.FC<{
           <div>
             <h2 className="text-md uppercase font-black">
               {isGreaterThan(phonon.Denomination, 0) ? (
-                weiToEth(phonon.Denomination)
+                phonon.CurrencyType === 3 ? (
+                  phonon.Denomination
+                ) : (
+                  weiToEth(phonon.Denomination)
+                )
               ) : (
                 <IonSpinner />
               )}{" "}

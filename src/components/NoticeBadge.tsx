@@ -3,17 +3,43 @@ import { IonIcon } from "@ionic/react";
 
 const NoticeBadge: React.FC<{
   icon: string;
+  theme?: string;
   children?;
-}> = ({ icon, children, ...rest }) => {
+}> = ({ icon, theme = "neutral", children, ...rest }) => {
+  const themes = {
+    neutral: {
+      bgColor: "bg-gray-300",
+      bgIconColor: "bg-gray-500",
+      textColor: "text-gray-800",
+    },
+    error: {
+      bgColor: "bg-red-300",
+      bgIconColor: "bg-red-500",
+      textColor: "text-red-800",
+    },
+  };
+
   return (
     <div className="">
-      <div className="p-2 rounded bg-gray-300 shadow-lg sm:p-3">
+      <div
+        className={
+          "p-2 rounded shadow-lg sm:p-3 " + String(themes[theme].bgColor)
+        }
+      >
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">
-            <span className="flex p-2 rounded-lg bg-gray-500">
+            <span
+              className={
+                "flex p-2 rounded-lg " + String(themes[theme].bgIconColor)
+              }
+            >
               <IonIcon color="white" icon={icon} />
             </span>
-            <p className="ml-3 font-medium text-gray-800">{children}</p>
+            <p
+              className={"ml-3 font-medium " + String(themes[theme].textColor)}
+            >
+              {children}
+            </p>
           </div>
         </div>
       </div>
