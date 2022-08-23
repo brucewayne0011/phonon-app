@@ -42,6 +42,7 @@ const MinePhononModal: React.FC<{
   const [currentAttempt, setCurrentAttempt] = useState<
     PhononMiningAttemptItem | undefined
   >(undefined);
+  const [forceFetch, setForceFetch] = useState(false);
 
   const [minePhonon, { isLoading: isMiningLoading }] = useMinePhononMutation();
   const [cancelMinePhonon, { isLoading: isCancelLoading }] =
@@ -61,10 +62,14 @@ const MinePhononModal: React.FC<{
 
   // event when you close the module
   const destroyModal = () => {
-    setErrorMessage("");
-    hideModal();
     setCurrentAttemptId(undefined);
     setCurrentAttempt(undefined);
+    setErrorMessage("");
+    if (forceFetch) {
+      refetch();
+      setForceFetch(false);
+    }
+    hideModal();
   };
 
   // event when you start mining a phonon
@@ -113,7 +118,7 @@ const MinePhononModal: React.FC<{
       if (currentAttempt.Status === "error") {
         setErrorMessage("There was an error, please try again.");
       } else if (currentAttempt.Status === "success") {
-        refetch();
+        setForceFetch(true);
       }
     }
   }, [currentAttempt]);
