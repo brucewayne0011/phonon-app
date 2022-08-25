@@ -55,7 +55,7 @@ export const CHAINS: { [key: string]: Chain } = {
     apiRoute: "api?module=contract&action=getabi",
     baseUrl: "https://api.etherscan.io",
     icon: faQuestionCircle,
-    ticker: "PHONON",
+    ticker: "nPhonon",
     name: "Native",
     textColor: "text-cyan-300",
     bgColor: "bg-cyan-300",

@@ -37,7 +37,7 @@ const PhononListItem: React.FC<{
         <div className="flex items-center">
           <div>{isChainValid ? <ChainBadge chain={chain} /> : null}</div>
           <div>
-            <h2 className="text-md uppercase font-black">
+            <h2 className="text-md font-black">
               {isGreaterThan(phonon.Denomination, 0) ? (
                 phonon.CurrencyType === 3 ? (
                   phonon.Denomination
