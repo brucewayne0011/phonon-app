@@ -23,7 +23,6 @@ const SendPhononModal: React.FC<{
   const [errorMessage, setErrorMessage] = useState("");
   const [sendPhonon, { isLoading: isSending }] = useSendPhononMutation();
   const [pair, { isLoading: isPairing }] = usePairMutation();
-  //   const { chain } = useChainByCurrencyType(phonon.CurrencyType);
   const chain = CHAINS[phonon.ChainID] ?? null;
   const { isConnected } = useIsConnected();
 
