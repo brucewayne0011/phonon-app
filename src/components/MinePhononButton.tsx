@@ -43,7 +43,7 @@ const MinePhononButton: React.FC<{
               : ""
           }
         />
-        {activeMiningAttempt !== undefined ? "Mining..." : "Mine"}
+        {!activeMiningAttempt ? "Mine" : "Mining..."}
       </IonButton>
       <MinePhononModal
         {...{
