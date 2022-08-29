@@ -146,7 +146,7 @@ const MinePhononModal: React.FC<{
                   />
                 </div>
 
-                <h3 className="text-xl font-bold text-center">
+                <h3 className="text-xl text-white font-bold text-center">
                   New Phonon Mined!
                 </h3>
                 <h4 className="text-sm text-gray-300 mb-8 text-center">
@@ -199,7 +199,7 @@ const MinePhononModal: React.FC<{
             {errors?.difficulty && (
               <FormErrorText>{difficultyErrorMessage}</FormErrorText>
             )}
-            <span className="my-4">
+            <span className="my-4 text-white">
               Set the mining difficulty. The higher the difficulty, the longer
               it will take to mine a phonon.
             </span>

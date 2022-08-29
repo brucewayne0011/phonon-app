@@ -46,7 +46,7 @@ const MinePhononStats: React.FC<{
               <div className="flex items-baseline text-2xl font-semibold text-white">
                 {item.Stat}
               </div>
-              <div className="text-xs">{item.SubText}</div>
+              <div className="text-xs text-gray-400">{item.SubText}</div>
             </dd>
           </div>
         ))}
@@ -58,7 +58,7 @@ const MinePhononStats: React.FC<{
             <dt className="text-base font-normal text-gray-400">
               Started mining on:
             </dt>
-            <dd className="mt-1 flex">
+            <dd className="mt-1 flex text-white">
               <IonIcon slot="end" icon={calendarOutline} />
               <div className="text-xs inline ml-2">
                 {DateTime.fromISO(currentAttempt.StartTime).toLocaleString(
@@ -72,7 +72,7 @@ const MinePhononStats: React.FC<{
             <dt className="text-base font-normal text-gray-400">
               Completed mining on:
             </dt>
-            <dd className="mt-1 flex">
+            <dd className="mt-1 flex text-white">
               {DateTime.fromISO(currentAttempt.StopTime) >
               DateTime.fromISO(currentAttempt.StartTime) ? (
                 <>
