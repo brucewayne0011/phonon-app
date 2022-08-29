@@ -76,16 +76,16 @@ type RedeemPhononDTO = {
 };
 
 enum MiningStatus {
-  Inactive,
-  Success,
-  Active,
-  Canceled,
-  Error,
+  Inactive = "inactive",
+  Success = "success",
+  Active = "active",
+  Canceled = "canceled",
+  Error = "error",
 }
 
 type PhononMiningAttemptItem = {
   Attempts: number;
-  Status: string;
+  Status: MiningStatus;
   TimeElapsed: number;
   StartTime: string;
   StopTime: string;
