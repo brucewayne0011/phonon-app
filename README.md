@@ -77,11 +77,6 @@ The user interface is built using [React](https://reactjs.org) with [Tailwind](h
 
 State is managed using [Redux Toolkit](https://redux-toolkit.js.org/). This gives us a simple, hooks-based way to sync state with the backend service ([phonon-client](https://github.com/GridPlus/phonon-client)).
 
-### Postman Collection for Phonon Client API
-To make development easier, this Postman collection provides the client endpoints for the Phonon client.
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2534516-58edc5bc-2aad-4be7-8161-68bdeb53f0ef?action=collection%2Ffork&collection-url=entityId%3D2534516-58edc5bc-2aad-4be7-8161-68bdeb53f0ef%26entityType%3Dcollection%26workspaceId%3D919c8e6a-c64b-4795-98cc-5732c80df95d)
-
 ## Contributing
 
 Pick up an unassigned ticket from the issues on this repo, do your work on a new branch, then open a PR targeting the `master` branch.
