@@ -59,16 +59,9 @@ const PhononsList: React.FC = () => {
 
   // we need to know how many mined phonons are on this card and don't allow more than max
   useEffect(() => {
-    if (data !== undefined) {
-      setMinedPhononCount(
-        data?.reduce((total, p) => {
-          if (p.CurrencyType === 3) {
-            total++;
-          }
-          return total;
-        }, 0)
-      );
-    }
+    setMinedPhononCount(
+      !data ? 0 : data.filter((p) => p.CurrencyType === 3).length
+    );
   }, [data]);
 
   return (
@@ -115,7 +108,7 @@ const PhononsList: React.FC = () => {
             </IonRefresher>
 
             <IonList className="overflow-auto max-h-[calc(100vh_-_350px)] rounded mb-5">
-              {data !== undefined && data.length > 0 ? (
+              {data ? (
                 data?.map((p) => (
                   <ErrorBoundary
                     FallbackComponent={({ error }) => (
