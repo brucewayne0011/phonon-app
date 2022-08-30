@@ -34,12 +34,6 @@ type PhononPair = {
   url: string;
 };
 
-enum CurrencyType {
-  BTC,
-  ETH,
-  OTHER,
-}
-
 type DescriptorDTO = {
   index: number;
   currencyType: number;

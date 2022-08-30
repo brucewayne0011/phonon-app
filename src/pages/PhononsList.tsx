@@ -108,7 +108,7 @@ const PhononsList: React.FC = () => {
             </IonRefresher>
 
             <IonList className="overflow-auto max-h-[calc(100vh_-_350px)] rounded mb-5">
-              {data ? (
+              {data && data.length > 0 ? (
                 data?.map((p) => (
                   <ErrorBoundary
                     FallbackComponent={({ error }) => (
