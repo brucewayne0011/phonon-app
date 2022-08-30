@@ -56,7 +56,7 @@ export const api = createApi({
     >({
       query: ({ sessionId }) => `/cards/${sessionId}/connectionStatus`,
     }),
-    fetchPhonons: builder.query<PhononDTO[], { sessionId: string }>({
+    fetchPhonons: builder.query<PhononDTO[] | null, { sessionId: string }>({
       query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
       providesTags: ["Phonon"],
     }),

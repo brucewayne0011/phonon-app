@@ -34,17 +34,12 @@ const PhononsList: React.FC = () => {
   );
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
-  let { data } = useFetchPhononsQuery({
+  const { data } = useFetchPhononsQuery({
     sessionId,
   });
   const { refetch, isLoading, isFetching, isError } = useFetchPhononsQuery({
     sessionId,
   });
-
-  // if list of Phonons is null, then set to empty array
-  if (data === null) {
-    data = [];
-  }
 
   if (isError || (!isSessionLoading && !activeSession)) {
     //TODO: Improve how this works. It's a bit hacky.
