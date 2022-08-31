@@ -19,8 +19,9 @@ import { useSession } from "../hooks/useSession";
 import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
 import { bulb, hammerSharp } from "ionicons/icons";
-import { useFetchPhononsQuery, useMinePhononStatusQuery } from "../store/api";
+import { useFetchPhononsQuery } from "../store/api";
 import { isNativePhonon } from "../utils/validation";
+import { FEATUREFLAGS } from "../constants/feature-flags";
 
 const PhononsList: React.FC = () => {
   const { sessionId, activeSession, isSessionLoading } = useSession();
@@ -28,11 +29,6 @@ const PhononsList: React.FC = () => {
   const router = useIonRouter();
   const maxMinedPhonons = 30;
   const [minedPhononCount, setMinedPhononCount] = useState(0);
-
-  const { data: allMiningAttempts } = useMinePhononStatusQuery(
-    { sessionId },
-    { pollingInterval: 1000 }
-  );
 
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
   const { data } = useFetchPhononsQuery({
@@ -77,11 +73,8 @@ const PhononsList: React.FC = () => {
           )}
         </div>
         <div className="flex gap-x-2 justify-between md:justify-start md:gap-x-5 my-3">
-          {minedPhononCount < maxMinedPhonons && (
-            <MinePhononButton
-              refetch={refetch}
-              allMiningAttempts={allMiningAttempts}
-            />
+          {FEATUREFLAGS.enableMining && minedPhononCount < maxMinedPhonons && (
+            <MinePhononButton refetch={refetch} sessionId={sessionId} />
           )}
           {isAuthenticated && <CreatePhononButton />}
           <ReceivePhononButton />
