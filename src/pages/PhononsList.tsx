@@ -20,6 +20,7 @@ import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
 import { bulb, hammerSharp } from "ionicons/icons";
 import { useFetchPhononsQuery, useMinePhononStatusQuery } from "../store/api";
+import { isNativePhonon } from "../utils/validation";
 
 const PhononsList: React.FC = () => {
   const { sessionId, activeSession, isSessionLoading } = useSession();
@@ -54,9 +55,7 @@ const PhononsList: React.FC = () => {
 
   // we need to know how many mined phonons are on this card and don't allow more than max
   useEffect(() => {
-    setMinedPhononCount(
-      !data ? 0 : data.filter((p) => p.CurrencyType === 3).length
-    );
+    setMinedPhononCount(!data ? 0 : data.filter(isNativePhonon).length);
   }, [data]);
 
   return (
