@@ -4,15 +4,21 @@ import React, { useEffect, useState } from "react";
 import { useModal } from "../hooks/useModal";
 import { isValidMiningAttempt } from "../utils/validation";
 import MinePhononModal from "./MinePhononModal";
+import { useMinePhononStatusQuery } from "../store/api";
 
 const MinePhononButton: React.FC<{
   refetch;
-  allMiningAttempts: PhononMiningAttempt | undefined;
-}> = ({ refetch, allMiningAttempts }) => {
+  sessionId;
+}> = ({ refetch, sessionId }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
   const [activeMiningAttemptId, setActiveMiningAttemptId] = useState<
     string | undefined
   >(undefined);
+
+  const { data: allMiningAttempts } = useMinePhononStatusQuery(
+    { sessionId },
+    { pollingInterval: 1000 }
+  );
 
   // if one status is "active", then set the active mining attempt
   useEffect(() => {
