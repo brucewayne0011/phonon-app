@@ -4,32 +4,32 @@ import { calendarOutline } from "ionicons/icons";
 import { DateTime } from "luxon";
 
 const MinePhononStats: React.FC<{
-  currentAttempt: PhononMiningAttemptItem | undefined;
-}> = ({ currentAttempt }) => {
+  activeMiningAttempt: PhononMiningAttemptItem | undefined;
+}> = ({ activeMiningAttempt }) => {
   const miningStats: PhononStatusItem[] = [];
 
   // let's conditionally add stats to show
-  if (currentAttempt !== undefined) {
-    if ("Attempts" in currentAttempt) {
+  if (activeMiningAttempt !== undefined) {
+    if ("Attempts" in activeMiningAttempt) {
       miningStats.push({
         Name: "Attempts",
-        Stat: String(currentAttempt.Attempts),
+        Stat: String(activeMiningAttempt.Attempts),
         SubText: "",
       });
     }
 
-    if ("TimeElapsed" in currentAttempt) {
+    if ("TimeElapsed" in activeMiningAttempt) {
       miningStats.push({
         Name: "Time Elapsed",
-        Stat: String(currentAttempt.TimeElapsed / 1000),
+        Stat: String(activeMiningAttempt.TimeElapsed / 1000),
         SubText: "seconds",
       });
     }
 
-    if ("AverageTime" in currentAttempt) {
+    if ("AverageTime" in activeMiningAttempt) {
       miningStats.push({
         Name: "Avg. Time",
-        Stat: String(currentAttempt.AverageTime / 1000),
+        Stat: String(activeMiningAttempt.AverageTime / 1000),
         SubText: "seconds",
       });
     }
@@ -52,7 +52,7 @@ const MinePhononStats: React.FC<{
         ))}
       </dl>
 
-      {currentAttempt !== undefined && (
+      {activeMiningAttempt !== undefined && (
         <dl className="mt-2 md:grid md:grid-cols-2 rounded-lg bg-gray-800 overflow-hidden divide-y divide-gray-700 md:divide-y-0 md:divide-x">
           <div className="px-4 py-3">
             <dt className="text-base font-normal text-gray-400">
@@ -61,7 +61,7 @@ const MinePhononStats: React.FC<{
             <dd className="mt-1 flex text-white">
               <IonIcon slot="end" icon={calendarOutline} />
               <div className="text-xs inline ml-2">
-                {DateTime.fromISO(currentAttempt.StartTime).toLocaleString(
+                {DateTime.fromISO(activeMiningAttempt.StartTime).toLocaleString(
                   DateTime.DATETIME_MED
                 )}
               </div>
@@ -73,17 +73,17 @@ const MinePhononStats: React.FC<{
               Completed mining on:
             </dt>
             <dd className="mt-1 flex text-white">
-              {DateTime.fromISO(currentAttempt.StopTime) >
-              DateTime.fromISO(currentAttempt.StartTime) ? (
+              {DateTime.fromISO(activeMiningAttempt.StopTime) >
+              DateTime.fromISO(activeMiningAttempt.StartTime) ? (
                 <>
                   <IonIcon slot="end" icon={calendarOutline} />
                   <div className="text-xs inline ml-2">
-                    {DateTime.fromISO(currentAttempt.StopTime).toLocaleString(
-                      DateTime.DATETIME_MED
-                    )}
+                    {DateTime.fromISO(
+                      activeMiningAttempt.StopTime
+                    ).toLocaleString(DateTime.DATETIME_MED)}
                   </div>
                 </>
-              ) : currentAttempt.Status === "error" ? (
+              ) : activeMiningAttempt.Status === "error" ? (
                 <div className="text-xs text-red-600">ERROR!</div>
               ) : (
                 <div className="text-xs animate-pulse">still mining...</div>

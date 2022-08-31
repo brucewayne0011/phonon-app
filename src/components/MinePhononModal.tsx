@@ -1,5 +1,5 @@
 import { IonButton, IonModal } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { abbreviateHash } from "../utils/addresses";
 import { useSession } from "../hooks/useSession";
@@ -22,24 +22,22 @@ const MinePhononModal: React.FC<{
   refetch;
   isModalVisible;
   hideModal;
-  activeMiningAttempt: PhononMiningAttemptItem | undefined;
+  activeMiningAttemptId: string | undefined;
   allMiningAttempts: PhononMiningAttempt | undefined;
 }> = ({
   refetch,
   isModalVisible,
   hideModal,
-  activeMiningAttempt,
+  activeMiningAttemptId,
   allMiningAttempts,
 }) => {
   const { sessionId } = useSession();
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [currentAttemptId, setCurrentAttemptId] = useState<string | undefined>(
-    undefined
-  );
-  const [currentAttempt, setCurrentAttempt] = useState<
-    PhononMiningAttemptItem | undefined
-  >(undefined);
+
   const [forceFetch, setForceFetch] = useState(false);
+  const [currentMiningAttemptId, setCurrentMiningAttemptId] = useState<
+    string | undefined
+  >(undefined);
 
   const [minePhonon, { isLoading: isMiningLoading }] = useMinePhononMutation();
   const [cancelMinePhonon, { isLoading: isCancelLoading }] =
@@ -58,8 +56,7 @@ const MinePhononModal: React.FC<{
 
   // event when you close the modal
   const destroyModal = () => {
-    setCurrentAttemptId(undefined);
-    setCurrentAttempt(undefined);
+    setCurrentMiningAttemptId(undefined);
     setErrorMessage("");
     if (forceFetch) {
       refetch();
@@ -72,27 +69,25 @@ const MinePhononModal: React.FC<{
   const onSubmit = async (data: MindPhononFormData, event) => {
     event.preventDefault();
 
-    await minePhonon({ sessionId, difficulty })
-      .then((response) => {
-        if ("data" in response) {
-          setCurrentAttemptId(response.data.AttemptId);
-        }
-      })
-      .catch((err) => {
-        logger.error(err);
-        // handle error
-        if (err.message) setErrorMessage(err.message);
-        else if (err.data) setErrorMessage(err.data);
-      });
+    setErrorMessage("");
+
+    await minePhonon({ sessionId, difficulty }).catch((err) => {
+      logger.error(err);
+      // handle error
+      if (err.message) setErrorMessage(err.message);
+      else if (err.data) setErrorMessage(err.data);
+    });
   };
 
   // event when you cancel mining a phonon
   const onCancelMinePhonon = async (event) => {
     event.preventDefault();
 
+    setErrorMessage("");
+
     await cancelMinePhonon({ sessionId })
       .then(() => {
-        setCurrentAttemptId(undefined);
+        setCurrentMiningAttemptId(undefined);
       })
       .catch((err) => {
         logger.error(err);
@@ -102,25 +97,28 @@ const MinePhononModal: React.FC<{
       });
   };
 
-  // let's set the current attempt
-  useEffect(() => {
-    if (allMiningAttempts !== undefined && currentAttemptId !== undefined) {
-      setCurrentAttempt(allMiningAttempts[currentAttemptId]);
-    } else if (activeMiningAttempt !== undefined) {
-      setCurrentAttempt(activeMiningAttempt);
-    }
-  }, [currentAttemptId, activeMiningAttempt, allMiningAttempts]);
-
   // additional actions base on current attempt status
   useEffect(() => {
-    if (currentAttempt !== undefined) {
-      if (currentAttempt.Status === "error") {
+    if (activeMiningAttemptId && allMiningAttempts) {
+      // if there's an error display the error
+      if (allMiningAttempts[activeMiningAttemptId].Status === "error") {
         setErrorMessage("There was an error, please try again.");
-      } else if (currentAttempt.Status === "success") {
+      } else if (
+        allMiningAttempts[activeMiningAttemptId].Status === "success"
+      ) {
         setForceFetch(true);
       }
     }
-  }, [currentAttempt]);
+  }, [activeMiningAttemptId, allMiningAttempts]);
+
+  // we only want to run this each time the modal is opened
+  const modalInit = useCallback(() => {
+    if (activeMiningAttemptId && isModalVisible) {
+      setCurrentMiningAttemptId(activeMiningAttemptId);
+    }
+  }, [activeMiningAttemptId, setCurrentMiningAttemptId, isModalVisible]);
+
+  useEffect(modalInit, [modalInit]);
 
   return (
     <IonModal isOpen={isModalVisible} onDidDismiss={destroyModal}>
@@ -131,9 +129,9 @@ const MinePhononModal: React.FC<{
         <p className="font-bold text-center text-red-400 uppercase mt-2">
           {errorMessage}
         </p>
-        {currentAttempt !== undefined ? (
+        {allMiningAttempts && currentMiningAttemptId ? (
           <div>
-            {currentAttempt.Status === "success" ? (
+            {allMiningAttempts[currentMiningAttemptId].Status === "success" ? (
               <div>
                 <div className="w-24 h-24 mx-auto my-4 relative">
                   <img
@@ -150,10 +148,14 @@ const MinePhononModal: React.FC<{
                   New Phonon Mined!
                 </h3>
                 <h4 className="text-sm text-gray-300 mb-8 text-center">
-                  Hash: {abbreviateHash(currentAttempt.Hash)}
+                  Hash:{" "}
+                  {abbreviateHash(
+                    allMiningAttempts[currentMiningAttemptId].Hash
+                  )}
                 </h4>
               </div>
-            ) : currentAttempt.Status === "active" ? (
+            ) : allMiningAttempts[currentMiningAttemptId].Status ===
+              "active" ? (
               <img
                 className="w-32 h-32 mx-auto mb-8"
                 src="/assets/mining-phonon.gif"
@@ -164,10 +166,13 @@ const MinePhononModal: React.FC<{
               </div>
             )}
 
-            <MinePhononStats currentAttempt={currentAttempt} />
+            <MinePhononStats
+              activeMiningAttempt={allMiningAttempts[currentMiningAttemptId]}
+            />
 
             <div className="grid grid-cols-1 gap-x-3 mt-4">
-              {currentAttempt.Status !== "success" ? (
+              {allMiningAttempts[currentMiningAttemptId].Status !==
+              "success" ? (
                 <IonButton
                   size="large"
                   fill="solid"
@@ -210,7 +215,7 @@ const MinePhononModal: React.FC<{
               min="1"
               max={maxDifficulty}
               value={difficulty}
-              disabled={currentAttempt !== undefined}
+              disabled={!!activeMiningAttemptId}
               {...register("difficulty", {
                 required: true,
                 onChange: async (e) => {
@@ -233,14 +238,14 @@ const MinePhononModal: React.FC<{
                 fill="solid"
                 expand="full"
                 color="light"
-                disabled={isMiningLoading || currentAttemptId !== undefined}
+                disabled={isMiningLoading || !!activeMiningAttemptId}
               >
-                {isMiningLoading || currentAttemptId !== undefined
+                {isMiningLoading || !!activeMiningAttemptId
                   ? "STARTING MINING..."
                   : "START MINING"}
               </IonButton>
 
-              {!isMiningLoading && currentAttemptId === undefined && (
+              {!isMiningLoading && !activeMiningAttemptId && (
                 <IonButton
                   size="large"
                   expand="full"

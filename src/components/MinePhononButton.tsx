@@ -10,17 +10,17 @@ const MinePhononButton: React.FC<{
   allMiningAttempts: PhononMiningAttempt | undefined;
 }> = ({ refetch, allMiningAttempts }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
-  const [activeMiningAttempt, setActiveMiningAttempt] = useState<
-    PhononMiningAttemptItem | undefined
+  const [activeMiningAttemptId, setActiveMiningAttemptId] = useState<
+    string | undefined
   >(undefined);
 
   // if one status is "active", then set the active mining attempt
   useEffect(() => {
-    setActiveMiningAttempt(undefined);
+    setActiveMiningAttemptId(undefined);
 
     miningAttemptCheck: for (const attemptId in allMiningAttempts) {
       if (isValidMiningAttempt(allMiningAttempts[attemptId])) {
-        setActiveMiningAttempt(allMiningAttempts[attemptId]);
+        setActiveMiningAttemptId(attemptId);
         // if we found one, abort, we only find the first
         break miningAttemptCheck;
       }
@@ -41,19 +41,19 @@ const MinePhononButton: React.FC<{
           slot="end"
           icon={hammerSharp}
           className={
-            activeMiningAttempt !== undefined
+            activeMiningAttemptId !== undefined
               ? "motion-safe:animate-bounce"
               : ""
           }
         />
-        {!activeMiningAttempt ? "Mine" : "Mining..."}
+        {!activeMiningAttemptId ? "Mine" : "Mining..."}
       </IonButton>
       <MinePhononModal
         {...{
           refetch,
           isModalVisible,
           hideModal,
-          activeMiningAttempt,
+          activeMiningAttemptId,
           allMiningAttempts,
         }}
       />
