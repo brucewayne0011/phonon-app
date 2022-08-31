@@ -14,3 +14,9 @@ export const isValidCardPin = (pin: string) => !!pin.match(/^[0-9]{6}$/);
 export const isNativePhonon = (phonon: PhononDTO) => {
   return phonon.ChainID === 0;
 };
+
+export const isValidMiningAttempt = (
+  miningAttempt: PhononMiningAttemptItem
+) => {
+  return miningAttempt.Status === "active";
+};

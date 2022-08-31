@@ -2,6 +2,7 @@ import { IonButton, IonIcon } from "@ionic/react";
 import { hammerSharp } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { useModal } from "../hooks/useModal";
+import { isValidMiningAttempt } from "../utils/validation";
 import MinePhononModal from "./MinePhononModal";
 
 const MinePhononButton: React.FC<{
@@ -17,9 +18,11 @@ const MinePhononButton: React.FC<{
   useEffect(() => {
     setActiveMiningAttempt(undefined);
 
-    for (const attemptId in allMiningAttempts) {
-      if (allMiningAttempts[attemptId].Status === "active") {
+    miningAttemptCheck: for (const attemptId in allMiningAttempts) {
+      if (isValidMiningAttempt(allMiningAttempts[attemptId])) {
         setActiveMiningAttempt(allMiningAttempts[attemptId]);
+        // if we found one, abort, we only find the first
+        break miningAttemptCheck;
       }
     }
   }, [allMiningAttempts]);
