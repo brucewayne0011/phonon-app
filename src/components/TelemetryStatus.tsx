@@ -7,7 +7,7 @@ export const TelemetryStatus: React.FC = () => {
   const [isOnline, setIsOnline] = useState<boolean>(false);
 
   const { error } = useTelemetryStatusQuery(undefined, {
-    pollingInterval: 3000,
+    pollingInterval: 30000,
   });
 
   useEffect(() => {
