@@ -11,15 +11,14 @@ export type RedeemPhononFormData = {
   redeemAddress: string;
 };
 
-export default function RedeemPhononModal({
-  isModalVisible,
-  hideModal,
-  phonon,
-}: {
-  isModalVisible: boolean;
-  hideModal: () => void;
+const RedeemPhononModal: React.FC<{
+  isModalVisible;
+  hideModal;
   phonon: PhononDTO;
-}) {
+  setSelectedPhonon: React.Dispatch<
+    React.SetStateAction<PhononDTO | undefined>
+  >;
+}> = ({ isModalVisible, hideModal, phonon, setSelectedPhonon }) => {
   const { sessionId } = useSession();
   const [redeemPhonon, { isLoading }] = useRedeemPhononMutation();
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,14 +31,17 @@ export default function RedeemPhononModal({
     formState: { errors },
   } = useForm<RedeemPhononFormData>();
 
+  // event to close the modal
   const destroyModal = () => {
     setErrorMessage("");
     hideModal();
     reset();
   };
 
+  // event to redeem a phonon
   const onSubmit = async (data: RedeemPhononFormData, event) => {
     event.preventDefault();
+
     const payload = [
       {
         P: phonon,
@@ -47,10 +49,21 @@ export default function RedeemPhononModal({
       },
     ];
     await redeemPhonon({ payload, sessionId })
-      .then(destroyModal)
+      .unwrap()
+      .then(() => {
+        // close the modal
+        destroyModal();
+        // we remove selected phonon
+        setSelectedPhonon(undefined);
+      })
       .catch((err) => {
-        setErrorMessage(err.message);
-        console.error(err);
+        if (Array.isArray(err?.data)) {
+          const firstError = [...err.data].shift();
+
+          if (firstError) {
+            setErrorMessage(firstError.Err);
+          }
+        }
       });
   };
 
@@ -67,10 +80,7 @@ export default function RedeemPhononModal({
           {`${weiToEth(phonon.Denomination)} ${chain ? chain.ticker : "ERR"}`}
         </p>
 
-        <form
-          className="flex flex-col mt-10 gap-10"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col mt-12" onSubmit={handleSubmit(onSubmit)}>
           <input
             className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
             placeholder="Redeem Address"
@@ -82,29 +92,33 @@ export default function RedeemPhononModal({
           {errors?.redeemAddress?.type === "required" && (
             <FormErrorText>Redeem address is required</FormErrorText>
           )}
-          <IonButton
-            key="submit"
-            size="large"
-            type="submit"
-            fill="solid"
-            expand="full"
-            color="tertiary"
-            disabled={isLoading}
-          >
-            REDEEM
-          </IonButton>
-          <IonButton
-            size="large"
-            expand="full"
-            fill="clear"
-            color="medium"
-            onClick={destroyModal}
-            disabled={isLoading}
-          >
-            CANCEL
-          </IonButton>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 mt-4">
+            <IonButton
+              key="submit"
+              size="large"
+              type="submit"
+              fill="solid"
+              expand="full"
+              color="tertiary"
+              disabled={isLoading}
+            >
+              REDEEM
+            </IonButton>
+            <IonButton
+              size="large"
+              expand="full"
+              fill="clear"
+              color="medium"
+              onClick={destroyModal}
+              disabled={isLoading}
+            >
+              CANCEL
+            </IonButton>
+          </div>
         </form>
       </div>
     </IonModal>
   );
-}
+};
+
+export default RedeemPhononModal;

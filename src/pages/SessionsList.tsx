@@ -9,9 +9,9 @@ const SessionsPage: React.FC = () => {
 
   return (
     <>
-      <h2 className="my-2 text-xl text-center">Wallets</h2>
+      <h2 className="my-2 text-xl text-center">Your Cards</h2>
       {data && (
-        <IonList>
+        <IonList className="rounded">
           {data.map((session) => (
             <SessionListItem session={session} key={session.Id} />
           ))}

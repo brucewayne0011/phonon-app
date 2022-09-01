@@ -14,9 +14,10 @@ export const ConnectButton: React.FC = () => {
   );
   const isConnected = !!data?.ConnectionStatus;
 
+  // only show if connected
   if (isConnected) {
     return (
-      <IonBadge color="success" className="mr-2">
+      <IonBadge color="success" className="mr-2 hidden md:flex">
         Connected to Server
       </IonBadge>
     );

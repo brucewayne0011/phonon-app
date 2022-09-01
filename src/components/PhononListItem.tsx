@@ -5,6 +5,7 @@ import "../index.css";
 import { abbreviateHash } from "../utils/addresses";
 import { weiToEth } from "../utils/denomination";
 import { isGreaterThan } from "../utils/math";
+import { isNativePhonon } from "../utils/validation";
 import ChainBadge from "./ChainBadge";
 
 const PhononListItem: React.FC<{
@@ -37,9 +38,13 @@ const PhononListItem: React.FC<{
         <div className="flex items-center">
           <div>{isChainValid ? <ChainBadge chain={chain} /> : null}</div>
           <div>
-            <h2 className="text-md uppercase font-black">
+            <h2 className="text-md font-black">
               {isGreaterThan(phonon.Denomination, 0) ? (
-                weiToEth(phonon.Denomination)
+                isNativePhonon(phonon) ? (
+                  phonon.Denomination
+                ) : (
+                  weiToEth(phonon.Denomination)
+                )
               ) : (
                 <IonSpinner />
               )}{" "}

@@ -96,7 +96,7 @@ export default function CreatePhononModal({
                 .then(async (response) => {
                   if (response) {
                     const Phonon = { ...phonon, ChainID };
-                    console.log({ Phonon });
+
                     const payload = [
                       {
                         Phonon,
@@ -132,7 +132,6 @@ export default function CreatePhononModal({
         }
       })
       .catch((err) => {
-        console.error(err);
         if (err.message) setErrorMessage(err.message);
         else if (err.data) setErrorMessage(err.data);
       });
@@ -148,7 +147,7 @@ export default function CreatePhononModal({
           {errorMessage}
         </p>
         <form
-          className="flex flex-col mt-10 gap-10"
+          className="flex flex-col mt-12"
           onSubmit={handleSubmit(onSubmitSingle)}
         >
           {errors?.amount?.type === "required" && (
@@ -165,6 +164,10 @@ export default function CreatePhononModal({
               required: true,
               onChange: () => trigger(),
               validate: async (value) => {
+                if (parseInt(value) === NaN) {
+                  return false;
+                }
+
                 const wei = ethToWei(value);
                 const resp = await checkDenomination({ denomination: wei });
                 //@ts-expect-error - type is wrong
@@ -173,28 +176,29 @@ export default function CreatePhononModal({
               },
             })}
           />
-
-          <IonButton
-            key="submit"
-            size="large"
-            type="submit"
-            fill="solid"
-            expand="full"
-            color="primary"
-            disabled={isPending || !!errors.amount}
-          >
-            CREATE
-          </IonButton>
-          <IonButton
-            size="large"
-            expand="full"
-            fill="clear"
-            color="medium"
-            onClick={destroyModal}
-            disabled={isPending}
-          >
-            CANCEL
-          </IonButton>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 mt-4">
+            <IonButton
+              key="submit"
+              size="large"
+              type="submit"
+              fill="solid"
+              expand="full"
+              color="primary"
+              disabled={isPending || !!errors.amount}
+            >
+              CREATE
+            </IonButton>
+            <IonButton
+              size="large"
+              expand="full"
+              fill="clear"
+              color="medium"
+              onClick={destroyModal}
+              disabled={isPending}
+            >
+              CANCEL
+            </IonButton>
+          </div>
         </form>
       </div>
     </IonModal>
