@@ -110,7 +110,7 @@ sequenceDiagram
 ```
 
 ### Precommit Hooks
-This repo utilizes [Husky](https://typicode.github.io/husky/#/) to run precommit hooks.  The precommit hooks run a series of lint and style checks.  This insures consistent code structure and formatting.
+This repo utilizes [Husky](https://typicode.github.io/husky/#/) to run precommit hooks.  The precommit hooks run a series of lint and style checks.  This ensures consistent code structure and formatting.
 
 If you're using [VSCode](https://code.visualstudio.com/) to develop, you can install the following extensions to help with linting and styling of your code:
 1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
