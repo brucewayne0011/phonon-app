@@ -66,7 +66,7 @@ with your IP address in the command, so the app knows where to look for changes.
 ## Mining Native Phonons
 By default mining native phonons is disabled in the UI.  You can enable this, but before you do, it's important to know the caveats.
 
-**CAVEATS/KNOWN BUGS**: You can brick your Phonon card. Mining native phonons with high levels of difficulty can result in the card running out of memory.  The card will not show a mix of Mined Native Phonons and Phonons.  If you'd like to test mining, make sure you don't have any Phonons on your card.  Do not try to create a Phonon before or after mining a Native Phonon.
+**CAVEATS/KNOWN BUGS**: You can brick your Phonon card. If you'd like to test mining, make sure you NEVER had any backed Phonons created on the card. Even if you created and destroyed a backed Phonon on the card it may still run out of memory. Proceed at your own risk!
 
 To enable mining Native Phonons in the UI, toggle the `enableMining` in `src/constants/feature-flags.ts` to *true*.
 
