@@ -97,6 +97,9 @@ export const api = createApi({
         method: "PUT",
       }),
     }),
+    telemetryStatus: builder.query<void, void>({
+      query: () => `/telemetryCheck`,
+    }),
     setDescriptor: builder.mutation<void, DescriptorDTO>({
       query: ({ index, currencyType, sessionId, value }) => ({
         url: `cards/${sessionId}/phonon/${index}/setDescriptor`,
@@ -172,6 +175,7 @@ export const {
   useMinePhononMutation,
   useMinePhononStatusQuery,
   useCancelMinePhononMutation,
+  useTelemetryStatusQuery,
   useInitDepositMutation,
   useFinalizeDepositMutation,
   useSetDescriptorMutation,
