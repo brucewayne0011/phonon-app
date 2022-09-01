@@ -53,7 +53,7 @@ const InitSessionModal: React.FC<InitSessionModalProps> = ({
               Initialize {displayName}
             </h1>
           </IonText>
-          <p className="mt-10 text-lg text-bold text-center">
+          <p className="mt-10 text-lg text-bold text-center text-white">
             Choose a 6 digit pin for your card
           </p>
           <form
