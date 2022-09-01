@@ -20,3 +20,9 @@ export const isValidMiningAttempt = (
 ) => {
   return miningAttempt.Status === "active";
 };
+
+export const hasMetamaskInstalled = () => {
+  //@ts-expect-error - todo: add ethereum module
+  const ethProvider = window.ethereum as any;
+  return !!ethProvider;
+};
