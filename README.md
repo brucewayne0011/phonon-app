@@ -63,6 +63,10 @@ As with iOS development, Android also requires preparation of your machine befor
 
 with your IP address in the command, so the app knows where to look for changes.
 
+## Additional Notes
+
+The default pin for mock cards is `111111`.
+
 ## Architecture
 
 This application uses the [Ionic Framework](https://ionicframework.com) to both give us UI components that look good on all platforms, as well as help us out with some build tools that make it easier to deploy mobile apps.
@@ -104,3 +108,11 @@ sequenceDiagram
       Client->>Client: Confirm Completion 
       Client->>App: Report Phonon Status
 ```
+
+### Precommit Hooks
+This repo utilizes [Husky](https://typicode.github.io/husky/#/) to run precommit hooks.  The precommit hooks run a series of lint and style checks.  This insures consistent code structure and formatting.
+
+If you're using [VSCode](https://code.visualstudio.com/) to develop, you can install the following extensions to help with linting and styling of your code:
+1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+2. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+3. [Prettier - ESLint](https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint)
