@@ -15,6 +15,7 @@ import MinePhononButton from "../components/MinePhononButton";
 import ReceivePhononButton from "../components/ReceivePhononButton";
 import RedeemPhononButton from "../components/RedeemPhononButton";
 import SendPhononButton from "../components/SendPhononButton";
+import { TelemetryStatus } from "../components/TelemetryStatus";
 import { useSession } from "../hooks/useSession";
 import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
@@ -136,6 +137,7 @@ const PhononsList: React.FC = () => {
           </div>
         )}
       </div>
+      <TelemetryStatus />
     </Layout>
   );
 };
