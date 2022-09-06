@@ -3,18 +3,19 @@ import React from "react";
 import { useSession } from "../hooks/useSession";
 import { useConnectionStatusQuery, useConnectMutation } from "../store/api";
 
-export const ConnectButton: React.FC = () => {
+export const ConnectButton: React.FC<{
+  isConnectedToServer: boolean;
+}> = ({ isConnectedToServer }) => {
   const { sessionId } = useSession();
   const [connect, { isLoading }] = useConnectMutation();
   const [isHovering, setIsHovering] = React.useState(false);
 
-  const { data, refetch } = useConnectionStatusQuery(
+  const { refetch } = useConnectionStatusQuery(
     { sessionId },
     { pollingInterval: 1000 }
   );
-  const isConnected = !!data?.ConnectionStatus;
 
-  if (isConnected) {
+  if (isConnectedToServer) {
     return (
       <IonBadge color="success" className="mr-2">
         Connected to Server
@@ -35,7 +36,7 @@ export const ConnectButton: React.FC = () => {
         setIsHovering(true);
       }}
       onMouseLeave={() => setIsHovering(false)}
-      disabled={isConnected || isLoading}
+      disabled={isConnectedToServer || isLoading}
     >
       {isLoading ? "connecting..." : "connect to server"}
     </IonButton>

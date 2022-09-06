@@ -9,16 +9,18 @@ export const MetaMaskAuth = () => {
 
   return (
     <>
-      <ChainBadge chain={chain ? chain : undefined} />
       {currentAccount ? (
-        <IonButton
-          fill="outline"
-          color="secondary"
-          slot="end"
-          // TODO: logout on click
-        >
-          {currentAccount.slice(0, 8)} &#8230;
-        </IonButton>
+        <>
+          <ChainBadge chain={chain ? chain : undefined} />
+          <IonButton
+            fill="outline"
+            color="secondary"
+            slot="end"
+            // TODO: logout on click
+          >
+            {currentAccount.slice(0, 8)} &#8230;
+          </IonButton>
+        </>
       ) : (
         <IonButton
           fill="outline"

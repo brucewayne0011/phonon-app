@@ -56,7 +56,7 @@ export const api = createApi({
     >({
       query: ({ sessionId }) => `/cards/${sessionId}/connectionStatus`,
     }),
-    fetchPhonons: builder.query<PhononDTO[], { sessionId: string }>({
+    fetchPhonons: builder.query<PhononDTO[] | null, { sessionId: string }>({
       query: ({ sessionId }) => `/cards/${sessionId}/listPhonons`,
       providesTags: ["Phonon"],
     }),
@@ -75,6 +75,31 @@ export const api = createApi({
         }),
       }
     ),
+    minePhonon: builder.mutation<
+      MinePhononResponse,
+      { sessionId: string; difficulty: number }
+    >({
+      query: ({ sessionId, difficulty }) => ({
+        url: `cards/${sessionId}/phonon/mineNative`,
+        method: "POST",
+        body: { difficulty },
+      }),
+    }),
+    minePhononStatus: builder.query<PhononMiningAttempt, { sessionId: string }>(
+      {
+        query: ({ sessionId }) =>
+          `/cards/${sessionId}/phonon/mineNative/status`,
+      }
+    ),
+    cancelMinePhonon: builder.mutation<void, { sessionId: string }>({
+      query: ({ sessionId }) => ({
+        url: `cards/${sessionId}/phonon/mineNative/cancel`,
+        method: "PUT",
+      }),
+    }),
+    telemetryStatus: builder.query<void, void>({
+      query: () => `/telemetryCheck`,
+    }),
     setDescriptor: builder.mutation<void, DescriptorDTO>({
       query: ({ index, currencyType, sessionId, value }) => ({
         url: `cards/${sessionId}/phonon/${index}/setDescriptor`,
@@ -147,6 +172,10 @@ export const {
   useFetchPhononsQuery,
   useCheckDenominationMutation,
   useCreatePhononMutation,
+  useMinePhononMutation,
+  useMinePhononStatusQuery,
+  useCancelMinePhononMutation,
+  useTelemetryStatusQuery,
   useInitDepositMutation,
   useFinalizeDepositMutation,
   useSetDescriptorMutation,

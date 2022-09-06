@@ -14,6 +14,10 @@ type CreatePhononResponse = {
   pubKey: string;
 };
 
+type MinePhononResponse = {
+  AttemptId: string;
+};
+
 type Phonon = {
   index: number;
   pubKey: string;
@@ -29,12 +33,6 @@ type ChainValue = {
 type PhononPair = {
   url: string;
 };
-
-enum CurrencyType {
-  BTC,
-  ETH,
-  OTHER,
-}
 
 type DescriptorDTO = {
   index: number;
@@ -69,6 +67,34 @@ type PhononDTO = {
 type RedeemPhononDTO = {
   P: PhononDTO;
   RedeemAddress: string;
+};
+
+enum MiningStatus {
+  Inactive = "inactive",
+  Success = "success",
+  Active = "active",
+  Canceled = "canceled",
+  Error = "error",
+}
+
+type PhononMiningAttemptItem = {
+  Attempts: number;
+  Status: MiningStatus;
+  TimeElapsed: number;
+  StartTime: string;
+  StopTime: string;
+  AverageTime: number;
+  KeyIndex: number;
+  Hash: string;
+};
+interface PhononMiningAttempt {
+  [currentAttemptId: string]: PhononMiningAttemptItem;
+}
+
+type PhononStatusItem = {
+  Name: string;
+  Stat: string;
+  SubText: string;
 };
 
 type SendPhononDTO = PhononDTO[];

@@ -9,9 +9,9 @@ const SessionsPage: React.FC = () => {
 
   return (
     <>
-      <h2 className="my-2 text-xl text-center">Wallets</h2>
+      <h2 className="my-2 text-xl text-center">Your Cards</h2>
       {data && (
-        <IonList>
+        <IonList className="rounded">
           {data.map((session) => (
             <SessionListItem session={session} key={session.Id} />
           ))}
@@ -19,7 +19,7 @@ const SessionsPage: React.FC = () => {
       )}
 
       {!data && (
-        <div className="text-center text-sm">
+        <div className="text-center text-sm text-white">
           <p className="mt-10 text-lg">No phonon cards detected.</p>
           <p className="mt-5 text-lg">
             Create a mock card below to preview the Phonon Protocol features.
