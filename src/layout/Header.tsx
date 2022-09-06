@@ -4,14 +4,17 @@ import icon from "../assets/icon.svg";
 import CardLockButton from "../components/CardLockButton";
 import { ConnectButton } from "../components/ConnectButton";
 import { MetaMaskAuth } from "../components/MetaMaskAuth";
+import { hasMetamaskInstalled } from "../utils/validation";
 
-const Header: React.FC = () => {
+const Header: React.FC<{
+  isConnectedToServer: boolean;
+}> = ({ isConnectedToServer }) => {
   return (
     <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
           <CardLockButton />
-          <ConnectButton />
+          <ConnectButton isConnectedToServer={isConnectedToServer} />
         </IonButtons>
         <IonTitle>
           <div className="flex flex-row content-center justify-center">
@@ -19,9 +22,11 @@ const Header: React.FC = () => {
             <h2 className="logoHeader hidden md:inline">PHONON</h2>
           </div>
         </IonTitle>
-        <IonButtons slot="end">
-          <MetaMaskAuth />
-        </IonButtons>
+        {hasMetamaskInstalled() && (
+          <IonButtons slot="end">
+            <MetaMaskAuth />
+          </IonButtons>
+        )}
       </IonToolbar>
     </IonHeader>
   );

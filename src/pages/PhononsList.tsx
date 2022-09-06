@@ -17,11 +17,11 @@ import RedeemPhononButton from "../components/RedeemPhononButton";
 import SendPhononButton from "../components/SendPhononButton";
 import { TelemetryStatus } from "../components/TelemetryStatus";
 import { useSession } from "../hooks/useSession";
+import { useConnectionStatusQuery, useFetchPhononsQuery } from "../store/api";
 import useChain from "../hooks/useChain";
 import Layout from "../layout/Layout";
 import { bulb, hammerSharp } from "ionicons/icons";
-import { useFetchPhononsQuery } from "../store/api";
-import { isNativePhonon } from "../utils/validation";
+import { hasMetamaskInstalled, isNativePhonon } from "../utils/validation";
 import { FEATUREFLAGS } from "../constants/feature-flags";
 
 const PhononsList: React.FC = () => {
@@ -30,7 +30,6 @@ const PhononsList: React.FC = () => {
   const router = useIonRouter();
   const maxMinedPhonons = 30;
   const [minedPhononCount, setMinedPhononCount] = useState(0);
-
   const [selectedPhonon, setSelectedPhonon] = useState<PhononDTO>();
   const { data } = useFetchPhononsQuery({
     sessionId,
@@ -38,6 +37,12 @@ const PhononsList: React.FC = () => {
   const { refetch, isLoading, isFetching, isError } = useFetchPhononsQuery({
     sessionId,
   });
+
+  const { data: serverConnectionStatus } = useConnectionStatusQuery(
+    { sessionId },
+    { pollingInterval: 1000 }
+  );
+  const isConnectedToServer = !!serverConnectionStatus?.ConnectionStatus;
 
   if (isError || (!isSessionLoading && !activeSession)) {
     //TODO: Improve how this works. It's a bit hacky.
@@ -56,14 +61,24 @@ const PhononsList: React.FC = () => {
   }, [data]);
 
   return (
-    <Layout>
+    <Layout isConnectedToServer={isConnectedToServer}>
       <div className="mx-4">
         <SessionNameHeader />
         <div className="grid gap-y-2">
           {!isAuthenticated && (
             <NoticeBadge icon={bulb}>
-              Welcome to the testnet phonon app! Connect your browser wallet to
-              create phonons from your wallet.
+              Welcome to the testnet phonon app!{" "}
+              {hasMetamaskInstalled() ? (
+                <>
+                  Connect your browser wallet to create phonons from your
+                  wallet.
+                </>
+              ) : (
+                <>
+                  To create backed Phonons, please use a browser with Metamask
+                  installed.
+                </>
+              )}
             </NoticeBadge>
           )}
           {minedPhononCount >= maxMinedPhonons && (
@@ -124,10 +139,12 @@ const PhononsList: React.FC = () => {
 
         {selectedPhonon && (
           <div className="grid md:flex gap-x-5 my-3 md:justify-end">
-            <SendPhononButton
-              phonon={selectedPhonon}
-              {...{ selectedPhonon, setSelectedPhonon }}
-            />
+            {isConnectedToServer && (
+              <SendPhononButton
+                phonon={selectedPhonon}
+                {...{ selectedPhonon, setSelectedPhonon }}
+              />
+            )}
             {selectedPhonon.CurrencyType !== 3 && (
               <RedeemPhononButton
                 phonon={selectedPhonon}
