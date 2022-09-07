@@ -8,7 +8,7 @@ The application for creating, sending, and redeeming Phonons.
 
 It can be built to target Web, iOS, and Android platforms.
 
-To learn more about Phonon, visit [phonon.network](https://phonon.network) and to get help [join the PhononDAO Discord](https://discord.gg/8EhKQXsm).
+To learn more about Phonon, visit [phonon.network](https://phonon.network) and to get help [join the PhononDAO Discord](https://discord.gg/phonon).
 
 ## Dependencies
 
