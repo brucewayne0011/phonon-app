@@ -15,7 +15,7 @@ export const TelemetryStatus: React.FC = () => {
   }, [error]);
 
   return (
-    <div className="fixed bottom-2 right-2 opacity-50" title="Telemetry status">
+    <div className="opacity-50" title="Telemetry status">
       {isOnline ? (
         <div className="flex text-green-500 gap-x-2 items-center">
           <IonIcon className="h-3 w-3 animate-pulse" icon={cloudDone} />
