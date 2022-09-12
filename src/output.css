@@ -516,46 +516,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   bottom: 0.5rem !important;
 }
 
-.left-2 {
-  left: 0.5rem !important;
-}
-
-.bottom-2 {
-  bottom: 0.5rem !important;
-}
-
-.left-2 {
-  left: 0.5rem !important;
-}
-
-.bottom-2 {
-  bottom: 0.5rem !important;
-}
-
-.left-2 {
-  left: 0.5rem !important;
-}
-
-.bottom-2 {
-  bottom: 0.5rem !important;
-}
-
-.left-2 {
-  left: 0.5rem !important;
-}
-
-.bottom-2 {
-  bottom: 0.5rem !important;
-}
-
-.right-2 {
-  right: 0.5rem !important;
-}
-
-.bottom-2 {
-  bottom: 0.5rem !important;
-}
-
 .right-2 {
   right: 0.5rem !important;
 }
@@ -662,10 +622,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1.25rem !important;
 }
 
-.ml-2 {
-  margin-left: 0.5rem !important;
-}
-
 .inline {
   display: inline !important;
 }
@@ -694,14 +650,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 8rem !important;
 }
 
-.h-2 {
-  height: 0.5rem !important;
-}
-
-.h-4 {
-  height: 1rem !important;
-}
-
 .h-3 {
   height: 0.75rem !important;
 }
@@ -726,20 +674,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 0px !important;
 }
 
-.w-7 {
-  width: 1.75rem !important;
-}
-
-.w-2 {
-  width: 0.5rem !important;
-}
-
-.w-4 {
-  width: 1rem !important;
-}
-
 .w-3 {
   width: 0.75rem !important;
+}
+
+.w-7 {
+  width: 1.75rem !important;
 }
 
 .flex-1 {
@@ -765,94 +705,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .animate-ping {
   -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite !important;
           animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .5;
-  }
-}
-
-.animate-pulse {
-  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
 }
 
 @keyframes pulse {
@@ -927,23 +779,18 @@ Ensure the default browser behavior of the `hidden` attribute.
           column-gap: 0.75rem !important;
 }
 
-.gap-y-2 {
-  row-gap: 0.5rem !important;
-}
-
 .gap-x-2 {
   -webkit-column-gap: 0.5rem !important;
           column-gap: 0.5rem !important;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem !important;
 }
 
 .gap-x-5 {
   -webkit-column-gap: 1.25rem !important;
           column-gap: 1.25rem !important;
-}
-
-.gap-x-2 {
-  -webkit-column-gap: 0.5rem !important;
-          column-gap: 0.5rem !important;
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1136,10 +983,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   text-transform: uppercase !important;
 }
 
-.leading-3 {
-  line-height: .75rem !important;
-}
-
 .text-gray-300 {
   --tw-text-opacity: 1 !important;
   color: rgb(209 213 219 / var(--tw-text-opacity)) !important;
@@ -1185,9 +1028,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(148 163 184 / var(--tw-text-opacity)) !important;
 }
 
-.text-green-200 {
+.text-green-500 {
   --tw-text-opacity: 1 !important;
-  color: rgb(187 247 208 / var(--tw-text-opacity)) !important;
+  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
 }
 
 .text-indigo-300 {
@@ -1235,96 +1083,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(252 165 165 / var(--tw-text-opacity)) !important;
 }
 
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-200 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(254 202 202 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
-}
-
-.opacity-25 {
-  opacity: 0.25 !important;
-}
-
 .opacity-50 {
   opacity: 0.5 !important;
-}
-
-.opacity-75 {
-  opacity: 0.75 !important;
 }
 
 .shadow-inner {
