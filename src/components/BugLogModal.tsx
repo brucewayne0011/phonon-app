@@ -184,7 +184,7 @@ export default function BugLogModal({ isModalVisible, hideModal }: any) {
           color="medium"
           onClick={destroyModal}
         >
-          CANCEL
+          CLOSE
         </IonButton>
       </div>
     </IonModal>
