@@ -100,6 +100,37 @@ export const api = createApi({
     telemetryStatus: builder.query<void, void>({
       query: () => `/telemetryCheck`,
     }),
+    logger: builder.mutation<
+      void,
+      {
+        userAgent: string;
+        env: string;
+        version: string | undefined;
+        userMessage: string;
+        reproducibleSteps: string;
+        browserConsoleHistory: any;
+      }
+    >({
+      query: ({
+        userAgent,
+        env,
+        version,
+        userMessage,
+        reproducibleSteps,
+        browserConsoleHistory,
+      }) => ({
+        url: `logs`,
+        method: "POST",
+        body: {
+          userAgent,
+          env,
+          version,
+          userMessage,
+          reproducibleSteps,
+          browserConsoleHistory,
+        },
+      }),
+    }),
     setDescriptor: builder.mutation<void, DescriptorDTO>({
       query: ({ index, currencyType, sessionId, value }) => ({
         url: `cards/${sessionId}/phonon/${index}/setDescriptor`,
@@ -176,6 +207,7 @@ export const {
   useMinePhononStatusQuery,
   useCancelMinePhononMutation,
   useTelemetryStatusQuery,
+  useLoggerMutation,
   useInitDepositMutation,
   useFinalizeDepositMutation,
   useSetDescriptorMutation,
