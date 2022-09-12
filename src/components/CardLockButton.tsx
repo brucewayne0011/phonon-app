@@ -23,6 +23,7 @@ export default function CardLockButton() {
       }}
     >
       {isHovering ? LockedIcon : UnlockedIcon}
+      <span className="ml-2">Lock Card</span>
     </IonButton>
   );
 }
