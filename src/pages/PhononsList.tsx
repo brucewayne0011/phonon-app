@@ -23,6 +23,7 @@ import Layout from "../layout/Layout";
 import { bulb, hammerSharp } from "ionicons/icons";
 import { hasMetamaskInstalled, isNativePhonon } from "../utils/validation";
 import { FEATUREFLAGS } from "../constants/feature-flags";
+import BugLogButton from "../components/BugLogButton";
 
 const PhononsList: React.FC = () => {
   const { sessionId, activeSession, isSessionLoading } = useSession();
@@ -154,7 +155,10 @@ const PhononsList: React.FC = () => {
           </div>
         )}
       </div>
-      <TelemetryStatus />
+      <div className="fixed bottom-2 right-2 flex gap-x-4 items-center">
+        <TelemetryStatus />
+        <BugLogButton />
+      </div>
     </Layout>
   );
 };
