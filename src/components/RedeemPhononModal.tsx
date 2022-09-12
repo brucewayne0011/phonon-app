@@ -1,9 +1,11 @@
-import { IonButton, IonModal } from "@ionic/react";
+import { IonButton, IonIcon, IonModal } from "@ionic/react";
+import { wallet } from "ionicons/icons";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CHAINS } from "../constants/chains";
 import { useSession } from "../hooks/useSession";
 import { useRedeemPhononMutation } from "../store/api";
+import useChain from "../hooks/useChain";
 import { weiToEth } from "../utils/denomination";
 import FormErrorText from "./FormErrorText";
 
@@ -23,11 +25,13 @@ const RedeemPhononModal: React.FC<{
   const [redeemPhonon, { isLoading }] = useRedeemPhononMutation();
   const [errorMessage, setErrorMessage] = useState("");
   const chain = CHAINS[phonon.ChainID] ?? null;
+  const { currentAccount } = useChain();
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<RedeemPhononFormData>();
 
@@ -89,6 +93,19 @@ const RedeemPhononModal: React.FC<{
               required: true,
             })}
           />
+          {currentAccount && (
+            <IonButton
+              size="small"
+              fill="clear"
+              color="medium"
+              onClick={() => {
+                setValue("redeemAddress", currentAccount);
+              }}
+            >
+              <IonIcon slot="start" icon={wallet} />
+              Use connected wallet address (0x&#8230;{currentAccount.slice(-8)})
+            </IonButton>
+          )}
           {errors?.redeemAddress?.type === "required" && (
             <FormErrorText>Redeem address is required</FormErrorText>
           )}

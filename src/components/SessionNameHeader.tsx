@@ -10,14 +10,6 @@ export default function SessionNameHeader() {
   const { showModal, hideModal, isModalVisible } = useModal();
   const { sessionName } = useSession();
 
-  const [isHovering, setIsHovering] = React.useState(false);
-
-  const handleMouseOver = () => {
-    setIsHovering(true);
-  };
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
   const handleOnClick = () => {
     showModal();
   };
@@ -26,12 +18,12 @@ export default function SessionNameHeader() {
     <>
       <div
         className="flex my-5 justify-center items-center cursor-pointer"
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
         onClick={handleOnClick}
       >
         <h1 className="text-2xl">{sessionName}</h1>
-        {isHovering && <IonIcon icon={pencilOutline} />}
+        <span className="ml-2 text-xs bg-white px-2 py-1 text-black rounded-sm flex items-center gap-x-2">
+          <IonIcon icon={pencilOutline} slot="start" /> EDIT
+        </span>
       </div>
 
       <NameSessionModal {...{ isModalVisible, hideModal }} />
