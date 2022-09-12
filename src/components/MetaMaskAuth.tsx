@@ -18,7 +18,7 @@ export const MetaMaskAuth = () => {
             slot="end"
             // TODO: logout on click
           >
-            {currentAccount.slice(0, 8)} &#8230;
+            0x&#8230;{currentAccount.slice(-8)}
           </IonButton>
         </>
       ) : (
