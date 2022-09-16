@@ -12,7 +12,7 @@ export default function CardLockButton() {
     <IonButton
       fill="outline"
       color={isHovering ? "tertiary" : "secondary"}
-      className="mx-3"
+      className="mr-3"
       onMouseEnter={() => {
         setIsHovering(true);
       }}
