@@ -63,7 +63,7 @@ const PhononsList: React.FC = () => {
 
   return (
     <Layout isConnectedToServer={isConnectedToServer}>
-      <div className="mx-4">
+      <div className="mx-2">
         <SessionNameHeader />
         <div className="grid gap-y-2">
           {!isAuthenticated && (
@@ -98,8 +98,14 @@ const PhononsList: React.FC = () => {
         </div>
 
         {isLoading || isFetching ? (
-          <div className="w-full flex justify-center align-middle">
-            <IonSpinner />
+          <div className="w-full align-middle mt-4">
+            <div className="flex gap-x-2 text-xl">
+              <IonSpinner /> Loading Phonons
+            </div>
+            <div className="text-gray-400 mt-2">
+              This can take a minute or two, depending on how many Phonons you
+              have. Please be patient.
+            </div>
           </div>
         ) : (
           <>
@@ -111,7 +117,7 @@ const PhononsList: React.FC = () => {
               <IonRefresherContent></IonRefresherContent>
             </IonRefresher>
 
-            <IonList className="overflow-auto max-h-[calc(100vh_-_350px)] rounded mb-5">
+            <IonList className="overflow-auto max-h-[calc(100vh_-_430px)] md:max-h-[calc(100vh_-_375px)] rounded mb-5">
               {data && data.length > 0 ? (
                 data?.map((p) => (
                   <ErrorBoundary

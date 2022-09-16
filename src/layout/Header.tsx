@@ -12,21 +12,27 @@ const Header: React.FC<{
   return (
     <IonHeader>
       <IonToolbar>
-        <IonButtons slot="start">
-          <CardLockButton />
-          <ConnectButton isConnectedToServer={isConnectedToServer} />
-        </IonButtons>
-        <IonTitle>
-          <div className="flex flex-row content-center justify-center">
-            <img src={icon} className="mr-1 w-7" alt="logo" />
-            <h2 className="logoHeader hidden md:inline">PHONON</h2>
+        <div className="md:flex mx-3">
+          <div className="flex mb-2">
+            <IonButtons slot="start">
+              <CardLockButton />
+              <ConnectButton isConnectedToServer={isConnectedToServer} />
+            </IonButtons>
           </div>
-        </IonTitle>
-        {hasMetamaskInstalled() && (
-          <IonButtons slot="end">
-            <MetaMaskAuth />
-          </IonButtons>
-        )}
+          <div className="flex w-full justify-between mb-2">
+            <IonTitle>
+              <div className="flex flex-row content-center justify-center">
+                <img src={icon} className="mr-1 w-7" alt="logo" />
+                <h2 className="logoHeader hidden md:inline">PHONON</h2>
+              </div>
+            </IonTitle>
+            {hasMetamaskInstalled() && (
+              <IonButtons slot="end">
+                <MetaMaskAuth />
+              </IonButtons>
+            )}
+          </div>
+        </div>
       </IonToolbar>
     </IonHeader>
   );
