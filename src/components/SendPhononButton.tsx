@@ -1,40 +1,26 @@
 import { IonButton, IonIcon, useIonToast } from "@ionic/react";
-import { lockClosedOutline, sendSharp } from "ionicons/icons";
+import { warning, sendSharp } from "ionicons/icons";
 import React from "react";
-import { useIsConnected } from "../hooks/useIsConnected";
 import { useModal } from "../hooks/useModal";
 import SendPhononModal from "./SendPhononModal";
 
 const SendPhononButton: React.FC<{
-  phonon: PhononDTO;
   selectedPhonon: PhononDTO | undefined;
   setSelectedPhonon: React.Dispatch<
     React.SetStateAction<PhononDTO | undefined>
   >;
-}> = ({ phonon, selectedPhonon, setSelectedPhonon }) => {
+  isConnectedToServer: boolean;
+}> = ({ selectedPhonon, setSelectedPhonon, isConnectedToServer }) => {
   const { showModal, hideModal, isModalVisible } = useModal();
-  const { isConnected } = useIsConnected();
   const [present] = useIonToast();
 
   // event to handle sending phonon
   const handleOnClick = () => {
-    if (!isConnected) {
+    if (!isConnectedToServer) {
       return present({
         header: "Error",
-        message: "Must be connected to send",
-        icon: lockClosedOutline,
-        duration: 2000,
-        color: "danger",
-        cssClass: "text-md text-center font-black uppercase",
-        translucent: true,
-        position: "top",
-      });
-    }
-    if (!phonon) {
-      return present({
-        header: "Error",
-        message: "Must select a Phonon to send",
-        icon: lockClosedOutline,
+        message: "Must be connected to the server to send!",
+        icon: warning,
         duration: 2000,
         color: "danger",
         cssClass: "text-md text-center font-black uppercase",
@@ -45,6 +31,7 @@ const SendPhononButton: React.FC<{
       showModal();
     }
   };
+
   return (
     <>
       <IonButton
@@ -56,17 +43,15 @@ const SendPhononButton: React.FC<{
         <IonIcon slot="end" icon={sendSharp} />
         Send Selected Phonon
       </IonButton>
-      {phonon ? (
-        <SendPhononModal
-          {...{
-            isModalVisible,
-            hideModal,
-            phonon,
-            selectedPhonon,
-            setSelectedPhonon,
-          }}
-        />
-      ) : null}
+      <SendPhononModal
+        {...{
+          isModalVisible,
+          hideModal,
+          selectedPhonon,
+          setSelectedPhonon,
+          isConnectedToServer,
+        }}
+      />
     </>
   );
 };

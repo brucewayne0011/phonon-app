@@ -41,6 +41,22 @@ export const api = createApi({
         url: `cards/${sessionId}/pair`,
         method: "POST",
         body: { CardID: `${cardId}` },
+        responseHandler: async (response) => {
+          const text = String(await response.text());
+
+          if (response.headers.get("Content-Type")?.includes("text/plain")) {
+            return text;
+          }
+
+          try {
+            const jsonString = JSON.parse(text);
+
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return jsonString;
+          } catch (err) {
+            return text;
+          }
+        },
       }),
     }),
     connect: builder.mutation<void, { sessionId: string }>({

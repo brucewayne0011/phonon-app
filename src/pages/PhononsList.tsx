@@ -146,12 +146,11 @@ const PhononsList: React.FC = () => {
 
         {selectedPhonon && (
           <div className="grid md:flex gap-x-5 my-3 md:justify-end">
-            {isConnectedToServer && (
-              <SendPhononButton
-                phonon={selectedPhonon}
-                {...{ selectedPhonon, setSelectedPhonon }}
-              />
-            )}
+            <SendPhononButton
+              selectedPhonon={selectedPhonon}
+              setSelectedPhonon={setSelectedPhonon}
+              isConnectedToServer={isConnectedToServer}
+            />
             {selectedPhonon.CurrencyType !== 3 && (
               <RedeemPhononButton
                 phonon={selectedPhonon}
