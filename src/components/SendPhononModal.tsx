@@ -40,6 +40,7 @@ const SendPhononModal: React.FC<{
 
   const destroyModal = () => {
     setErrorMessage("");
+    setErrorMessageDetails("");
     hideModal();
     reset();
   };
