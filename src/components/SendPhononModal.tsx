@@ -6,6 +6,8 @@ import { useIsConnected } from "../hooks/useIsConnected";
 import { useSession } from "../hooks/useSession";
 import { usePairMutation, useSendPhononMutation } from "../store/api";
 import { weiToEth } from "../utils/denomination";
+import { isGreaterThan } from "../utils/math";
+import { isNativePhonon } from "../utils/validation";
 
 export type SendPhononFormData = {
   cardId: string;
@@ -97,43 +99,64 @@ const SendPhononModal: React.FC<{
             Pairing with{" "}
             <span className="font-bold ml-1">{getValues("cardId")}</span>...
           </div>
-        ) : isConnectedToServer ? (
-          <form
-            className="flex flex-col mt-12"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <input
-              className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
-              placeholder="Recipient Card ID"
-              disabled={isLoading}
-              {...register("cardId", {
-                required: true,
-              })}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 mt-4">
-              <IonButton
-                key="submit"
-                size="large"
-                fill="solid"
-                expand="full"
-                color="primary"
-                onClick={handleSubmit(onSubmit)}
-                disabled={isLoading}
-              >
-                SEND
-              </IonButton>
-              <IonButton
-                size="large"
-                expand="full"
-                fill="clear"
-                color="medium"
-                onClick={destroyModal}
-                disabled={isLoading}
-              >
-                CANCEL
-              </IonButton>
+        ) : isSending ? (
+          isConnectedToServer ? (
+            <div className="text-xl mt-8 mx-auto flex items-center">
+              <IonSpinner className="mr-2" />
+              Sending{" "}
+              <span className="font-bold ml-1">
+                {isGreaterThan(selectedPhonon.Denomination, 0) ? (
+                  isNativePhonon(selectedPhonon) ? (
+                    selectedPhonon.Denomination
+                  ) : (
+                    weiToEth(selectedPhonon.Denomination)
+                  )
+                ) : (
+                  <IonSpinner />
+                )}{" "}
+                {chain?.ticker}
+              </span>{" "}
+              to
+              <span className="font-bold ml-1">{getValues("cardId")}</span>...
             </div>
-          </form>
+          ) : (
+            <form
+              className="flex flex-col mt-12"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <input
+                className="text-bold p-2 text-xl text-white bg-zinc-800 shadow-inner"
+                placeholder="Recipient Card ID"
+                disabled={isLoading}
+                {...register("cardId", {
+                  required: true,
+                })}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 mt-4">
+                <IonButton
+                  key="submit"
+                  size="large"
+                  fill="solid"
+                  expand="full"
+                  color="primary"
+                  onClick={handleSubmit(onSubmit)}
+                  disabled={isLoading}
+                >
+                  SEND
+                </IonButton>
+                <IonButton
+                  size="large"
+                  expand="full"
+                  fill="clear"
+                  color="medium"
+                  onClick={destroyModal}
+                  disabled={isLoading}
+                >
+                  CANCEL
+                </IonButton>
+              </div>
+            </form>
+          )
         ) : (
           <IonButton
             size="large"
