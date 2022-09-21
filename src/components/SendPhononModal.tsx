@@ -101,12 +101,12 @@ const SendPhononModal: React.FC<{
             chain ? chain.ticker : "ERR"
           }`}
         </p>
-        <p className="font-bold text-xl text-red-400 mt-2">
+        <div className="font-bold text-xl text-red-400 mt-2">
           <div className="uppercase text-center">{errorMessage}</div>
           {errorMessageDetails && (
             <span className="text-sm block mt-2">{errorMessageDetails}</span>
           )}
-        </p>
+        </div>
 
         {isPairing ? (
           <div className="text-xl mt-8 mx-auto flex items-center">
