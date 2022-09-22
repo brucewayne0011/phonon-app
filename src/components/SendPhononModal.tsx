@@ -1,4 +1,4 @@
-import { IonButton, IonModal, IonSpinner } from "@ionic/react";
+import { IonButton, IonModal } from "@ionic/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CHAINS } from "../constants/chains";
@@ -6,7 +6,6 @@ import { useIsConnected } from "../hooks/useIsConnected";
 import { useSession } from "../hooks/useSession";
 import { usePairMutation, useSendPhononMutation } from "../store/api";
 import { weiToEth } from "../utils/denomination";
-import { isGreaterThan } from "../utils/math";
 import { isNativePhonon } from "../utils/validation";
 import LoadingMessage from "./LoadingMessage";
 
