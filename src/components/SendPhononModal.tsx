@@ -8,6 +8,7 @@ import { usePairMutation, useSendPhononMutation } from "../store/api";
 import { weiToEth } from "../utils/denomination";
 import { isGreaterThan } from "../utils/math";
 import { isNativePhonon } from "../utils/validation";
+import LoadingMessage from "./LoadingMessage";
 
 export type SendPhononFormData = {
   cardId: string;
@@ -83,8 +84,6 @@ const SendPhononModal: React.FC<{
               "There's a known issue that is preventing the pairing of a remote card after a previous Phonon was sent to that same remote card. This will be resolved in a future release."
             );
           }
-
-          // console.error(err);
         });
     } catch (err) {
       console.log(err);
@@ -109,32 +108,29 @@ const SendPhononModal: React.FC<{
           )}
         </div>
 
-        {isPairing ? (
-          <div className="text-xl mt-8 mx-auto flex items-center">
-            <IonSpinner className="mr-2" />
+        {/* Loading message while pairing with remote card */}
+        {isPairing && (
+          <LoadingMessage>
             Pairing with{" "}
             <span className="font-bold ml-1">{getValues("cardId")}</span>...
-          </div>
-        ) : isSending ? (
-          <div className="text-xl mt-8 mx-auto flex items-center">
-            <IonSpinner className="mr-2" />
+          </LoadingMessage>
+        )}
+        {/* Loading message while sending phonon to remote card */}
+        {isSending && (
+          <LoadingMessage>
             Sending{" "}
             <span className="font-bold ml-1">
-              {isGreaterThan(selectedPhonon.Denomination, 0) ? (
-                isNativePhonon(selectedPhonon) ? (
-                  selectedPhonon.Denomination
-                ) : (
-                  weiToEth(selectedPhonon.Denomination)
-                )
-              ) : (
-                <IonSpinner />
-              )}{" "}
+              {isNativePhonon(selectedPhonon)
+                ? selectedPhonon.Denomination
+                : weiToEth(selectedPhonon.Denomination)}{" "}
               {chain?.ticker}
             </span>{" "}
             to
             <span className="font-bold ml-1">{getValues("cardId")}</span>...
-          </div>
-        ) : isConnectedToServer ? (
+          </LoadingMessage>
+        )}
+        {/* Show the send form if not pairing, not sending and connected to server */}
+        {!isPairing && !isSending && isConnectedToServer ? (
           <form
             className="flex flex-col mt-12"
             onSubmit={handleSubmit(onSubmit)}
